@@ -14,7 +14,7 @@
 /coverage
 
 # webstorm
-.idea
+/.idea
 
 # next.js
 /.next/
