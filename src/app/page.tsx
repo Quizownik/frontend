@@ -5,7 +5,7 @@ import QuizButton from "@/app/components/QuizButton";
 
 export default function Home() {
   return (
-      <main className="min-h-screen bg-quizYellow flex flex-col items-center justify-center font-quiz px-4">
+      <main className="min-h-screen flex flex-col items-center justify-center font-quiz px-4">
         <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -19,7 +19,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-xl text-gray-800 mb-8 text-center"
+            className="text-xl  mb-8 text-center"
         >
           Wybierz kategorię i sprawdź swoją wiedzę!
         </motion.p>
@@ -28,7 +28,7 @@ export default function Home() {
           <QuizButton color="quizBlue" emoji="🧠" label="Nauka" />
           <QuizButton color="quizGreen" emoji="🎵" label="Muzyka" />
           <QuizButton color="quizPink" emoji="⚽" label="Sport" />
-          <QuizButton color="white" emoji="🎮" label="Gry" border />
+          <QuizButton color="white" emoji="🎮" label="Gry" />
         </div>
       </main>
   );
