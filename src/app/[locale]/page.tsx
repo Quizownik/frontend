@@ -1,9 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import QuizButton from "@/app/components/QuizButton";
+import QuizButton from "@/app/[locale]/components/QuizButton";
+import {useTranslations} from "next-intl";
 
 export default function Home() {
+    const t = useTranslations('HomePage');
   return (
       <main className="min-h-screen flex flex-col items-center justify-center font-quiz px-4">
         <motion.h1
@@ -21,14 +23,14 @@ export default function Home() {
             transition={{ delay: 0.4 }}
             className="text-xl  mb-8 text-center"
         >
-          Wybierz kategorię i sprawdź swoją wiedzę!
+            {t('chooseCategory')}
         </motion.p>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <QuizButton color="quizBlue" emoji="🧠" label="Nauka" />
-          <QuizButton color="quizGreen" emoji="🎵" label="Muzyka" />
-          <QuizButton color="quizPink" emoji="⚽" label="Sport" />
-          <QuizButton color="white" emoji="🎮" label="Gry" />
+          <QuizButton color="blue" emoji="🧠" label="Nauka" />
+          <QuizButton color="green" emoji="🎵" label="Muzyka" />
+          <QuizButton color="pink" emoji="⚽" label="Sport" />
+          <QuizButton color="yellow" emoji="🎮" label="Gry" />
         </div>
       </main>
   );
