@@ -9,6 +9,8 @@ import {routing} from '@/i18n/routing';
 import {Fredoka} from 'next/font/google';
 
 import React, {ReactNode} from "react";
+import Header from "@/app/[locale]/components/Header";
+import Footer from "@/app/[locale]/components/Footer";
 
 const fredoka = Fredoka({subsets: ['latin'], weight: ['400', '700']});
 
@@ -36,7 +38,8 @@ export default async function RootLayout({children, params}: {
         <body
             className={`${fredoka.className} antialiased`}
         >
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+            <Header/>{children}</NextIntlClientProvider><Footer/>
         </body>
         </html>
     );
