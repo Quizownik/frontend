@@ -1,14 +1,23 @@
-﻿
+﻿"use client"
+
+import {useState} from "react";
 
 export default function Footer() {
+
+    const currentYear = new Date().getFullYear();
+
+    const [isLoggedIn] = useState(true);
+
+    if (!isLoggedIn) {
+        return null;
+    }
+
     return (
-        <>
-            </>
-        // <footer className="bg-gray-800 text-white py-4">
-        //     <div className="container mx-auto text-center">
-        //         <p className="text-sm">© 2023 Quizownik. All rights reserved.</p>
-        //         <p className="text-sm">Made with ❤️ by Quizownik Team</p>
-        //     </div>
-        // </footer>
+        <footer className=" text-white py-4 shadow-none">
+            <div className="container mx-auto text-center">
+                <p className="text-sm">© {currentYear} Quizownik. All rights reserved.</p>
+                <p className="text-sm">Made with ❤️ by Quizownik Team</p>
+            </div>
+        </footer>
     );
 }
