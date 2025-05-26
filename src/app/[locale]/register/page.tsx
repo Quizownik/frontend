@@ -30,8 +30,8 @@ export default function RegisterPage() {
         const result = await signup(formData);
         if (result?.errors) {
             alert('Błąd: ' + JSON.stringify(result.errors));
-        } else if (result?.message) {
-            alert(result.message);
+        } else if (result) {
+            alert(result);
         }
     };
 

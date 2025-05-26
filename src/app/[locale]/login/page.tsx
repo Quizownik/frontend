@@ -1,37 +1,49 @@
 ﻿'use client';
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import {useState} from 'react';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import VisibilityOffTwoToneIcon from '@mui/icons-material/VisibilityOffTwoTone';
+import {login} from "@/app/[locale]/actions/auth";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Logging in with:', { email, password });
+        console.log('Logging in with:', {email, password});
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('password', password);
+        const result = await login(formData);
+        if (result?.errors) {
+            alert('Błąd: ' + JSON.stringify(result.errors));
+        } else if (result) {
+            alert(result);
+        }
     };
 
     return (
-        <main className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 font-quiz bg-gradient-to-br from-quizBlue via-quizPink to-quizBlue">
-            <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
+        <main
+            className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 font-quiz bg-gradient-to-br from-quizBlue via-quizPink to-quizBlue">
+            <div
+                className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
                 <div className="text-center">
                     <motion.h1
-                        initial={{ opacity: 0, y: -40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1 }}
+                        initial={{opacity: 0, y: -40}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 1}}
                         className="text-4xl sm:text-5xl md:text-6xl text-quizPink font-bold mb-4"
                     >
                         Quizownik
                     </motion.h1>
 
                     <motion.p
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.2 }}
+                        initial={{opacity: 0, y: -20}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 1, delay: 0.2}}
                         className="text-lg sm:text-xl md:text-2xl text-gray-500"
                     >
                         Odkryj swoją pasję do quizów!
