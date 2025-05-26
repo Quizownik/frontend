@@ -1,4 +1,6 @@
 ﻿import { SignupFormSchema} from '@/app/[locale]/lib/definitions'
+import {redirect} from "next/navigation";
+import {createSession} from "@/app/[locale]/lib/session";
 
 export async function signup(formData: FormData) {
     // Validate form fields
@@ -47,9 +49,20 @@ export async function signup(formData: FormData) {
         }
     }
 
-    return {
-        message: 'Registration successful! Please check your email to verify your account.',
-        success: true,
+    const data = await response.json()
+    if (!data.access_token) {
+        return {
+            errors: {
+                email: ['Unexpected response from server'],
+            },
+        }
     }
+
+    console.log(data)
+
+
+    await createSession(data.access_token)
+
+    redirect('/profile')
 }
 
