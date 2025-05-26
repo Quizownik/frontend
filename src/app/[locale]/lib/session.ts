@@ -59,3 +59,8 @@ export async function updateSession() {
         path: '/',
     })
 }
+
+export async function deleteSession() {
+    const cookieStore = await cookies()
+    cookieStore.delete('session')
+}
