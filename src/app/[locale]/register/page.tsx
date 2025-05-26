@@ -4,22 +4,35 @@ import Link from 'next/link';
 import { useState } from 'react';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import VisibilityOffTwoToneIcon from '@mui/icons-material/VisibilityOffTwoTone';
+import {signup} from "@/app/[locale]/actions/auth";
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
+    const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleRegister = (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         if (password !== confirmPassword) {
             alert('Passwords do not match');
             return;
         }
-        console.log('Registering:', { name, email, password });
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('lastName', lastname);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('confirmPassword', confirmPassword);
+        const result = await signup(formData);
+        if (result?.errors) {
+            alert('Błąd: ' + JSON.stringify(result.errors));
+        } else if (result) {
+            alert(result);
+        }
     };
 
     return (
@@ -56,6 +69,20 @@ export default function RegisterPage() {
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="lastname" className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
+                            Nazwisko
+                        </label>
+                        <input
+                            id="lastname"
+                            type="text"
+                            required
+                            value={lastname}
+                            onChange={(e) => setLastname(e.target.value)}
                             className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
                         />
                     </div>
