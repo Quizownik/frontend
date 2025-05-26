@@ -1,6 +1,6 @@
 ﻿import { SignupFormSchema} from '@/app/[locale]/lib/definitions'
 import {redirect} from "next/navigation";
-import {createSession} from "@/app/[locale]/lib/session";
+import {createSession, deleteSession} from "@/app/[locale]/lib/session";
 
 export async function signup(formData: FormData) {
     // Validate form fields
@@ -64,5 +64,11 @@ export async function signup(formData: FormData) {
     await createSession(data.access_token)
 
     redirect('/profile')
+}
+
+
+export async function logout() {
+    await deleteSession()
+    redirect('/login')
 }
 
