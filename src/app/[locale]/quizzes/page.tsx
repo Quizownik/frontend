@@ -1,7 +1,8 @@
 ﻿'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {categoryColors} from "@/app/[locale]/lib/categoryColors";
 
 const allQuizzes = [
@@ -12,15 +13,30 @@ const allQuizzes = [
     { id: '5', title: 'Listening: podstawowe dialogi', category: 'Słuchanie' },
 ];
 
-const categories = ['Wszystkie', 'Słownictwo', 'Gramatyka', 'Czytanie', 'Słuchanie'];
-
 export default function QuizzesPage() {
-    const [activeCategory, setActiveCategory] = useState('Wszystkie');
+    const router = useRouter();
+    const [loading, setLoading] = useState(true);
+    const [authorized, setAuthorized] = useState(false);
 
-    const filteredQuizzes =
-        activeCategory === 'Wszystkie'
-            ? allQuizzes
-            : allQuizzes.filter((q) => q.category === activeCategory);
+    useEffect(() => {
+        const locale = window.location.pathname.split('/')[1] || 'pl';
+        fetch(`/${locale}/api/me`)
+            .then(res => {
+                if (res.status === 401) {
+                    router.replace('/login');
+                } else if (res.ok) {
+                    setAuthorized(true);
+                }
+            })
+            .finally(() => setLoading(false));
+    }, [router]);
+
+    if (loading) {
+        return <div className="text-center text-xl text-quizPink py-20">Ładowanie...</div>;
+    }
+    if (!authorized) {
+        return null;
+    }
 
     return (
         <main className="min-h-screen font-quiz px-4 py-10 shadow-xl">
@@ -42,26 +58,10 @@ export default function QuizzesPage() {
                 Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.
             </motion.p>
 
-            <div className="flex flex-wrap justify-center gap-4 mb-10">
-                {categories.map((category) => (
-                    <button
-                        key={category}
-                        onClick={() => setActiveCategory(category)}
-                        className={`px-4 py-2 rounded-full border-2 font-semibold transition duration-300 ${
-                            activeCategory === category
-                                ? 'bg-quizPink text-white border-quizPink'
-                                : 'text-quizPink border-quizPink hover:bg-quizPink hover:text-white'
-                        }`}
-                    >
-                        {category}
-                    </button>
-                ))}
-            </div>
-
+            {/* Możesz tu wstawić Client Component do filtrowania quizów po kategoriach */}
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                {filteredQuizzes.map((quiz, index) => {
+                {allQuizzes.map((quiz, index) => {
                     const borderColor = categoryColors[quiz.category] || 'border-gray-300';
-
                     return (
                         <motion.div
                             key={quiz.id}
