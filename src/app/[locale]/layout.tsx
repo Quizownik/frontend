@@ -39,7 +39,10 @@ export default async function RootLayout({children, params}: {
             className={`${fredoka.className} antialiased`}
         >
         <NextIntlClientProvider>
-            <Header/>{children}</NextIntlClientProvider><Footer/>
+            <Header/>
+            {children}
+            <Footer/>
+        </NextIntlClientProvider>
         </body>
         </html>
     );

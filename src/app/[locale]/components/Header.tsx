@@ -1,9 +1,15 @@
 ﻿"use client"
 import {Link} from "@/i18n/navigation";
-import {useState} from "react";
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
+import { usePathname } from 'next/navigation';
+import { isAuthPage } from '@/app/[locale]/lib/utils'; // Import nowej funkcji
 
 export default function Header() {
+    const pathname = usePathname();
+
+    if (isAuthPage(pathname)) {
+        return null;
+    }
 
     return (
         <header
@@ -24,3 +30,4 @@ export default function Header() {
     );
 
 }
+

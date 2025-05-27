@@ -1,9 +1,14 @@
 ﻿"use client"
+import { usePathname } from 'next/navigation';
+import { isAuthPage } from '@/app/[locale]/lib/utils'; // Import nowej funkcji
 
 export default function Footer() {
-
+    const pathname = usePathname();
     const currentYear = new Date().getFullYear();
 
+    if (isAuthPage(pathname)) {
+        return null;
+    }
 
     return (
         <footer className=" text-white py-4 shadow-none">
@@ -14,3 +19,4 @@ export default function Footer() {
         </footer>
     );
 }
+
