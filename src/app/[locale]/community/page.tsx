@@ -1,5 +1,7 @@
 ﻿'use client';
 import { motion } from 'framer-motion';
+import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 const leaderboard = [
     {
@@ -35,6 +37,10 @@ const leaderboard = [
 ];
 
 export default function CommunityPage() {
+    const { loading, authorized } = useAuthGuard();
+    if (loading) return <LoadingSpinner />;
+    if (!authorized) return null;
+
     return (
         <main className="min-h-screen font-quiz px-4 py-10 flex flex-col items-center">
             <motion.h1

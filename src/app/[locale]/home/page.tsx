@@ -1,7 +1,13 @@
 ﻿"use client"
 import {motion} from 'framer-motion';
+import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 export default function HomePage() {
+    const { loading, authorized } = useAuthGuard();
+    if (loading) return <LoadingSpinner />;
+    if (!authorized) return null;
+
     return (
         <main className="min-h-screen flex flex-col items-center justify-center font-quiz px-4">
             <motion.h1

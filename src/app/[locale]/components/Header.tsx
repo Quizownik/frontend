@@ -4,11 +4,7 @@ import {useState} from "react";
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 
 export default function Header() {
-    const [isLoggedIn] = useState(true);
 
-    if (!isLoggedIn) {
-        return null;
-    }
     return (
         <header
             className="grid grid-cols-3 w-full items-center justify-center p-4 text-white shadow-xl z-50">

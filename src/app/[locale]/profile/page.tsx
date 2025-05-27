@@ -3,6 +3,8 @@ import {motion} from 'framer-motion';
 import Image from 'next/image';
 import {colorClasses} from "@/app/[locale]/lib/colorClasses";
 import {logout} from "@/app/[locale]/actions/auth";
+import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 const mockUser = {
     username: 'Juhas',
@@ -16,6 +18,10 @@ const mockUser = {
 };
 
 export default function ProfilePage() {
+    const { loading, authorized } = useAuthGuard();
+    if (loading) return <LoadingSpinner />;
+    if (!authorized) return null;
+
     return (
         <main className="min-h-screen flex flex-col items-center justify-start font-quiz px-4 pt-16 shadow-xl">
             <motion.h1

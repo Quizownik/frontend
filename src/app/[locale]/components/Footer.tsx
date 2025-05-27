@@ -1,16 +1,9 @@
 ﻿"use client"
 
-import {useState} from "react";
-
 export default function Footer() {
 
     const currentYear = new Date().getFullYear();
 
-    const [isLoggedIn] = useState(true);
-
-    if (!isLoggedIn) {
-        return null;
-    }
 
     return (
         <footer className=" text-white py-4 shadow-none">

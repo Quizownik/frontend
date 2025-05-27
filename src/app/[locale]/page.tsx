@@ -3,16 +3,14 @@
 import { motion } from 'framer-motion';
 import {useTranslations} from "next-intl";
 import QuizCategoryButton from "@/app/[locale]/components/QuizCategoryButton";
-import {useState} from "react";
-import LoginPage from "@/app/[locale]/login/page";
+import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 export default function Start() {
     const t = useTranslations('HomePage');
-    const [isLoggedIn] = useState(true);
-
-    if (!isLoggedIn) {
-        return <LoginPage />;
-    }
+    const { loading, authorized } = useAuthGuard();
+    if (loading) return <LoadingSpinner />;
+    if (!authorized) return null;
 
   return (
       <main className="min-h-screen flex flex-col items-center justify-center font-quiz px-4">

@@ -19,13 +19,6 @@ export default function QuizzesPage() {
     if (loading) return <LoadingSpinner />;
     if (!authorized) return null;
 
-    if (loading) {
-        return <div className="text-center text-xl text-quizPink py-20">Ładowanie...</div>;
-    }
-    if (!authorized) {
-        return null;
-    }
-
     return (
         <main className="min-h-screen font-quiz px-4 py-10 shadow-xl">
             <motion.h1
