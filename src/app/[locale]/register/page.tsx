@@ -9,6 +9,7 @@ import {signup} from "@/app/[locale]/actions/auth";
 export default function RegisterPage() {
     const [name, setName] = useState('');
     const [lastname, setLastname] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,8 +23,9 @@ export default function RegisterPage() {
             return;
         }
         const formData = new FormData();
-        formData.append('name', name);
-        formData.append('lastName', lastname);
+        formData.append('firstname', name);
+        formData.append('lastname', lastname);
+        formData.append('username', username);
         formData.append('email', email);
         formData.append('password', password);
         formData.append('confirmPassword', confirmPassword);
@@ -83,6 +85,20 @@ export default function RegisterPage() {
                             required
                             value={lastname}
                             onChange={(e) => setLastname(e.target.value)}
+                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="username" className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
+                            Nazwa użytkownika
+                        </label>
+                        <input
+                            id="username"
+                            type="text"
+                            required
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
                         />
                     </div>

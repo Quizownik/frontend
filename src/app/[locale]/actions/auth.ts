@@ -6,8 +6,9 @@ import {API_BASE_URL} from "@/app/[locale]/lib/utils";
 export async function signup(formData: FormData) {
     // Validate form fields
     const validatedFields = SignupFormSchema.safeParse({
-        name: formData.get('name'),
-        lastName: formData.get('lastName'),
+        firstname: formData.get('firstname'),
+        lastname: formData.get('lastname'),
+        username: formData.get('username'),
         email: formData.get('email'),
         password: formData.get('password'),
         confirmPassword: formData.get('confirmPassword'),
@@ -26,7 +27,9 @@ export async function signup(formData: FormData) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            name: validatedFields.data.name,
+            firstname: validatedFields.data.firstname,
+            lastname: validatedFields.data.lastname,
+            username: validatedFields.data.username,
             email: validatedFields.data.email,
             password: validatedFields.data.password,
             role: 'USER',
@@ -59,9 +62,6 @@ export async function signup(formData: FormData) {
             },
         }
     }
-
-    console.log(data)
-
 
     await createSession(data.access_token)
 
