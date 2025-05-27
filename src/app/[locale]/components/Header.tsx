@@ -17,7 +17,6 @@ export default function Header() {
             <h1 className="text-2xl font-bold text-quizPink">Quizownik</h1>
             <nav className="flex items-center justify-center">
                 <ul className="flex space-x-4">
-                    <li><Link href="/">Home</Link></li>
                     <li><Link href="/quizzes">Quizzes</Link></li>
                     <li><Link href="/community">Community</Link></li>
                 </ul>
