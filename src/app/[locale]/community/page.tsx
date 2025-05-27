@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
+import Image from 'next/image';
 
 const leaderboard = [
     {
@@ -75,9 +76,11 @@ export default function CommunityPage() {
                 }`}>
                   #{index + 1}
                 </span>
-                                <img
+                                <Image
                                     src={user.avatar}
                                     alt={user.username}
+                                    width={48}
+                                    height={48}
                                     className="w-12 h-12 rounded-full border-2 border-quizPink"
                                 />
                                 <span className="font-medium text-lg text-gray-800">@{user.username}</span>
