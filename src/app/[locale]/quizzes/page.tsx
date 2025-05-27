@@ -1,9 +1,9 @@
 ﻿'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import {categoryColors} from "@/app/[locale]/lib/categoryColors";
+import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 const allQuizzes = [
     { id: '1', title: 'Słówka z życia codziennego', category: 'Słownictwo' },
@@ -14,22 +14,10 @@ const allQuizzes = [
 ];
 
 export default function QuizzesPage() {
-    const router = useRouter();
-    const [loading, setLoading] = useState(true);
-    const [authorized, setAuthorized] = useState(false);
 
-    useEffect(() => {
-        const locale = window.location.pathname.split('/')[1] || 'pl';
-        fetch(`/${locale}/api/me`)
-            .then(res => {
-                if (res.status === 401) {
-                    router.replace('/login');
-                } else if (res.ok) {
-                    setAuthorized(true);
-                }
-            })
-            .finally(() => setLoading(false));
-    }, [router]);
+    const { loading, authorized } = useAuthGuard();
+    if (loading) return <LoadingSpinner />;
+    if (!authorized) return null;
 
     if (loading) {
         return <div className="text-center text-xl text-quizPink py-20">Ładowanie...</div>;
