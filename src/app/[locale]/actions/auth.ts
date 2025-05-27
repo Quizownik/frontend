@@ -1,6 +1,7 @@
 ﻿import {LoginFormSchema, SignupFormSchema} from '@/app/[locale]/lib/definitions'
 import {redirect} from "next/navigation";
 import {createSession, deleteSession} from "@/app/[locale]/lib/session";
+import {API_BASE_URL} from "@/app/[locale]/lib/utils";
 
 export async function signup(formData: FormData) {
     // Validate form fields
@@ -19,7 +20,7 @@ export async function signup(formData: FormData) {
     }
 
     // fetch API endpoint
-    const response = await fetch('http://localhost:8080/api/v1/auth/register', {
+    const response = await fetch(API_BASE_URL + '/auth/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ export async function login(formData: FormData) {
     }
 
     // fetch API endpoint
-    const response = await fetch('http://localhost:8080/api/v1/auth/authenticate', {
+    const response = await fetch(API_BASE_URL+'/auth/authenticate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -125,7 +126,6 @@ export async function login(formData: FormData) {
 
     redirect('/profile')
 }
-
 
 export async function logout() {
     await deleteSession()

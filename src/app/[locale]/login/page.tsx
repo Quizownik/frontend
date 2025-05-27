@@ -23,6 +23,7 @@ export default function LoginPage() {
         } else if (result) {
             alert(result);
         }
+
     };
 
     return (
@@ -112,3 +113,5 @@ export default function LoginPage() {
         </main>
     );
 }
+
+

@@ -25,7 +25,7 @@ export async function encrypt(payload: SessionPayload) {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
-        .setExpirationTime('1d')
+        .setExpirationTime('1h')
         .sign(encodedKey)
 }
 
@@ -69,7 +69,6 @@ export async function getCurrentUser() {
     const session = (await cookies()).get('session')?.value;
     if (!session) return null;
     const payload = await decrypt(session);
-    console.log(payload)
     if (!payload) return null;
     return payload;
 }
