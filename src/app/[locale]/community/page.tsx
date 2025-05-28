@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
-import Image from 'next/image';
 import {useTranslations} from "next-intl";
 import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
