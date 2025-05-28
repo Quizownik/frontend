@@ -94,7 +94,44 @@ export default function QuizzesPage() {
             })
             .then(data => {
                 console.log('Received quiz data:', data);
-                setQuizzesPage(data);
+
+                // Sprawdź czy dane są tablicą (bez paginacji) i przekształć je do formatu PageResponse
+                if (Array.isArray(data)) {
+                    const totalItems = data.length;
+                    const totalPages = Math.ceil(totalItems / size);
+
+                    // Oblicz, które elementy należą do bieżącej strony
+                    const start = page * size;
+                    const end = Math.min(start + size, totalItems);
+                    const paginatedContent = data.slice(start, end);
+
+                    // Utwórz obiekt zgodny z interfejsem PageResponse
+                    const pageResponse: PageResponse = {
+                        content: paginatedContent,
+                        pageable: {
+                            pageNumber: page,
+                            pageSize: size,
+                            sort: { sorted: false, empty: true, unsorted: true },
+                            offset: page * size,
+                            paged: true,
+                            unpaged: false
+                        },
+                        last: page >= totalPages - 1,
+                        totalElements: totalItems,
+                        totalPages: totalPages,
+                        size: size,
+                        number: page,
+                        sort: { sorted: false, empty: true, unsorted: true },
+                        first: page === 0,
+                        numberOfElements: paginatedContent.length,
+                        empty: paginatedContent.length === 0
+                    };
+
+                    setQuizzesPage(pageResponse);
+                } else {
+                    // Jeśli dane są już w formacie PageResponse
+                    setQuizzesPage(data);
+                }
             })
             .catch(error => {
                 console.error('Błąd pobierania quizów:', error);
