@@ -1,4 +1,15 @@
 {
+  "LoginPage": {
+    "title": "Login",
+    "welcomeMessage": "Discover your passion for quizzes!",
+    "usernameLabel": "Username",
+    "passwordLabel": "Password",
+    "loginButton": "Log In",
+    "registerButton": "Register",
+    "newUserMessage": "Don't have an account yet?",
+    "errorMessage": "Invalid username or password"
+  },
+
   "HomePage": {
     "chooseCategory": "Choose one of the cateegories!",
     "about": "Go to the about page"

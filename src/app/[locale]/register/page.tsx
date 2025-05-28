@@ -5,6 +5,7 @@ import { useState } from 'react';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import VisibilityOffTwoToneIcon from '@mui/icons-material/VisibilityOffTwoTone';
 import {signup} from "@/app/[locale]/actions/auth";
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
@@ -38,8 +39,18 @@ export default function RegisterPage() {
     };
 
     return (
-        <main className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 font-quiz bg-gradient-to-bl from-quizBlue via-quizPink to-quizBlue">
-            <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
+        <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-quizBlue to-quizPink">
+            {/* Dodany przełącznik języka w prawym górnym rogu */}
+            <div className="absolute top-4 right-4">
+                <LanguageSwitcher variant="pill" />
+            </div>
+
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6"
+            >
                 <div className="text-center">
                     <motion.h1
                         initial={{ opacity: 0, y: -40 }}
@@ -183,7 +194,7 @@ export default function RegisterPage() {
                         </Link>
                     </p>
                 </form>
-            </div>
+            </motion.div>
         </main>
     );
 }

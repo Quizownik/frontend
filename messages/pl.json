@@ -1,4 +1,14 @@
 {
+  "LoginPage": {
+    "title": "Logowanie",
+    "welcomeMessage": "Odkryj swoją pasję do quizów!",
+    "usernameLabel": "Nazwa użytkownika",
+    "passwordLabel": "Hasło",
+    "loginButton": "Zaloguj się",
+    "registerButton": "Zarejestruj się",
+    "newUserMessage": "Nie masz jeszcze konta?",
+    "errorMessage": "Nieprawidłowa nazwa użytkownika lub hasło"
+  },
   "HomePage": {
     "chooseCategory": "Wybierz jedną z kategorii!",
     "about": "Idź do about"
