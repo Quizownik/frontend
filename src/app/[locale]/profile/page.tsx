@@ -7,6 +7,7 @@ import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
+import {useTranslations} from "next-intl";
 
 type UserProfile = {
     firstName: string;
@@ -22,6 +23,8 @@ type UserProfile = {
 const defaultAvatarUrl = '/avatars/avatar.png';
 
 export default function ProfilePage() {
+    const t = useTranslations('ProfilePage');
+
     const { loading, authorized } = useAuthGuard();
     const [user, setUser] = useState<UserProfile | null>(null);
     const [fetchError, setFetchError] = useState<string | null>(null);
@@ -60,10 +63,20 @@ export default function ProfilePage() {
                 initial={{opacity: 0, y: -20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.7}}
-                className="text-4xl sm:text-5xl md:text-6xl text-quizPink font-bold mb-10 text-center"
+                className="text-4xl sm:text-5xl md:text-6xl text-quizPink font-bold mb-4 text-center"
             >
-                Twój Profil
+                {t('title')}
             </motion.h1>
+
+            <motion.h1
+                initial={{opacity: 0, y: -30}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 1}}
+                className="text-md sm:text-xl md:text-2xl text-gray-100 font-bold mb-10 text-center"
+            >
+                {t('welcomeMessage')}
+            </motion.h1>
+
 
             {fetchError && (
                 <motion.div
@@ -73,7 +86,9 @@ export default function ProfilePage() {
                 >
                     <div className="flex items-center">
                         <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            <path fillRule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clipRule="evenodd"/>
                         </svg>
                         {fetchError}
                     </div>
@@ -114,17 +129,20 @@ export default function ProfilePage() {
                             <>
                                 {/* Stats Cards */}
                                 <div className="grid grid-cols-2 gap-4 mb-8">
-                                    <StatCard label="Ukończone quizy" value={user.numOfDoneQuizzes} color='pink'/>
-                                    <StatCard label="Bezbłędne quizy" value={user.numOfOnlyFullyCorrectQuizzes} color='blue'/>
+                                    <StatCard label={t("endedQuizzes")} value={user.numOfDoneQuizzes} color='pink'/>
+                                    <StatCard label={t("noMistakeQuizzes")} value={user.numOfOnlyFullyCorrectQuizzes}
+                                              color='blue'/>
                                 </div>
 
                                 {/* Account Information */}
                                 <div className="bg-gray-50 rounded-xl p-6 shadow-inner">
                                     <h3 className="font-semibold text-lg border-b border-gray-200 pb-3 mb-4 flex items-center">
-                                        <svg className="w-5 h-5 mr-2 text-quizBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        <svg className="w-5 h-5 mr-2 text-quizBlue" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                         </svg>
-                                        Informacje o koncie
+                                        {t('accountInfo')}
                                     </h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
                                         <div className="flex items-start">
@@ -134,7 +152,7 @@ export default function ProfilePage() {
                                                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                             </svg>
                                             <div>
-                                                <span className="text-gray-600 text-sm">Imię i nazwisko:</span>
+                                                <span className="text-gray-600 text-sm">{t("nameAndSurname")}:</span>
                                                 <p className="font-medium">{user.firstName} {user.lastName}</p>
                                             </div>
                                         </div>
@@ -156,7 +174,7 @@ export default function ProfilePage() {
                                                       d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                                             </svg>
                                             <div>
-                                                <span className="text-gray-600 text-sm">Rola:</span>
+                                                <span className="text-gray-600 text-sm">{t("role")}:</span>
                                                 <p className="font-medium">{user.role}</p>
                                             </div>
                                         </div>
@@ -167,7 +185,8 @@ export default function ProfilePage() {
                                                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
                                             <div>
-                                                <span className="text-gray-600 text-sm">Data utworzenia konta:</span>
+                                                <span
+                                                    className="text-gray-600 text-sm">{t("accountCreatedDate")}:</span>
                                                 <p className="font-medium">{new Date(user.createdDate).toLocaleDateString()}</p>
                                             </div>
                                         </div>
@@ -183,23 +202,25 @@ export default function ProfilePage() {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                                   d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                         </svg>
-                                        Edytuj profil
+                                        {t("editProfile")}
                                     </button>
                                     <button
                                         className="flex-1 px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-colors flex items-center justify-center"
                                         onClick={() => logout()}
                                     >
-                                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                         </svg>
-                                        Wyloguj się
+                                        {t("logoutButton")}
                                     </button>
                                 </div>
                             </>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-12">
-                                <LoadingSpinner />
-                                <p className="mt-4 text-gray-600">Ładowanie danych profilu...</p>
+                                <LoadingSpinner/>
+                                <p className="mt-4 text-gray-600">{t("dataLoading")}...</p>
                             </div>
                         )}
                     </div>
@@ -211,7 +232,8 @@ export default function ProfilePage() {
 
 function StatCard({label, value, color}: { label: string; value: string | number; color: string }) {
     return (
-        <div className={`${colorClasses[color]} rounded-xl p-5 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow h-full`}>
+        <div
+            className={`${colorClasses[color]} rounded-xl p-5 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-shadow h-full`}>
             <span>{value}</span>
             <span>{label}</span>
         </div>

@@ -1,6 +1,50 @@
 {
-  "HomePage": {
-    "chooseCategory": "Choose one of the cateegories!",
-    "about": "Go to the about page"
+  "LoginPage": {
+    "title": "Login",
+    "welcomeMessage": "Discover your passion for quizzes!",
+    "usernameLabel": "Username",
+    "passwordLabel": "Password",
+    "loginButton": "Log In",
+    "registerButton": "Register",
+    "newUserMessage": "Don't have an account yet?",
+    "errorMessage": "Invalid username or password"
+  },
+  "RegisterPage": {
+    "title": "Registration",
+    "welcomeMessage": "Create an account and join the fun!",
+    "nameLabel": "First Name",
+    "surnameLabel": "Last Name",
+    "usernameLabel": "Username",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "registerButton": "Register",
+    "loginButton": "Log In",
+    "alreadyHaveAccount": "Already have an account?",
+    "errorMessage": "An error occurred during registration"
+  },
+  "QuizzesPage": {
+    "title": "English Learning Quizzes",
+    "categoryLabel": "Category",
+    "questions": "Questions",
+    "subtitle": "Choose a category and test your English knowledge.",
+    "startQuiz": "Start Quiz"
+  },
+  "ProfilePage": {
+    "title": "Your Profile",
+    "welcomeMessage": "Manage your account and preferences.",
+    "accountInfo": "Account Information",
+    "nameAndSurname": "First and Last Name",
+    "role": "Role",
+    "accountCreatedDate": "Account Creation Date",
+    "usernameLabel": "Username",
+    "emailLabel": "Email",
+    "editProfile": "Edit Profile",
+    "dataLoading": "Loading profile data",
+    "endedQuizzes": "Completed Quizzes",
+    "noMistakeQuizzes": "Flawless Quizzes",
+    "logoutButton": "Log Out",
+    "errorMessage": "An error occurred while updating the profile"
   }
+
+
 }

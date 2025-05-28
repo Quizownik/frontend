@@ -1,6 +1,48 @@
 {
-  "HomePage": {
-    "chooseCategory": "Wybierz jedną z kategorii!",
-    "about": "Idź do about"
+  "LoginPage": {
+    "title": "Logowanie",
+    "welcomeMessage": "Odkryj swoją pasję do quizów!",
+    "usernameLabel": "Nazwa użytkownika",
+    "passwordLabel": "Hasło",
+    "loginButton": "Zaloguj się",
+    "registerButton": "Zarejestruj się",
+    "newUserMessage": "Nie masz jeszcze konta?",
+    "errorMessage": "Nieprawidłowa nazwa użytkownika lub hasło"
+  },
+  "RegisterPage": {
+    "title": "Rejestracja",
+    "welcomeMessage": "Załóż konto i dołącz do zabawy!",
+    "nameLabel": "Imię",
+    "surnameLabel": "Nazwisko",
+    "usernameLabel": "Nazwa użytkownika",
+    "passwordLabel": "Hasło",
+    "confirmPasswordLabel": "Potwierdź hasło",
+    "registerButton": "Zarejestruj się",
+    "loginButton": "Zaloguj się",
+    "alreadyHaveAccount": "Masz już konto?",
+    "errorMessage": "Wystąpił błąd podczas rejestracji"
+  },
+  "QuizzesPage": {
+    "title": "Quizy do nauki angielskiego",
+    "categoryLabel": "Kategoria",
+    "questions": "Pytania",
+    "subtitle": "Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.",
+    "startQuiz": "Rozpocznij Quiz"
+  },
+  "ProfilePage": {
+    "title": "Twój profil",
+    "welcomeMessage": "Zarządzaj swoim kontem i preferencjami.",
+    "accountInfo": "Informacje o koncie",
+    "nameAndSurname": "Imię i Nazwisko",
+    "role": "Rola",
+    "accountCreatedDate": "Data utworzenia konta",
+    "usernameLabel": "Nazwa użytkownika",
+    "emailLabel": "Email",
+    "editProfile": "Edytuj profil",
+    "dataLoading": "Ładowanie danych profilu",
+    "endedQuizzes": "Ukończone quizy",
+    "noMistakeQuizzes": "Bezbłędne quizy",
+    "logoutButton": "Wyloguj się",
+    "errorMessage": "Wystąpił błąd podczas aktualizacji profilu"
   }
 }

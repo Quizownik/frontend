@@ -1,15 +1,42 @@
 ﻿'use client';
 import {motion} from 'framer-motion';
 import Link from 'next/link';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useRouter} from 'next/navigation';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import VisibilityOffTwoToneIcon from '@mui/icons-material/VisibilityOffTwoTone';
 import {login} from "@/app/[locale]/actions/auth";
+import {useTranslations} from "next-intl";
+import LanguageSwitcher from '../components/LanguageSwitcher';
+import {getLocale} from '@/app/[locale]/lib/utils';
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 export default function LoginPage() {
+    const t = useTranslations('LoginPage');
+    const router = useRouter();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Sprawdzanie, czy użytkownik jest już zalogowany
+    useEffect(() => {
+        const locale = getLocale();
+
+        fetch(`/${locale}/api/me`)
+            .then(response => {
+                if (response.ok) {
+                    router.replace('/profile');
+                }
+            })
+            .catch(error => {
+                console.error('Błąd podczas sprawdzania stanu logowania:', error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, [router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,14 +50,29 @@ export default function LoginPage() {
         } else if (result) {
             alert(result);
         }
-
     };
 
+    if (isLoading) {
+        return (
+            <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-quizBlue to-quizPink">
+                <LoadingSpinner />
+            </main>
+        );
+    }
+
     return (
-        <main
-            className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 font-quiz bg-gradient-to-br from-quizBlue via-quizPink to-quizBlue">
-            <div
-                className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
+        <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-quizBlue to-quizPink">
+            {/* Dodany przełącznik języka w prawym górnym rogu */}
+            <div className="absolute top-4 right-4">
+                <LanguageSwitcher variant="pill" />
+            </div>
+
+            <motion.div
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.5}}
+                className="w-full max-w-md bg-white rounded-xl shadow-xl p-8"
+            >
                 <div className="text-center">
                     <motion.h1
                         initial={{opacity: 0, y: -40}}
@@ -47,7 +89,7 @@ export default function LoginPage() {
                         transition={{duration: 1, delay: 0.2}}
                         className="text-lg sm:text-xl md:text-2xl text-gray-500"
                     >
-                        Odkryj swoją pasję do quizów!
+                        {t('welcomeMessage')}
                     </motion.p>
                 </div>
 
@@ -71,7 +113,7 @@ export default function LoginPage() {
                             htmlFor="password"
                             className="text-quizBlue mb-1 font-medium text-sm sm:text-base"
                         >
-                            Password
+                            {t('passwordLabel')}
                         </label>
                         <input
                             id="password"
@@ -99,19 +141,18 @@ export default function LoginPage() {
                         type="submit"
                         className="w-full bg-quizPink hover:bg-pink-400 text-white font-bold py-2 sm:py-3 rounded-lg transition duration-300 text-sm sm:text-base"
                     >
-                        Login
+                        {t("loginButton")}
                     </button>
 
                     <p className="text-sm text-center text-gray-500">
-                        Don&apos;t have an account?{' '}
+                        {t("newUserMessage")}{' '}
                         <Link href="/register" className="text-quizPink font-semibold hover:underline">
-                            Register here
+                            {t("registerButton")}
                         </Link>
                     </p>
                 </form>
-            </div>
+            </motion.div>
         </main>
     );
 }
-
 

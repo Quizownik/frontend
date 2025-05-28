@@ -1,8 +1,8 @@
 ﻿"use client"
-import {Link} from "@/i18n/navigation";
+import {Link, usePathname} from "@/i18n/navigation";
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import { usePathname } from 'next/navigation';
-import { isAuthPage } from '@/app/[locale]/lib/utils'; // Import nowej funkcji
+import { isAuthPage } from '@/app/[locale]/lib/utils';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
     const pathname = usePathname();
@@ -22,11 +22,15 @@ export default function Header() {
                 </ul>
             </nav>
 
-            <Link href="/profile" className="flex items-center justify-end text-white px-4 py-2 rounded">
-                <AccountCircleTwoToneIcon fontSize={"large"}/>
-            </Link>
+            <div className="flex items-center justify-end space-x-4">
+                {/* Używamy komponentu LanguageSwitcher */}
+                <LanguageSwitcher variant="default" />
+
+                <Link href="/profile" className="flex items-center text-white">
+                    <AccountCircleTwoToneIcon fontSize={"large"}/>
+                </Link>
+            </div>
         </header>
     );
-
 }
 
