@@ -28,6 +28,23 @@
     "questions": "Questions",
     "subtitle": "Choose a category and test your English knowledge.",
     "startQuiz": "Start Quiz"
+  },
+  "ProfilePage": {
+    "title": "Your Profile",
+    "welcomeMessage": "Manage your account and preferences.",
+    "accountInfo": "Account Information",
+    "nameAndSurname": "First and Last Name",
+    "role": "Role",
+    "accountCreatedDate": "Account Creation Date",
+    "usernameLabel": "Username",
+    "emailLabel": "Email",
+    "editProfile": "Edit Profile",
+    "dataLoading": "Loading profile data",
+    "endedQuizzes": "Completed Quizzes",
+    "noMistakeQuizzes": "Flawless Quizzes",
+    "logoutButton": "Log Out",
+    "errorMessage": "An error occurred while updating the profile"
   }
+
 
 }

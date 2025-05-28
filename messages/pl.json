@@ -28,5 +28,21 @@
     "questions": "Pytania",
     "subtitle": "Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.",
     "startQuiz": "Rozpocznij Quiz"
+  },
+  "ProfilePage": {
+    "title": "Twój profil",
+    "welcomeMessage": "Zarządzaj swoim kontem i preferencjami.",
+    "accountInfo": "Informacje o koncie",
+    "nameAndSurname": "Imię i Nazwisko",
+    "role": "Rola",
+    "accountCreatedDate": "Data utworzenia konta",
+    "usernameLabel": "Nazwa użytkownika",
+    "emailLabel": "Email",
+    "editProfile": "Edytuj profil",
+    "dataLoading": "Ładowanie danych profilu",
+    "endedQuizzes": "Ukończone quizy",
+    "noMistakeQuizzes": "Bezbłędne quizy",
+    "logoutButton": "Wyloguj się",
+    "errorMessage": "Wystąpił błąd podczas aktualizacji profilu"
   }
 }
