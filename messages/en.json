@@ -44,7 +44,11 @@
     "noMistakeQuizzes": "Flawless Quizzes",
     "logoutButton": "Log Out",
     "errorMessage": "An error occurred while updating the profile"
+  },
+  "CommunityPage": {
+    "title": "Community",
+    "subtitle": "Compare yourself with other players and test your skills.",
+    "leaderboard": "Leaderboard",
+    "noResults": "No results"
   }
-
-
 }

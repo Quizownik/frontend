@@ -44,5 +44,11 @@
     "noMistakeQuizzes": "Bezbłędne quizy",
     "logoutButton": "Wyloguj się",
     "errorMessage": "Wystąpił błąd podczas aktualizacji profilu"
+  },
+  "CommunityPage": {
+    "title": "Społeczność",
+    "subtitle": "Porównuj się z innymi graczami i sprawdź swoje umiejętności.",
+    "leaderboard": "Tablica Liderów",
+    "noResults": "Brak wyników"
   }
 }
