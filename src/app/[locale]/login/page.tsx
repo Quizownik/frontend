@@ -1,19 +1,42 @@
 ﻿'use client';
 import {motion} from 'framer-motion';
 import Link from 'next/link';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useRouter} from 'next/navigation';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import VisibilityOffTwoToneIcon from '@mui/icons-material/VisibilityOffTwoTone';
 import {login} from "@/app/[locale]/actions/auth";
 import {useTranslations} from "next-intl";
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import {getLocale} from '@/app/[locale]/lib/utils';
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 export default function LoginPage() {
     const t = useTranslations('LoginPage');
+    const router = useRouter();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Sprawdzanie, czy użytkownik jest już zalogowany
+    useEffect(() => {
+        const locale = getLocale();
+
+        fetch(`/${locale}/api/me`)
+            .then(response => {
+                if (response.ok) {
+                    router.replace('/profile');
+                }
+            })
+            .catch(error => {
+                console.error('Błąd podczas sprawdzania stanu logowania:', error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, [router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -27,8 +50,15 @@ export default function LoginPage() {
         } else if (result) {
             alert(result);
         }
-
     };
+
+    if (isLoading) {
+        return (
+            <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-quizBlue to-quizPink">
+                <LoadingSpinner />
+            </main>
+        );
+    }
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-quizBlue to-quizPink">

@@ -1,13 +1,20 @@
 ﻿'use client';
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import {useState, useEffect} from 'react';
+import {useRouter} from 'next/navigation';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 import VisibilityOffTwoToneIcon from '@mui/icons-material/VisibilityOffTwoTone';
 import {signup} from "@/app/[locale]/actions/auth";
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import {useTranslations} from "next-intl";
+import {getLocale} from '@/app/[locale]/lib/utils';
+import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 
 export default function RegisterPage() {
+    const t = useTranslations('RegisterPage');
+    const router = useRouter();
+
     const [name, setName] = useState('');
     const [lastname, setLastname] = useState('');
     const [username, setUsername] = useState('');
@@ -16,6 +23,26 @@ export default function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Sprawdzanie, czy użytkownik jest już zalogowany
+    useEffect(() => {
+        const locale = getLocale();
+
+        fetch(`/${locale}/api/me`)
+            .then(response => {
+                if (response.ok) {
+                    // Użytkownik jest zalogowany, przekieruj na stronę profilu
+                    router.replace('/profile');
+                }
+            })
+            .catch(error => {
+                console.error('Błąd podczas sprawdzania stanu logowania:', error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, [router]);
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -38,43 +65,52 @@ export default function RegisterPage() {
         }
     };
 
+    if (isLoading) {
+        return (
+            <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-quizBlue to-quizPink">
+                <LoadingSpinner />
+            </main>
+        );
+    }
+
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-quizBlue to-quizPink">
+        <main
+            className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-quizBlue to-quizPink">
             {/* Dodany przełącznik języka w prawym górnym rogu */}
             <div className="absolute top-4 right-4">
-                <LanguageSwitcher variant="pill" />
+                <LanguageSwitcher variant="pill"/>
             </div>
 
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.5}}
                 className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6"
             >
                 <div className="text-center">
                     <motion.h1
-                        initial={{ opacity: 0, y: -40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1 }}
+                        initial={{opacity: 0, y: -40}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 1}}
                         className="text-4xl sm:text-5xl md:text-6xl text-quizPink font-bold mb-4"
                     >
-                        Rejestracja
+                        {t('title')}
                     </motion.h1>
 
                     <motion.p
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.2 }}
+                        initial={{opacity: 0, y: -20}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 1, delay: 0.2}}
                         className="text-lg sm:text-xl md:text-2xl text-gray-500"
                     >
-                        Załóż konto i dołącz do zabawy!
+                        {t('welcomeMessage')}
                     </motion.p>
                 </div>
 
                 <form onSubmit={handleRegister} className="space-y-5 text-black">
                     <div className="flex flex-col">
                         <label htmlFor="name" className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
-                            Imię
+                            {t('nameLabel')}
                         </label>
                         <input
                             id="name"
@@ -88,7 +124,7 @@ export default function RegisterPage() {
 
                     <div className="flex flex-col">
                         <label htmlFor="lastname" className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
-                            Nazwisko
+                            {t('surnameLabel')}
                         </label>
                         <input
                             id="lastname"
@@ -102,7 +138,7 @@ export default function RegisterPage() {
 
                     <div className="flex flex-col">
                         <label htmlFor="username" className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
-                            Nazwa użytkownika
+                            {t('usernameLabel')}
                         </label>
                         <input
                             id="username"
@@ -130,7 +166,7 @@ export default function RegisterPage() {
 
                     <div className="flex flex-col relative">
                         <label htmlFor="password" className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
-                            Hasło
+                            {t('passwordLabel')}
                         </label>
                         <input
                             id="password"
@@ -147,16 +183,17 @@ export default function RegisterPage() {
                             aria-label="Toggle password visibility"
                         >
                             {showPassword ? (
-                                <VisibilityTwoToneIcon className="w-5 h-5" />
+                                <VisibilityTwoToneIcon className="w-5 h-5"/>
                             ) : (
-                                <VisibilityOffTwoToneIcon className="w-5 h-5" />
+                                <VisibilityOffTwoToneIcon className="w-5 h-5"/>
                             )}
                         </button>
                     </div>
 
                     <div className="flex flex-col relative">
-                        <label htmlFor="confirmPassword" className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
-                            Powtórz hasło
+                        <label htmlFor="confirmPassword"
+                               className="text-quizBlue mb-1 font-medium text-sm sm:text-base">
+                            {t('confirmPasswordLabel')}
                         </label>
                         <input
                             id="confirmPassword"
@@ -173,9 +210,9 @@ export default function RegisterPage() {
                             aria-label="Toggle confirm password visibility"
                         >
                             {showConfirmPassword ? (
-                                <VisibilityTwoToneIcon className="w-5 h-5" />
+                                <VisibilityTwoToneIcon className="w-5 h-5"/>
                             ) : (
-                                <VisibilityOffTwoToneIcon className="w-5 h-5" />
+                                <VisibilityOffTwoToneIcon className="w-5 h-5"/>
                             )}
                         </button>
                     </div>
@@ -184,13 +221,13 @@ export default function RegisterPage() {
                         type="submit"
                         className="w-full bg-quizPink hover:bg-pink-400 text-white font-bold py-2 sm:py-3 rounded-lg transition duration-300 text-sm sm:text-base"
                     >
-                        Zarejestruj się
+                        {t('registerButton')}
                     </button>
 
                     <p className="text-sm text-center text-gray-500">
-                        Masz już konto?{' '}
+                        {t("alreadyHaveAccount")}{' '}
                         <Link href="/login" className="text-quizPink font-semibold hover:underline">
-                            Zaloguj się
+                            {t("loginButton")}
                         </Link>
                     </p>
                 </form>

@@ -9,8 +9,24 @@
     "newUserMessage": "Nie masz jeszcze konta?",
     "errorMessage": "Nieprawidłowa nazwa użytkownika lub hasło"
   },
-  "HomePage": {
-    "chooseCategory": "Wybierz jedną z kategorii!",
-    "about": "Idź do about"
+  "RegisterPage": {
+    "title": "Rejestracja",
+    "welcomeMessage": "Załóż konto i dołącz do zabawy!",
+    "nameLabel": "Imię",
+    "surnameLabel": "Nazwisko",
+    "usernameLabel": "Nazwa użytkownika",
+    "passwordLabel": "Hasło",
+    "confirmPasswordLabel": "Potwierdź hasło",
+    "registerButton": "Zarejestruj się",
+    "loginButton": "Zaloguj się",
+    "alreadyHaveAccount": "Masz już konto?",
+    "errorMessage": "Wystąpił błąd podczas rejestracji"
+  },
+  "QuizzesPage": {
+    "title": "Quizy do nauki angielskiego",
+    "categoryLabel": "Kategoria",
+    "questions": "Pytania",
+    "subtitle": "Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.",
+    "startQuiz": "Rozpocznij Quiz"
   }
 }

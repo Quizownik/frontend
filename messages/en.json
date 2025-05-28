@@ -9,9 +9,25 @@
     "newUserMessage": "Don't have an account yet?",
     "errorMessage": "Invalid username or password"
   },
-
-  "HomePage": {
-    "chooseCategory": "Choose one of the cateegories!",
-    "about": "Go to the about page"
+  "RegisterPage": {
+    "title": "Registration",
+    "welcomeMessage": "Create an account and join the fun!",
+    "nameLabel": "First Name",
+    "surnameLabel": "Last Name",
+    "usernameLabel": "Username",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "registerButton": "Register",
+    "loginButton": "Log In",
+    "alreadyHaveAccount": "Already have an account?",
+    "errorMessage": "An error occurred during registration"
+  },
+  "QuizzesPage": {
+    "title": "English Learning Quizzes",
+    "categoryLabel": "Category",
+    "questions": "Questions",
+    "subtitle": "Choose a category and test your English knowledge.",
+    "startQuiz": "Start Quiz"
   }
+
 }

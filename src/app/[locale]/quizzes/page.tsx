@@ -6,6 +6,7 @@ import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
+import {useTranslations} from "next-intl";
 
 // Typy dla odpowiedzi z quizami
 type Answer = {
@@ -70,6 +71,8 @@ type PageResponse = {
 };
 
 export default function QuizzesPage() {
+    const t = useTranslations('QuizzesPage');
+
     const {loading, authorized} = useAuthGuard();
     const [quizzesPage, setQuizzesPage] = useState<PageResponse | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(0);
@@ -174,7 +177,7 @@ export default function QuizzesPage() {
                 transition={{duration: 1}}
                 className="text-4xl sm:text-5xl md:text-6xl text-quizPink font-bold mb-6 text-center"
             >
-                Quizy do nauki angielskiego
+                {t('title')}
             </motion.h1>
 
             <motion.p
@@ -183,7 +186,7 @@ export default function QuizzesPage() {
                 transition={{delay: 0.3}}
                 className="text-lg sm:text-xl text-center text-gray-100 mb-10"
             >
-                Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.
+                {t('subtitle')}
             </motion.p>
 
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -198,15 +201,15 @@ export default function QuizzesPage() {
                             className={`bg-gray-100 p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300 border-l-4 ${borderColor}`}
                         >
                             <h2 className="text-xl font-bold text-quizBlue mb-2">{quiz.name}</h2>
-                            <p className="text-sm text-black mb-4">Kategoria: {quiz.category}</p>
+                            <p className="text-sm text-black mb-4">{t("categoryLabel")}: {quiz.category}</p>
                             <p className="text-sm text-gray-600 mb-4">
-                                {quiz.questions.length} pytania
+                                {quiz.questions.length} {t("questions")}
                             </p>
                             <Link
                                 href={`/quizzes/${quiz.id}`}
                                 className="inline-block text-white bg-quizPink hover:bg-pink-400 font-semibold px-4 py-2 rounded-lg transition"
                             >
-                                Rozpocznij quiz
+                                {t("startQuiz")}
                             </Link>
                         </motion.div>
                     );
