@@ -194,18 +194,9 @@ export default function ProfilePage() {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                                <div className="w-full flex flex-col mt-8 gap-4 justify-center items-end">
                                     <button
-                                        className="flex-1 px-6 py-3 bg-quizBlue text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors flex items-center justify-center">
-                                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                        {t("editProfile")}
-                                    </button>
-                                    <button
-                                        className="flex-1 px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-colors flex items-center justify-center"
+                                        className="flex flex-row px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-colors items-center justify-center"
                                         onClick={() => logout()}
                                     >
                                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor"
