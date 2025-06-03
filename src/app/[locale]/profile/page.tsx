@@ -196,11 +196,11 @@ export default function ProfilePage() {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className="w-full flex flex-col mt-8 gap-4 justify-center items-end">
+                                <div className="w-full flex flex-row mt-8 gap-4 justify-around items-end">
                                     <Link
                                         href={`/profile/results`}
                                         className="flex flex-row px-6 py-3 bg-quizBlue text-white rounded-lg shadow-md hover:bg-quizBlue/90 transition-colors items-center justify-center">
-                                        {t("resultsButton")}
+                                        {t("resultsPage")}
                                     </Link>
                                     <button
                                         className="flex flex-row px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-colors items-center justify-center"

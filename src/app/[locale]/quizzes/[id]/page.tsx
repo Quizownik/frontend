@@ -7,6 +7,7 @@ import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {categoryColors} from "@/app/[locale]/lib/categoryColors";
 import {getLocale} from "@/app/[locale]/lib/utils";
+import {Link} from '@/i18n/navigation';
 
 type Answer = {
     id: number;
@@ -300,6 +301,13 @@ export default function QuizDetailPage() {
                         >
                             {t('tryAgain')}
                         </button>
+
+                        <Link
+                            href="/quizzes"
+                            className="w-full mt-4 py-3 bg-quizBlue hover:bg-blue-400 text-white font-semibold rounded-lg transition text-center block"
+                        >
+                            {t('backToQuizzes')}
+                        </Link>
                     </motion.div>
                 ) : (
                     /* Treść quizu */
