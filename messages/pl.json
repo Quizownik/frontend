@@ -28,9 +28,16 @@
     "questions": "Pytania",
     "subtitle": "Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.",
     "startQuiz": "Rozpocznij Quiz",
+    "repeatQuiz": "Powtórz Quiz",
     "grammarLabel": "Gramatyka",
     "vocabularyLabel": "Słownictwo",
-    "mixedLabel": "Mieszane"
+    "mixedLabel": "Mieszane",
+    "pagination": {
+      "previous": "Poprzednia",
+      "next": "Następna",
+      "quizzesPerPage": "Quizy na stronę",
+      "pageInfo": "Strona {current} z {total} (łącznie {count} quizów)"
+    }
   },
   "ProfilePage": {
     "title": "Twój profil",

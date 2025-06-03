@@ -242,7 +242,7 @@ export default function QuizzesPage() {
                             disabled={quizzesPage.first}
                             className={`px-4 py-2 rounded ${quizzesPage.first ? 'bg-gray-500 cursor-not-allowed' : 'bg-quizBlue hover:bg-blue-600'} text-white`}
                         >
-                            Poprzednia
+                            {t('pagination.previous')}
                         </button>
 
                         <div className="flex space-x-1">
@@ -263,12 +263,16 @@ export default function QuizzesPage() {
                             disabled={quizzesPage.last}
                             className={`px-4 py-2 rounded ${quizzesPage.last ? 'bg-gray-500 cursor-not-allowed' : 'bg-quizBlue hover:bg-blue-600'} text-white`}
                         >
-                            Następna
+                            {t('pagination.next')}
                         </button>
                     </div>
 
                     <div className="text-white text-sm">
-                        Strona {quizzesPage.number + 1} z {quizzesPage.totalPages} (łącznie {quizzesPage.totalElements} quizów)
+                        {t('pagination.pageInfo', {
+                            current: quizzesPage.number + 1,
+                            total: quizzesPage.totalPages,
+                            count: quizzesPage.totalElements
+                        })}
                     </div>
                 </div>
             )}

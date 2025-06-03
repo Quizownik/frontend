@@ -28,9 +28,16 @@
     "questions": "Questions",
     "subtitle": "Choose a category and test your English knowledge.",
     "startQuiz": "Start Quiz",
+    "repeatQuiz": "Repeat Quiz",
     "grammarLabel": "Grammar",
     "vocabularyLabel": "Vocabulary",
-    "mixedLabel": "Mixed"
+    "mixedLabel": "Mixed",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "quizzesPerPage": "Quizzes per page",
+      "pageInfo": "Page {current} of {total} (total {count} quizzes)"
+    }
   },
   "ProfilePage": {
     "title": "Your Profile",
