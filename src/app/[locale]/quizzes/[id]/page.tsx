@@ -31,11 +31,16 @@ type Quiz = {
 };
 
 type User = {
-    id: number;
+    firstName: string;
+    lastName: string;
     username: string;
-    name: string;
-    surname: string;
+    email: string;
     role: string;
+    createdDate: string;
+    numOfDoneQuizzes: number;
+    numOfOnlyFullyCorrectQuizzes: number;
+    score: number;
+    id: number;
 };
 
 export default function QuizDetailPage() {
@@ -158,7 +163,7 @@ export default function QuizDetailPage() {
         // Przygotuj dane w wymaganym formacie
         const questionOrder = quiz.questions.map(q => q.id);
         const chosenAnswers = quiz.questions.map(q => selectedAnswers.get(q.id) || 0);
-
+        console.log("user:", user);
         const quizResultData = {
             quizId: Number(quizId),
             userId: user.id,

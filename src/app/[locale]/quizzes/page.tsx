@@ -8,36 +8,14 @@ import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
 
-// Typy dla odpowiedzi z quizami
-type Answer = {
-    id: number;
-    answer: string;
-    question?: string;
-    createdBy?: number;
-    lastModifiedBy?: number;
-    correct?: boolean;
-    isCorrect?: boolean;
-};
-
-type Question = {
-    id: number;
-    question: string;
-    category: string;
-    answers: Answer[];
-    quizzes?: string[];
-    createdBy?: number;
-    lastModifiedBy?: number;
-    createDate?: string;
-    lastModified?: string;
-};
-
 type Quiz = {
     id: number;
     name: string;
     createdBy?: number;
     category: string;
     position: number;
-    questions: Question[];
+    level: string;
+    isMastered: boolean;
 };
 
 // Struktury dla paginacji
@@ -76,19 +54,26 @@ export default function QuizzesPage() {
     const {loading, authorized} = useAuthGuard();
     const [quizzesPage, setQuizzesPage] = useState<PageResponse | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(0);
-    const [pageSize, setPageSize] = useState<number>(10); // Domyślny rozmiar strony
+    const [pageSize] = useState<number>(9); // Domyślny rozmiar strony
+    const [category, setCategory] = useState<string>("Grammar"); // Domyślna kategoria
 
     useEffect(() => {
         if (!loading && authorized) {
-            fetchQuizzes(currentPage, pageSize);
+            fetchQuizzes(currentPage, pageSize, category);
         }
-    }, [loading, authorized, currentPage, pageSize]);
+    }, [loading, authorized, currentPage, pageSize, category]);
 
-    // Funkcja do pobierania quizów z parametrami paginacji
-    const fetchQuizzes = (page: number, size: number) => {
+    // Funkcja zmieniająca kategorię
+    const changeCategory = (newCategory: string) => {
+        setCategory(newCategory);
+        setCurrentPage(0); // Reset do pierwszej strony po zmianie kategorii
+    };
+
+    // Funkcja do pobierania quizów z parametrami paginacji i kategorią
+    const fetchQuizzes = (page: number, size: number, category: string) => {
         const locale = getLocale();
 
-        fetch(`/${locale}/api/quizzes?page=${page}&size=${size}`)
+        fetch(`/${locale}/api/quizzes?page=${page}&size=${size}&category=${encodeURIComponent(category)}&sort=name`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -160,12 +145,6 @@ export default function QuizzesPage() {
         }
     };
 
-    const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newSize = parseInt(event.target.value, 10);
-        setPageSize(newSize);
-        setCurrentPage(0); // Reset do pierwszej strony po zmianie rozmiaru strony
-    };
-
     if (loading) return <LoadingSpinner/>;
     if (!authorized) return null;
 
@@ -184,32 +163,70 @@ export default function QuizzesPage() {
                 initial={{opacity: 0, y: -20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{delay: 0.3}}
-                className="text-lg sm:text-xl text-center text-gray-100 mb-10"
+                className="text-lg sm:text-xl text-center text-gray-100 mb-6"
             >
                 {t('subtitle')}
             </motion.p>
 
+            {/* Przyciski do wyboru kategorii */}
+            <div className="flex flex-wrap justify-center gap-4 mb-10">
+                <button
+                    onClick={() => changeCategory("Mixed")}
+                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Mixed" ? 'bg-quizPink shadow-lg' : 'bg-gray-300 hover:bg-pink-500'}`}
+                >
+                    {t('mixedLabel')}
+                </button>
+                <button
+                    onClick={() => changeCategory("Grammar")}
+                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Grammar" ? 'bg-quizYellow shadow-lg' : 'bg-gray-300 hover:bg-yellow-500'}`}
+                >
+                    {t('grammarLabel')}
+                </button>
+                <button
+                    onClick={() => changeCategory("Vocabulary")}
+                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Vocabulary" ? 'bg-quizBlue shadow-lg' : 'bg-gray-300 hover:bg-blue-500'}`}
+                >
+                    {t('vocabularyLabel')}
+                </button>
+            </div>
+
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                 {quizzesPage?.content && quizzesPage.content.map((quiz, index) => {
                     const borderColor = categoryColors[quiz.category] || 'border-gray-300';
+
+                    // Style dla opanowanych quizów
+                    const isQuizMastered = quiz.isMastered;
+                    const cardClasses = `
+                        bg-gray-100 p-6 rounded-xl shadow-md transition duration-300 border-l-4 
+                        ${borderColor} 
+                        ${isQuizMastered 
+                            ? 'opacity-60 grayscale relative overflow-hidden' 
+                            : 'hover:shadow-xl'}
+                    `;
+
                     return (
                         <motion.div
                             key={quiz.id}
                             initial={{opacity: 0, y: 10}}
                             animate={{opacity: 1, y: 0}}
                             transition={{delay: index * 0.2}}
-                            className={`bg-gray-100 p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300 border-l-4 ${borderColor}`}
+                            className={cardClasses}
                         >
+                            {isQuizMastered && (
+                                <div className="absolute top-2 right-2 bg-green-600 text-xs text-white px-2 py-1 rounded-full">
+                                    Completed
+                                </div>
+                            )}
+
                             <h2 className="text-xl font-bold text-quizBlue mb-2">{quiz.name}</h2>
-                            <p className="text-sm text-black mb-4">{t("categoryLabel")}: {quiz.category}</p>
-                            <p className="text-sm text-gray-600 mb-4">
-                                {quiz.questions.length} {t("questions")}
-                            </p>
+                            <p className="text-sm text-black mb-1">{t("categoryLabel")}: {quiz.category}</p>
+                            <p className="text-sm text-gray-600 mb-4">Level: {quiz.level}</p>
+
                             <Link
                                 href={`/quizzes/${quiz.id}`}
-                                className="inline-block text-white bg-quizPink hover:bg-pink-400 font-semibold px-4 py-2 rounded-lg transition"
+                                className={`inline-block text-white font-semibold px-4 py-2 rounded-lg transition ${isQuizMastered ? 'bg-gray-500' : 'bg-quizPink hover:bg-pink-400'}`}
                             >
-                                {t("startQuiz")}
+                                {isQuizMastered ? t("repeatQuiz") : t("startQuiz")}
                             </Link>
                         </motion.div>
                     );
@@ -219,20 +236,6 @@ export default function QuizzesPage() {
             {/* Panel kontrolny paginacji */}
             {quizzesPage && quizzesPage.totalPages > 1 && (
                 <div className="mt-10 flex flex-col items-center space-y-4">
-                    <div className="flex items-center space-x-2">
-                        <span className="text-white">Quizy na stronę:</span>
-                        <select
-                            value={pageSize}
-                            onChange={handlePageSizeChange}
-                            className="bg-white rounded px-2 py-1 text-quizBlue"
-                        >
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                        </select>
-                    </div>
-
                     <div className="flex items-center space-x-2">
                         <button
                             onClick={goToPreviousPage}
