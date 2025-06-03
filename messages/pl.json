@@ -37,7 +37,8 @@
       "next": "Następna",
       "quizzesPerPage": "Quizy na stronę",
       "pageInfo": "Strona {current} z {total} (łącznie {count} quizów)"
-    }
+    },
+    "masteredLabel": "Ukończone"
   },
   "ProfilePage": {
     "title": "Twój profil",
@@ -77,7 +78,8 @@
     "yourAnswer": "Twoja odpowiedź",
     "noAnswer": "Brak odpowiedzi",
     "correctAnswer": "Poprawna odpowiedź",
-    "tryAgain": "Spróbuj ponownie"
+    "tryAgain": "Spróbuj ponownie",
+    "backToQuizzes": "Powrót do Quizów"
   },
   "ResultsPage": {
     "title": "Twoje Wyniki Quizów",

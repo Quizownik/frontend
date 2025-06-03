@@ -213,8 +213,8 @@ export default function QuizzesPage() {
                             className={cardClasses}
                         >
                             {isQuizMastered && (
-                                <div className="absolute top-2 right-2 bg-green-600 text-xs text-white px-2 py-1 rounded-full">
-                                    Completed
+                                <div className="absolute top-2 right-2 bg-black text-xs text-white px-2 py-1 rounded-full">
+                                    {t("masteredLabel")}
                                 </div>
                             )}
 

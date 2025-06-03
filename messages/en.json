@@ -37,7 +37,8 @@
       "next": "Next",
       "quizzesPerPage": "Quizzes per page",
       "pageInfo": "Page {current} of {total} (total {count} quizzes)"
-    }
+    },
+    "masteredLabel": "Completed"
   },
   "ProfilePage": {
     "title": "Your Profile",
@@ -77,7 +78,8 @@
     "yourAnswer": "Your answer",
     "noAnswer": "No answer provided",
     "correctAnswer": "Correct answer",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "backToQuizzes": "Back to Quizzes"
   },
   "ResultsPage": {
     "title": "Your Quiz Results",
