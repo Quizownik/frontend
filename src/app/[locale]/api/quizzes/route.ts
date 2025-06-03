@@ -4,11 +4,12 @@ import { API_BASE_URL } from '@/app/[locale]/lib/utils';
 
 export async function GET(request: NextRequest) {
     try {
-        // Pobierz parametry paginacji z URL
+        // Pobierz parametry paginacji i kategorii z URL
         const searchParams = request.nextUrl.searchParams;
         const page = searchParams.get('page') || '0';
         const size = searchParams.get('size') || '10';
-
+        const category = searchParams.get('category') || 'Grammar';
+        const sort = searchParams.get('sort') || 'name';
 
         const user = await getCurrentUser();
 
@@ -18,11 +19,14 @@ export async function GET(request: NextRequest) {
 
         // Użyj tokenu z sesji do autoryzacji zapytania do zewnętrznego API
         try {
-            const response = await fetch(`${API_BASE_URL}/quizzes?page=${page}&size=${size}`, {
-                headers: {
-                    'Authorization': `Bearer ${user.userToken}`
+            const response = await fetch(
+                `${API_BASE_URL}/quizzes/sorted?category=${encodeURIComponent(category)}&page=${page}&size=${size}&sort=${sort}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${user.userToken}`
+                    }
                 }
-            });
+            );
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -36,7 +40,6 @@ export async function GET(request: NextRequest) {
             const quizzes = await response.json();
             return NextResponse.json(quizzes);
         } catch (apiError) {
-
             // Bezpieczne wyciągnięcie wiadomości błędu
             const errorMessage = apiError instanceof Error ? apiError.message : 'Nieznany błąd';
             return NextResponse.json({

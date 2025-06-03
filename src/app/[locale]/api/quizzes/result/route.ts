@@ -39,13 +39,13 @@ export async function POST(request: NextRequest) {
                 }, { status: response.status });
             }
 
-            const result = await response.json();
+            const result = await response;
             return NextResponse.json(result);
         } catch (apiError) {
             const errorMessage = apiError instanceof Error ? apiError.message : 'Nieznany błąd';
             return NextResponse.json({
                 error: 'Błąd podczas zapisywania wyniku quizu',
-                details: errorMessage
+                details: errorMessage + '\n' + JSON.stringify(body)
             }, { status: 500 });
         }
     } catch (error) {
