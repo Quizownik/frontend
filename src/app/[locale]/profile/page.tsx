@@ -8,6 +8,7 @@ import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
+import {redirect} from "next/navigation";
 
 type UserProfile = {
     firstName: string;
@@ -41,6 +42,7 @@ export default function ProfilePage() {
         fetch(`/${locale}/api/user/me`)
             .then(response => {
                 if (!response.ok) {
+                    redirect('/login');
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return response.json();
