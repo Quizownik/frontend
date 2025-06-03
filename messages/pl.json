@@ -62,6 +62,7 @@
     "answered": "Udzielone odpowiedzi",
     "quizCompleted": "Quiz ukończony!",
     "scoreMessage": "Poprawnie odpowiedziałeś na {score} z {total} pytań!",
+    "durationMessage": "Czas rozwiązywania: {duration} sekund",
     "yourAnswer": "Twoja odpowiedź",
     "noAnswer": "Brak odpowiedzi",
     "correctAnswer": "Poprawna odpowiedź",

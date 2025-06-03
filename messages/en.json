@@ -62,6 +62,7 @@
     "answered": "Questions answered",
     "quizCompleted": "Quiz Completed!",
     "scoreMessage": "You answered {score} out of {total} questions correctly!",
+    "durationMessage": "Time taken: {duration} seconds",
     "yourAnswer": "Your answer",
     "noAnswer": "No answer provided",
     "correctAnswer": "Correct answer",
