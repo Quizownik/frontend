@@ -27,7 +27,10 @@
     "categoryLabel": "Category",
     "questions": "Questions",
     "subtitle": "Choose a category and test your English knowledge.",
-    "startQuiz": "Start Quiz"
+    "startQuiz": "Start Quiz",
+    "grammarLabel": "Grammar",
+    "vocabularyLabel": "Vocabulary",
+    "mixedLabel": "Mixed"
   },
   "ProfilePage": {
     "title": "Your Profile",
@@ -43,7 +46,8 @@
     "endedQuizzes": "Completed Quizzes",
     "noMistakeQuizzes": "Flawless Quizzes",
     "logoutButton": "Log Out",
-    "errorMessage": "An error occurred while updating the profile"
+    "errorMessage": "An error occurred while updating the profile",
+    "resultsPage": "Quiz Results"
   },
   "CommunityPage": {
     "title": "Community",
@@ -67,6 +71,18 @@
     "noAnswer": "No answer provided",
     "correctAnswer": "Correct answer",
     "tryAgain": "Try Again"
+  },
+  "ResultsPage": {
+    "title": "Your Quiz Results",
+    "backToProfile": "Back to Profile",
+    "resultsSubtitle": "History of your completed quizzes",
+    "noResults": "You haven't completed any quizzes yet",
+    "quizId": "Quiz ID",
+    "finishedAt": "Completed At",
+    "duration": "Time",
+    "score": "Score",
+    "actions": "Actions",
+    "retakeQuiz": "Take Quiz Again"
   }
 }
 

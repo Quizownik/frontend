@@ -27,7 +27,10 @@
     "categoryLabel": "Kategoria",
     "questions": "Pytania",
     "subtitle": "Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.",
-    "startQuiz": "Rozpocznij Quiz"
+    "startQuiz": "Rozpocznij Quiz",
+    "grammarLabel": "Gramatyka",
+    "vocabularyLabel": "Słownictwo",
+    "mixedLabel": "Mieszane"
   },
   "ProfilePage": {
     "title": "Twój profil",
@@ -43,7 +46,8 @@
     "endedQuizzes": "Ukończone quizy",
     "noMistakeQuizzes": "Bezbłędne quizy",
     "logoutButton": "Wyloguj się",
-    "errorMessage": "Wystąpił błąd podczas aktualizacji profilu"
+    "errorMessage": "Wystąpił błąd podczas aktualizacji profilu",
+    "resultsPage": "Wyniki quizów"
   },
   "CommunityPage": {
     "title": "Społeczność",
@@ -67,6 +71,18 @@
     "noAnswer": "Brak odpowiedzi",
     "correctAnswer": "Poprawna odpowiedź",
     "tryAgain": "Spróbuj ponownie"
+  },
+  "ResultsPage": {
+    "title": "Twoje Wyniki Quizów",
+    "backToProfile": "Powrót do Profilu",
+    "resultsSubtitle": "Historia ukończonych quizów",
+    "noResults": "Nie ukończyłeś jeszcze żadnego quizu",
+    "quizId": "ID Quizu",
+    "finishedAt": "Ukończono",
+    "duration": "Czas",
+    "score": "Wynik",
+    "actions": "Akcje",
+    "retakeQuiz": "Rozwiąż Ponownie"
   }
 }
 
