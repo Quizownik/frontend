@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
 import {redirect} from "next/navigation";
+import {Link} from "@/i18n/navigation";
 
 type UserProfile = {
     firstName: string;
@@ -26,7 +27,7 @@ const defaultAvatarUrl = '/avatars/avatar.png';
 export default function ProfilePage() {
     const t = useTranslations('ProfilePage');
 
-    const { loading, authorized } = useAuthGuard();
+    const {loading, authorized} = useAuthGuard();
     const [user, setUser] = useState<UserProfile | null>(null);
     const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -43,7 +44,6 @@ export default function ProfilePage() {
             .then(response => {
                 if (!response.ok) {
                     redirect('/login');
-                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return response.json();
             })
@@ -56,7 +56,7 @@ export default function ProfilePage() {
             });
     };
 
-    if (loading) return <LoadingSpinner />;
+    if (loading) return <LoadingSpinner/>;
     if (!authorized) return null;
 
     return (
@@ -197,6 +197,11 @@ export default function ProfilePage() {
 
                                 {/* Action Buttons */}
                                 <div className="w-full flex flex-col mt-8 gap-4 justify-center items-end">
+                                    <Link
+                                        href={`/profile/results`}
+                                        className="flex flex-row px-6 py-3 bg-quizBlue text-white rounded-lg shadow-md hover:bg-quizBlue/90 transition-colors items-center justify-center">
+                                        {t("resultsButton")}
+                                    </Link>
                                     <button
                                         className="flex flex-row px-6 py-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-colors items-center justify-center"
                                         onClick={() => logout()}
