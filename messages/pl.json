@@ -50,5 +50,22 @@
     "subtitle": "Porównuj się z innymi graczami i sprawdź swoje umiejętności.",
     "leaderboard": "Tablica Liderów",
     "noResults": "Brak wyników"
+  },
+  "QuizDetailPage": {
+    "quizNotFound": "Quiz nie został znaleziony",
+    "categoryLabel": "Kategoria",
+    "questions": "pytania",
+    "question": "Pytanie",
+    "previous": "Poprzednie",
+    "next": "Następne",
+    "submit": "Zakończ Quiz",
+    "answered": "Udzielone odpowiedzi",
+    "quizCompleted": "Quiz ukończony!",
+    "scoreMessage": "Poprawnie odpowiedziałeś na {score} z {total} pytań!",
+    "yourAnswer": "Twoja odpowiedź",
+    "noAnswer": "Brak odpowiedzi",
+    "correctAnswer": "Poprawna odpowiedź",
+    "tryAgain": "Spróbuj ponownie"
   }
 }
+

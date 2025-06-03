@@ -50,5 +50,22 @@
     "subtitle": "Compare yourself with other players and test your skills.",
     "leaderboard": "Leaderboard",
     "noResults": "No results"
+  },
+  "QuizDetailPage": {
+    "quizNotFound": "Quiz not found",
+    "categoryLabel": "Category",
+    "questions": "questions",
+    "question": "Question",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit Quiz",
+    "answered": "Questions answered",
+    "quizCompleted": "Quiz Completed!",
+    "scoreMessage": "You answered {score} out of {total} questions correctly!",
+    "yourAnswer": "Your answer",
+    "noAnswer": "No answer provided",
+    "correctAnswer": "Correct answer",
+    "tryAgain": "Try Again"
   }
 }
+
