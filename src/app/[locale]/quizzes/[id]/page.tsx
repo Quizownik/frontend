@@ -8,7 +8,6 @@ import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {categoryColors} from "@/app/[locale]/lib/categoryColors";
 import {getLocale} from "@/app/[locale]/lib/utils";
 
-// Typy dla odpowiedzi z quizem
 type Answer = {
     id: number;
     answer: string;
@@ -31,6 +30,14 @@ type Quiz = {
     level: string;
 };
 
+type User = {
+    id: number;
+    username: string;
+    name: string;
+    surname: string;
+    role: string;
+};
+
 export default function QuizDetailPage() {
     const params = useParams();
     const quizId = params.id as string;
@@ -40,15 +47,26 @@ export default function QuizDetailPage() {
     const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
     const [selectedAnswers, setSelectedAnswers] = useState<Map<number, number>>(new Map());
     const [isQuizSubmitted, setIsQuizSubmitted] = useState<boolean>(false);
     const [score, setScore] = useState<number>(0);
+    const [quizStartTime, setQuizStartTime] = useState<Date | null>(null);
+    const [quizEndTime, setQuizEndTime] = useState<Date | null>(null);
+    const [quizDuration, setQuizDuration] = useState<number>(0); // w sekundach
+
+    useEffect(() => {
+        if (!loading && authorized && quiz && !quizStartTime) {
+            setQuizStartTime(new Date());
+        }
+    }, [loading, authorized, quiz, quizStartTime]);
 
     useEffect(() => {
         if (!loading && authorized) {
             fetchQuiz();
+            fetchUserData();
         }
     }, [loading, authorized, quizId]);
 
@@ -73,6 +91,24 @@ export default function QuizDetailPage() {
         }
     };
 
+    const fetchUserData = async () => {
+        const locale = getLocale();
+
+        try {
+            const response = await fetch(`/${locale}/api/user/me`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setUser(data);
+        } catch (err) {
+            console.error('Błąd pobierania danych użytkownika:', err);
+            setError('Nie udało się załadować danych użytkownika. Spróbuj ponownie później.');
+        }
+    };
+
     const handleAnswerSelect = (questionId: number, answerId: number) => {
         if (isQuizSubmitted) return;
 
@@ -82,14 +118,14 @@ export default function QuizDetailPage() {
     };
 
     const nextQuestion = () => {
+        // Sprawdź czy użytkownik zaznaczył odpowiedź na aktualne pytanie
+        const currentQuestion = quiz?.questions[currentQuestionIndex];
+        if (currentQuestion && !selectedAnswers.has(currentQuestion.id)) {
+            return; // Nie przechodzimy dalej jeśli odpowiedź nie została wybrana
+        }
+
         if (currentQuestionIndex < (quiz?.questions.length || 0) - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
-        }
-    };
-
-    const previousQuestion = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex(currentQuestionIndex - 1);
         }
     };
 
@@ -112,10 +148,60 @@ export default function QuizDetailPage() {
         return correctAnswers;
     };
 
+    const submitQuizResults = async () => {
+        if (!quiz || !user || !quizStartTime) return;
+
+        const locale = getLocale();
+        const endTime = new Date();
+        const duration = Math.floor((endTime.getTime() - quizStartTime.getTime()) / 1000);
+
+        // Przygotuj dane w wymaganym formacie
+        const questionOrder = quiz.questions.map(q => q.id);
+        const chosenAnswers = quiz.questions.map(q => selectedAnswers.get(q.id) || 0);
+
+        const quizResultData = {
+            quizId: Number(quizId),
+            userId: user.id,
+            finishedAt: endTime.toISOString(),
+            duration: duration,
+            questionOrder: questionOrder,
+            chosenAnswers: chosenAnswers
+        };
+
+        try {
+            const response = await fetch(`/${locale}/api/quizzes/result`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(quizResultData)
+            });
+
+            if (!response.ok) {
+                console.error('Błąd zapisywania wyniku:', await response.text());
+            } else {
+                console.log('Wynik quizu został pomyślnie zapisany');
+            }
+        } catch (error) {
+            console.error('Błąd podczas wysyłania wyników:', error);
+        }
+    };
+
     const submitQuiz = () => {
         const finalScore = calculateScore();
         setIsQuizSubmitted(true);
-        console.log(`Quiz zakończony. Wynik: ${finalScore}/${quiz?.questions.length || 0}`);
+        setScore(finalScore);
+
+        const endTime = new Date();
+        setQuizEndTime(endTime);
+
+        if (quizStartTime) {
+            const duration = Math.floor((endTime.getTime() - quizStartTime.getTime()) / 1000);
+            setQuizDuration(duration);
+
+            // Wyślij wyniki do backendu
+            submitQuizResults();
+        }
     };
 
     const resetQuiz = () => {
@@ -123,6 +209,9 @@ export default function QuizDetailPage() {
         setSelectedAnswers(new Map());
         setIsQuizSubmitted(false);
         setScore(0);
+        setQuizStartTime(null);
+        setQuizEndTime(null);
+        setQuizDuration(0);
     };
 
     if (loading || isLoading) return <LoadingSpinner/>;
@@ -132,10 +221,10 @@ export default function QuizDetailPage() {
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
     const borderColor = categoryColors[quiz.category] || 'border-gray-300';
-    const progress = Math.round(((currentQuestionIndex + 1) / quiz.questions.length) * 100);
+    const progress = Math.round(((currentQuestionIndex) / quiz.questions.length) * 100);
 
     return (
-        <main className="min-h-screen font-quiz px-4 py-10 shadow-xl">
+        <main className="min-h-screen font-quiz px-4 py-10 shadow-xl text-black">
             <motion.div
                 initial={{opacity: 0, y: -20}}
                 animate={{opacity: 1, y: 0}}
@@ -165,6 +254,9 @@ export default function QuizDetailPage() {
                         </div>
                         <p className="text-center mb-6">
                             {t('scoreMessage', {score, total: quiz.questions.length})}
+                        </p>
+                        <p className="text-center mb-6">
+                            {t('durationMessage', {duration: quizDuration})}
                         </p>
 
                         <div className="space-y-6 mt-8">
@@ -260,7 +352,7 @@ export default function QuizDetailPage() {
                                                         <div className="w-3 h-3 bg-quizPink rounded-full"></div>
                                                     )}
                                                 </div>
-                                                <span className="ml-3">{answer.answer}</span>
+                                                <span className="ml-3 text-black">{answer.answer}</span>
                                             </div>
                                         </div>
                                     );
@@ -269,31 +361,20 @@ export default function QuizDetailPage() {
                         </motion.div>
 
                         {/* Przyciski nawigacyjne */}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                onClick={previousQuestion}
-                                disabled={currentQuestionIndex === 0}
-                                className={`px-6 py-2 rounded-lg ${
-                                    currentQuestionIndex === 0
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-quizBlue hover:bg-blue-600'
-                                } text-white font-semibold`}
-                            >
-                                {t('previous')}
-                            </button>
-
+                        <div className="flex flex-row mt-6 justify-end">
                             {currentQuestionIndex === quiz.questions.length - 1 ? (
                                 <button
                                     onClick={submitQuiz}
-                                    className="px-6 py-2 bg-quizPink hover:bg-pink-400 text-white font-semibold rounded-lg transition"
-                                    disabled={selectedAnswers.size < quiz.questions.length}
+                                    disabled={!selectedAnswers.has(currentQuestion.id)}
+                                    className={`px-6 py-2 ${selectedAnswers.has(currentQuestion.id) ? 'bg-quizPink hover:bg-pink-400' : 'bg-gray-400 cursor-not-allowed'} text-white font-semibold rounded-lg transition`}
                                 >
                                     {t('submit')}
                                 </button>
                             ) : (
                                 <button
                                     onClick={nextQuestion}
-                                    className="px-6 py-2 bg-quizBlue hover:bg-blue-600 text-white font-semibold rounded-lg transition"
+                                    disabled={!selectedAnswers.has(currentQuestion.id)}
+                                    className={`px-6 py-2 ${selectedAnswers.has(currentQuestion.id) ? 'bg-quizBlue hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'} text-white font-semibold rounded-lg transition`}
                                 >
                                     {t('next')}
                                 </button>
@@ -301,9 +382,6 @@ export default function QuizDetailPage() {
                         </div>
 
                         {/* Licznik odpowiedzi */}
-                        <div className="mt-6 text-center text-white">
-                            {t('answered')}: {selectedAnswers.size} / {quiz.questions.length}
-                        </div>
                     </>
                 )}
             </motion.div>
