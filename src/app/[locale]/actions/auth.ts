@@ -37,19 +37,30 @@ export async function signup(formData: FormData) {
     })
 
     if (!response.ok) {
-        let errorData = {message: 'An error occurred'};
+        let errorData: { error?: string, message?: string } = { message: 'An error occurred' };
         try {
             // Sprawdź, czy odpowiedź ma body
             const text = await response.text();
             if (text) {
                 errorData = JSON.parse(text);
             }
+
+            // Obsługa statusu 409 CONFLICT (email już istnieje)
+            if (response.status === 409) {
+                return {
+                    errors: {
+                        email: [errorData.error || 'Ten adres email jest już zarejestrowany']
+                    },
+                }
+            }
         } catch (e) {
             console.error(e);
         }
+
+        // Dla innych błędów
         return {
             errors: {
-                email: [errorData.message || 'An error occurred'],
+                email: [errorData.error || errorData.message || 'Wystąpił błąd podczas rejestracji']
             },
         }
     }
