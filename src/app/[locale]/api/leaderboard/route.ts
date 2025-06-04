@@ -27,8 +27,9 @@ export async function GET() {
                 }, {status: response.status});
             }
 
-            const quizzes = await response.json();
-            return NextResponse.json(quizzes);
+            const userEntries = await response.json();
+            console.log('Fetched user entries:', userEntries);
+            return NextResponse.json(userEntries);
         } catch (apiError) {
 
             // Bezpieczne wyciągnięcie wiadomości błędu
