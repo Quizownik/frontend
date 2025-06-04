@@ -133,6 +133,13 @@
     "edit": "Edit",
     "delete": "Delete",
     "noQuizzes": "No quizzes available yet.",
-    "noQuestions": "No questions available yet."
+    "noQuestions": "No questions available yet.",
+    "confirmDelete": "Confirm Deletion",
+    "deleteQuizConfirmation": "Are you sure you want to delete the quiz: \"{name}\"?",
+    "deleting": "Deleting...",
+    "cancel": "Cancel"
+  },
+  "API": {
+    "quizIdRequired": "Quiz ID is required"
   }
 }
