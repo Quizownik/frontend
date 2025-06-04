@@ -14,7 +14,7 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
         questionIds: string
     }>({
         name: '',
-        category: 'Grammar', // Default value
+        category: 'Mixed', // Default value
         position: 0,
         questionIds: '',
     });
@@ -65,7 +65,7 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
             };
 
             const locale = getLocale();
-            const response = await fetch(`/${locale}/api/admin/quizzes`, {
+            const response = await fetch(`/${locale}/api/quizzes/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
                     </div>
                 </div>
 
-                {/* Available questions list */}
+                {/*Available questions list */}
                 <div className="mb-6">
                     <h4 className="font-medium mb-2">{t('availableQuestions')}:</h4>
                     <div className="bg-white p-3 border rounded max-h-48 overflow-y-auto">
