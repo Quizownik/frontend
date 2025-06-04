@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category');
     const page = searchParams.get('page') || '0';
     const size = searchParams.get('size') || '10';
-    const sort = searchParams.get('sort') || '';
+    const sort = "";
 
     if (!category) {
         return NextResponse.json(
@@ -24,7 +24,8 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/questions/category/${encodeURIComponent(category)}?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`, {
+        console.log(`${API_BASE_URL}/questions/category/${encodeURIComponent(category)}?page=${page}&size=${size}&sort=${sort}`)
+        const response = await fetch(`${API_BASE_URL}/questions/category/${encodeURIComponent(category)}?page=${page}&size=${size}&sort=${sort}`, {
             headers: {
                 'Authorization': `Bearer ${user.userToken}`,
                 'Content-Type': 'application/json',
