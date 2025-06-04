@@ -55,7 +55,8 @@
     "noMistakeQuizzes": "Bezbłędne quizy",
     "logoutButton": "Wyloguj się",
     "errorMessage": "Wystąpił błąd podczas aktualizacji profilu",
-    "resultsPage": "Wyniki quizów"
+    "resultsPage": "Wyniki quizów",
+    "adminQuizzes": "Zarządzaj Quizami"
   },
   "CommunityPage": {
     "title": "Społeczność",
@@ -91,7 +92,47 @@
     "duration": "Czas",
     "score": "Wynik",
     "actions": "Akcje",
-    "retakeQuiz": "Rozwiąż Ponownie"
+    "retakeQuiz": "Rozwiąż Ponownie",
+    "pagination": {
+      "previous": "Poprzednia",
+      "next": "Następna",
+      "resultsPerPage": "Wyniki na stronę",
+      "pageInfo": "Strona {current} z {total} (łącznie {count} wyników)"
+    }
+  },
+  "AdminPage": {
+    "title": "Zarządzanie Quizami",
+    "backToProfile": "Powrót do profilu",
+    "quizzesTab": "Quizy",
+    "questionsTab": "Pytania",
+    "quizzesList": "Lista quizów",
+    "questionsList": "Lista pytań",
+    "addNewQuiz": "Dodaj nowy quiz",
+    "addNewQuestion": "Dodaj nowe pytanie",
+    "cancelAddQuiz": "Anuluj",
+    "cancelAddQuestion": "Anuluj",
+    "name": "Nazwa",
+    "question": "Pytanie",
+    "category": "Kategoria",
+    "position": "Pozycja",
+    "questionsCount": "Liczba pytań",
+    "answersCount": "Liczba odpowiedzi",
+    "questionIds": "ID pytań",
+    "questionIdsHelp": "Wprowadź ID pytań, które mają być zawarte w quizie, oddzielone przecinkami.",
+    "availableQuestions": "Dostępne pytania",
+    "noQuestionsAvailable": "Brak dostępnych pytań. Najpierw dodaj jakieś pytania.",
+    "answers": "Odpowiedzi",
+    "answer": "Odpowiedź",
+    "selectCorrectAnswer": "Zaznacz przycisk obok poprawnej odpowiedzi.",
+    "allAnswersRequired": "Wszystkie odpowiedzi muszą być wypełnione",
+    "correctAnswerRequired": "Musisz wybrać poprawną odpowiedź",
+    "saving": "Zapisywanie...",
+    "saveQuiz": "Zapisz quiz",
+    "saveQuestion": "Zapisz pytanie",
+    "actions": "Akcje",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "noQuizzes": "Brak dostępnych quizów.",
+    "noQuestions": "Brak dostępnych pytań."
   }
 }
-
