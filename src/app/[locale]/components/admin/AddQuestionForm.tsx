@@ -53,7 +53,7 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
 
         try {
             const locale = getLocale();
-            const response = await fetch(`/${locale}/api/admin/questions`, {
+            const response = await fetch(`/${locale}/api//questions/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
