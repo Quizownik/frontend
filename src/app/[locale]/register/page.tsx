@@ -10,6 +10,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher';
 import {useTranslations} from "next-intl";
 import {getLocale} from '@/app/[locale]/lib/utils';
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
+import {ErrorPopup} from "@/app/[locale]/components/ErrorPopup";
 
 export default function RegisterPage() {
     const t = useTranslations('RegisterPage');
@@ -24,6 +25,9 @@ export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [passwordMismatch, setPasswordMismatch] = useState(false);
+    const [emailError, setEmailError] = useState<string | null>(null);
 
     // Sprawdzanie, czy użytkownik jest już zalogowany
     useEffect(() => {
@@ -46,10 +50,18 @@ export default function RegisterPage() {
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Reset dotychczasowych błędów
+        setErrorMessage(null);
+        setEmailError(null);
+        setPasswordMismatch(false);
+
         if (password !== confirmPassword) {
-            alert('Passwords do not match');
+            setPasswordMismatch(true);
+            setErrorMessage(t('passwordMismatch') || 'Hasła nie są zgodne');
             return;
         }
+
         const formData = new FormData();
         formData.append('firstname', name);
         formData.append('lastname', lastname);
@@ -57,12 +69,21 @@ export default function RegisterPage() {
         formData.append('email', email);
         formData.append('password', password);
         formData.append('confirmPassword', confirmPassword);
+
         const result = await signup(formData);
+
         if (result?.errors) {
-            alert('Błąd: ' + JSON.stringify(result.errors));
-        } else if (result) {
-            alert(result);
+            // Jeśli mamy błędy specyficzne dla pól
+            if (result.errors.email && result.errors.email.length > 0) {
+                setEmailError(result.errors.email[0]);
+                setErrorMessage(result.errors.email[0]);
+            }
         }
+    };
+
+    // Funkcja zamykająca popup z błędem
+    const handleCloseError = () => {
+        setErrorMessage(null);
     };
 
     if (isLoading) {
@@ -76,6 +97,15 @@ export default function RegisterPage() {
     return (
         <main
             className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-quizBlue to-quizPink">
+            {/* Wyświetlanie popup z błędem */}
+            {errorMessage && (
+                <ErrorPopup
+                    message={errorMessage}
+                    onClose={handleCloseError}
+                    autoCloseTime={6000}
+                />
+            )}
+
             {/* Dodany przełącznik języka w prawym górnym rogu */}
             <div className="absolute top-4 right-4">
                 <LanguageSwitcher variant="pill"/>
@@ -159,9 +189,15 @@ export default function RegisterPage() {
                             type="email"
                             required
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                setEmailError(null);
+                            }}
+                            className={`px-4 py-2 sm:py-3 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base`}
                         />
+                        {emailError && (
+                            <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                        )}
                     </div>
 
                     <div className="flex flex-col relative">
@@ -173,8 +209,11 @@ export default function RegisterPage() {
                             type={showPassword ? 'text' : 'password'}
                             required
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12"
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setPasswordMismatch(false);
+                            }}
+                            className={`px-4 py-2 sm:py-3 border ${passwordMismatch ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12`}
                         />
                         <button
                             type="button"
@@ -200,8 +239,11 @@ export default function RegisterPage() {
                             type={showConfirmPassword ? 'text' : 'password'}
                             required
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12"
+                            onChange={(e) => {
+                                setConfirmPassword(e.target.value);
+                                setPasswordMismatch(false);
+                            }}
+                            className={`px-4 py-2 sm:py-3 border ${passwordMismatch ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12`}
                         />
                         <button
                             type="button"
@@ -216,6 +258,9 @@ export default function RegisterPage() {
                             )}
                         </button>
                     </div>
+                    {passwordMismatch && (
+                        <p className="text-red-500 text-sm -mt-2">{t('passwordMismatch') || 'Hasła nie są zgodne'}</p>
+                    )}
 
                     <button
                         type="submit"
