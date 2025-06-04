@@ -7,46 +7,7 @@ import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
-
-type Quiz = {
-    id: number;
-    name: string;
-    createdBy?: number;
-    category: string;
-    position: number;
-    level: string;
-    isMastered: boolean;
-};
-
-// Struktury dla paginacji
-type Sort = {
-    sorted: boolean;
-    empty: boolean;
-    unsorted: boolean;
-};
-
-type Pageable = {
-    pageNumber: number;
-    pageSize: number;
-    sort: Sort;
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-};
-
-type PageResponse = {
-    content: Quiz[];
-    pageable: Pageable;
-    last: boolean;
-    totalElements: number;
-    totalPages: number;
-    size: number;
-    number: number; // Aktualny numer strony
-    sort: Sort;
-    first: boolean;
-    numberOfElements: number;
-    empty: boolean;
-};
+import {PageResponse} from "@/app/[locale]/lib/types";
 
 export default function QuizzesPage() {
     const t = useTranslations('QuizzesPage');

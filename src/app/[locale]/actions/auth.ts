@@ -37,7 +37,7 @@ export async function signup(formData: FormData) {
     })
 
     if (!response.ok) {
-        let errorData = { message: 'An error occurred' };
+        let errorData = {message: 'An error occurred'};
         try {
             // Sprawdź, czy odpowiedź ma body
             const text = await response.text();
@@ -82,7 +82,7 @@ export async function login(formData: FormData) {
     }
 
     // fetch API endpoint
-    const response = await fetch(API_BASE_URL+'/auth/authenticate', {
+    const response = await fetch(API_BASE_URL + '/auth/authenticate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export async function login(formData: FormData) {
     })
 
     if (!response.ok) {
-        let errorData = { message: 'An error occurred' };
+        let errorData = {message: 'An error occurred'};
         try {
             // Sprawdź, czy odpowiedź ma body
             const text = await response.text();
