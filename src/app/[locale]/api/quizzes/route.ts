@@ -4,18 +4,21 @@ import { API_BASE_URL } from '@/app/[locale]/lib/utils';
 
 export async function GET(request: NextRequest) {
     try {
-        // Pobierz parametry paginacji i kategorii z URL
-        const searchParams = request.nextUrl.searchParams;
-        const page = searchParams.get('page') || '0';
-        const size = searchParams.get('size') || '10';
-        const category = searchParams.get('category') || 'Grammar';
-        const sort = searchParams.get('sort') || 'name';
-
         const user = await getCurrentUser();
 
         if (!user || !user.userToken) {
             return NextResponse.json({error: 'Unauthorized'}, {status: 401});
         }
+
+
+        // Pobierz parametry paginacji i kategorii z URL
+        const searchParams = request.nextUrl.searchParams;
+        const page = searchParams.get('page') || '0';
+        const size = searchParams.get('size') || '10';
+        const category = searchParams.get('category') || 'Mixed';
+        const sort = searchParams.get('sort') || 'name';
+
+
 
         // Użyj tokenu z sesji do autoryzacji zapytania do zewnętrznego API
         try {
