@@ -70,3 +70,8 @@ export type PageResponseQuestions = {
     numberOfElements: number;
     empty: boolean;
 }
+
+export type UserEntry = {
+    username: string;
+    score: number;
+}
