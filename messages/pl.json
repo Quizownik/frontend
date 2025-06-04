@@ -27,7 +27,18 @@
     "categoryLabel": "Kategoria",
     "questions": "Pytania",
     "subtitle": "Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.",
-    "startQuiz": "Rozpocznij Quiz"
+    "startQuiz": "Rozpocznij Quiz",
+    "repeatQuiz": "Powtórz Quiz",
+    "grammarLabel": "Gramatyka",
+    "vocabularyLabel": "Słownictwo",
+    "mixedLabel": "Mieszane",
+    "pagination": {
+      "previous": "Poprzednia",
+      "next": "Następna",
+      "quizzesPerPage": "Quizy na stronę",
+      "pageInfo": "Strona {current} z {total} (łącznie {count} quizów)"
+    },
+    "masteredLabel": "Ukończone"
   },
   "ProfilePage": {
     "title": "Twój profil",
@@ -43,12 +54,85 @@
     "endedQuizzes": "Ukończone quizy",
     "noMistakeQuizzes": "Bezbłędne quizy",
     "logoutButton": "Wyloguj się",
-    "errorMessage": "Wystąpił błąd podczas aktualizacji profilu"
+    "errorMessage": "Wystąpił błąd podczas aktualizacji profilu",
+    "resultsPage": "Wyniki quizów",
+    "adminQuizzes": "Zarządzaj Quizami"
   },
   "CommunityPage": {
     "title": "Społeczność",
     "subtitle": "Porównuj się z innymi graczami i sprawdź swoje umiejętności.",
     "leaderboard": "Tablica Liderów",
     "noResults": "Brak wyników"
+  },
+  "QuizDetailPage": {
+    "quizNotFound": "Quiz nie został znaleziony",
+    "categoryLabel": "Kategoria",
+    "questions": "pytania",
+    "question": "Pytanie",
+    "previous": "Poprzednie",
+    "next": "Następne",
+    "submit": "Zakończ Quiz",
+    "answered": "Udzielone odpowiedzi",
+    "quizCompleted": "Quiz ukończony!",
+    "scoreMessage": "Poprawnie odpowiedziałeś na {score} z {total} pytań!",
+    "durationMessage": "Czas rozwiązywania: {duration} sekund",
+    "yourAnswer": "Twoja odpowiedź",
+    "noAnswer": "Brak odpowiedzi",
+    "correctAnswer": "Poprawna odpowiedź",
+    "tryAgain": "Spróbuj ponownie",
+    "backToQuizzes": "Powrót do Quizów"
+  },
+  "ResultsPage": {
+    "title": "Twoje Wyniki Quizów",
+    "backToProfile": "Powrót do Profilu",
+    "resultsSubtitle": "Historia ukończonych quizów",
+    "noResults": "Nie ukończyłeś jeszcze żadnego quizu",
+    "quizId": "ID Quizu",
+    "finishedAt": "Ukończono",
+    "duration": "Czas",
+    "score": "Wynik",
+    "actions": "Akcje",
+    "retakeQuiz": "Rozwiąż Ponownie",
+    "pagination": {
+      "previous": "Poprzednia",
+      "next": "Następna",
+      "resultsPerPage": "Wyniki na stronę",
+      "pageInfo": "Strona {current} z {total} (łącznie {count} wyników)"
+    }
+  },
+  "AdminPage": {
+    "title": "Zarządzanie Quizami",
+    "backToProfile": "Powrót do profilu",
+    "quizzesTab": "Quizy",
+    "questionsTab": "Pytania",
+    "quizzesList": "Lista quizów",
+    "questionsList": "Lista pytań",
+    "addNewQuiz": "Dodaj nowy quiz",
+    "addNewQuestion": "Dodaj nowe pytanie",
+    "cancelAddQuiz": "Anuluj",
+    "cancelAddQuestion": "Anuluj",
+    "name": "Nazwa",
+    "question": "Pytanie",
+    "category": "Kategoria",
+    "position": "Pozycja",
+    "questionsCount": "Liczba pytań",
+    "answersCount": "Liczba odpowiedzi",
+    "questionIds": "ID pytań",
+    "questionIdsHelp": "Wprowadź ID pytań, które mają być zawarte w quizie, oddzielone przecinkami.",
+    "availableQuestions": "Dostępne pytania",
+    "noQuestionsAvailable": "Brak dostępnych pytań. Najpierw dodaj jakieś pytania.",
+    "answers": "Odpowiedzi",
+    "answer": "Odpowiedź",
+    "selectCorrectAnswer": "Zaznacz przycisk obok poprawnej odpowiedzi.",
+    "allAnswersRequired": "Wszystkie odpowiedzi muszą być wypełnione",
+    "correctAnswerRequired": "Musisz wybrać poprawną odpowiedź",
+    "saving": "Zapisywanie...",
+    "saveQuiz": "Zapisz quiz",
+    "saveQuestion": "Zapisz pytanie",
+    "actions": "Akcje",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "noQuizzes": "Brak dostępnych quizów.",
+    "noQuestions": "Brak dostępnych pytań."
   }
 }

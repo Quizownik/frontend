@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCurrentUser } from '@/app/[locale]/lib/session';
+import {deleteSession, getCurrentUser} from '@/app/[locale]/lib/session';
 import { API_BASE_URL } from '@/app/[locale]/lib/utils';
 
 export async function GET() {
@@ -19,6 +19,7 @@ export async function GET() {
 
             if (!response.ok) {
                 const errorText = await response.text();
+                await deleteSession();
                 return NextResponse.json({
                     error: `API error: ${response.status}`,
                     details: errorText

@@ -27,7 +27,18 @@
     "categoryLabel": "Category",
     "questions": "Questions",
     "subtitle": "Choose a category and test your English knowledge.",
-    "startQuiz": "Start Quiz"
+    "startQuiz": "Start Quiz",
+    "repeatQuiz": "Repeat Quiz",
+    "grammarLabel": "Grammar",
+    "vocabularyLabel": "Vocabulary",
+    "mixedLabel": "Mixed",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "quizzesPerPage": "Quizzes per page",
+      "pageInfo": "Page {current} of {total} (total {count} quizzes)"
+    },
+    "masteredLabel": "Completed"
   },
   "ProfilePage": {
     "title": "Your Profile",
@@ -43,12 +54,85 @@
     "endedQuizzes": "Completed Quizzes",
     "noMistakeQuizzes": "Flawless Quizzes",
     "logoutButton": "Log Out",
-    "errorMessage": "An error occurred while updating the profile"
+    "errorMessage": "An error occurred while updating the profile",
+    "resultsPage": "Quiz Results",
+    "adminQuizzes": "Manage Quizzes"
   },
   "CommunityPage": {
     "title": "Community",
     "subtitle": "Compare yourself with other players and test your skills.",
     "leaderboard": "Leaderboard",
     "noResults": "No results"
+  },
+  "QuizDetailPage": {
+    "quizNotFound": "Quiz not found",
+    "categoryLabel": "Category",
+    "questions": "questions",
+    "question": "Question",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit Quiz",
+    "answered": "Questions answered",
+    "quizCompleted": "Quiz Completed!",
+    "scoreMessage": "You answered {score} out of {total} questions correctly!",
+    "durationMessage": "Time taken: {duration} seconds",
+    "yourAnswer": "Your answer",
+    "noAnswer": "No answer provided",
+    "correctAnswer": "Correct answer",
+    "tryAgain": "Try Again",
+    "backToQuizzes": "Back to Quizzes"
+  },
+  "ResultsPage": {
+    "title": "Your Quiz Results",
+    "backToProfile": "Back to Profile",
+    "resultsSubtitle": "History of your completed quizzes",
+    "noResults": "You haven't completed any quizzes yet",
+    "quizId": "Quiz ID",
+    "finishedAt": "Completed At",
+    "duration": "Time",
+    "score": "Score",
+    "actions": "Actions",
+    "retakeQuiz": "Take Quiz Again",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "resultsPerPage": "Results per page",
+      "pageInfo": "Page {current} of {total} (total {count} results)"
+    }
+  },
+  "AdminPage": {
+    "title": "Quiz Management",
+    "backToProfile": "Back to Profile",
+    "quizzesTab": "Quizzes",
+    "questionsTab": "Questions",
+    "quizzesList": "Quizzes List",
+    "questionsList": "Questions List",
+    "addNewQuiz": "Add New Quiz",
+    "addNewQuestion": "Add New Question",
+    "cancelAddQuiz": "Cancel",
+    "cancelAddQuestion": "Cancel",
+    "name": "Name",
+    "question": "Question",
+    "category": "Category",
+    "position": "Position",
+    "questionsCount": "Questions",
+    "answersCount": "Answers",
+    "questionIds": "Question IDs",
+    "questionIdsHelp": "Enter the IDs of questions to include in this quiz, separated by commas.",
+    "availableQuestions": "Available Questions",
+    "noQuestionsAvailable": "No questions available yet. Add some first.",
+    "answers": "Answers",
+    "answer": "Answer",
+    "selectCorrectAnswer": "Select the radio button next to the correct answer.",
+    "allAnswersRequired": "All answers must be filled in",
+    "correctAnswerRequired": "You must select a correct answer",
+    "saving": "Saving...",
+    "saveQuiz": "Save Quiz",
+    "saveQuestion": "Save Question",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noQuizzes": "No quizzes available yet.",
+    "noQuestions": "No questions available yet."
   }
 }
