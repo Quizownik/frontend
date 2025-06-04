@@ -8,7 +8,7 @@ import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
-import {redirect} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {Link} from "@/i18n/navigation";
 
 type UserProfile = {
@@ -26,6 +26,7 @@ const defaultAvatarUrl = '/avatars/avatar.png';
 
 export default function ProfilePage() {
     const t = useTranslations('ProfilePage');
+    const router = useRouter();
 
     const {loading, authorized} = useAuthGuard();
     const [user, setUser] = useState<UserProfile | null>(null);
@@ -34,26 +35,31 @@ export default function ProfilePage() {
     useEffect(() => {
         if (!loading && authorized) {
             fetchUser();
+        } else if (!loading && !authorized) {
+            router.push('/login');
         }
-    }, [loading, authorized]);
+    }, [loading, authorized, router]);
 
-    const fetchUser = () => {
-        const locale = getLocale();
+    const fetchUser = async () => {
+        try {
+            const locale = getLocale();
+            const response = await fetch(`/${locale}/api/user/me`);
 
-        fetch(`/${locale}/api/user/me`)
-            .then(response => {
-                if (!response.ok) {
-                    redirect('/login');
+            if (!response.ok) {
+                if (response.status === 401) {
+                    router.push('/login');
+                    return;
                 }
-                return response.json();
-            })
-            .then(data => {
-                setUser(data);
-                setFetchError(null);
-            })
-            .catch(error => {
-                setFetchError('Nie udało się pobrać danych profilu. Spróbuj ponownie później.' + (error.message ? ` (${error.message})` : ''));
-            });
+                throw new Error(`Error ${response.status}: ${await response.text()}`);
+            }
+
+            const data = await response.json();
+            setUser(data);
+            setFetchError(null);
+        } catch (error) {
+            setFetchError('Nie udało się pobrać danych profilu. Spróbuj ponownie później.' +
+                (error instanceof Error ? ` (${error.message})` : ''));
+        }
     };
 
     if (loading) return <LoadingSpinner/>;

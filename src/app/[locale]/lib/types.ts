@@ -57,3 +57,21 @@ export type PageResponse = {
     empty: boolean;
 };
 
+export type PageResponseQuestions = {
+    content: Question[];
+    pageable: Pageable;
+    last: boolean;
+    totalElements: number;
+    totalPages: number;
+    size: number;
+    number: number; // Aktualny numer strony
+    sort: Sort;
+    first: boolean;
+    numberOfElements: number;
+    empty: boolean;
+}
+
+export type UserEntry = {
+    username: string;
+    score: number;
+}

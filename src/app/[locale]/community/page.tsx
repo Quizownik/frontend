@@ -5,44 +5,7 @@ import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {useTranslations} from "next-intl";
 import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
-
-// const leaderboard = [
-//     {
-//         id: 1,
-//         username: 'quiz_champion',
-//         avatar: '/avatars/avatar.png',
-//         score: 1520,
-//     },
-//     {
-//         id: 2,
-//         username: 'brainy_user',
-//         avatar: '/avatars/avatar.png',
-//         score: 1380,
-//     },
-//     {
-//         id: 3,
-//         username: 'fast_fingers',
-//         avatar: '/avatars/avatar.png',
-//         score: 1260,
-//     },
-//     {
-//         id: 4,
-//         username: 'smart_cookie',
-//         avatar: '/avatars/avatar.png',
-//         score: 1100,
-//     },
-//     {
-//         id: 5,
-//         username: 'think_tank',
-//         avatar: '/avatars/avatar.png',
-//         score: 980,
-//     },
-// ];
-
-type UserEntry = {
-    username: string;
-    numOfDoneQuizzes: number;
-}
+import {UserEntry} from "@/app/[locale]/lib/types";
 
 export default function CommunityPage() {
     const t = useTranslations('CommunityPage');
@@ -147,7 +110,7 @@ export default function CommunityPage() {
                                                 : 'text-gray-600'
                                 }`}>@{user.username}</span>
                             </div>
-                            <span className="text-xl font-bold text-quizPink">{user.numOfDoneQuizzes} pts</span>
+                            <span className="text-xl font-bold text-quizPink">{user.score} pts</span>
                         </motion.li>
                     ))}
                 </ul>

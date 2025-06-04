@@ -133,6 +133,13 @@
     "edit": "Edytuj",
     "delete": "Usuń",
     "noQuizzes": "Brak dostępnych quizów.",
-    "noQuestions": "Brak dostępnych pytań."
+    "noQuestions": "Brak dostępnych pytań.",
+    "confirmDelete": "Potwierdzenie usunięcia",
+    "deleteQuizConfirmation": "Czy na pewno chcesz usunąć quiz: \"{name}\"?",
+    "deleting": "Usuwanie...",
+    "cancel": "Anuluj"
+  },
+  "API": {
+    "quizIdRequired": "ID quizu jest wymagane"
   }
 }
