@@ -11,13 +11,13 @@ import Link from 'next/link';
 type ResultResponse = {
     quizId: number;
     userId: number;
+    quizName: string;
     finishedAt: string; // LocalDateTime jako string w formacie ISO
     duration: number; // Long
     questionOrder: number[]; // List<Integer>
     chosenAnswers: number[]; // List<Integer>
     correct: number; // Integer
     fails: number; // Integer
-    quizName?: string; // Dodatkowe pole, które możemy uzupełnić jeśli dostępne
 };
 
 // Typ dla paginacji
@@ -174,7 +174,7 @@ export default function ResultsPage() {
                                 <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr className="bg-gray-100">
-                                            <th className="px-6 py-3 border-b">{t('quizId')}</th>
+                                            <th className="px-6 py-3 border-b">{t('quizName')}</th>
                                             <th className="px-6 py-3 border-b">{t('finishedAt')}</th>
                                             <th className="px-6 py-3 border-b">{t('duration')}</th>
                                             <th className="px-6 py-3 border-b">{t('score')}</th>
@@ -198,7 +198,7 @@ export default function ResultsPage() {
                                                     className="hover:bg-gray-50"
                                                 >
                                                     <td className="px-6 py-4 border-b">
-                                                        {result.quizId}
+                                                        {result.quizName}
                                                     </td>
                                                     <td className="px-6 py-4 border-b">
                                                         {formatDateTime(result.finishedAt)}

@@ -99,6 +99,7 @@
     "score": "Score",
     "actions": "Actions",
     "retakeQuiz": "Take Quiz Again",
+    "quizName": "Quiz Name",
     "pagination": {
       "previous": "Previous",
       "next": "Next",

@@ -99,6 +99,7 @@
     "score": "Wynik",
     "actions": "Akcje",
     "retakeQuiz": "Rozwiąż Ponownie",
+    "quizName": "Nazwa Quizu",
     "pagination": {
       "previous": "Poprzednia",
       "next": "Następna",
