@@ -9,7 +9,7 @@ module.exports = {
       colors: {
         quizPink: '#FF7EB9',
         quizYellow: '#FEE440',
-        quizGreen: '#00F5D4',
+        quizGreen: '#00f59f',
         quizBlue: '#5BC0EB',
         quizPurple: '#7f00b2',
       },
