@@ -1,6 +1,6 @@
 ﻿import {useTranslations} from "next-intl";
 import {useEffect, useState} from "react";
-import {QuizLabel} from "@/app/[locale]/lib/types";
+import {PageResponse, QuizLabel} from "@/app/[locale]/lib/types";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import AddQuizForm from "@/app/[locale]/components/admin/AddQuizForm";
@@ -14,27 +14,37 @@ export default function QuizzesManager() {
     const [quizToDelete, setQuizToDelete] = useState<QuizLabel | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [deleteError, setDeleteError] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState<number>(0);
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const pageSize = 10;
 
     useEffect(() => {
-        fetchQuizzes();
-    }, []);
+        fetchQuizzes(currentPage);
+    }, [currentPage]);
 
-    const fetchQuizzes = async () => {
+    const fetchQuizzes = async (page = 0) => {
         setIsLoading(true);
         const locale = getLocale();
 
         try {
-            const response = await fetch(`/${locale}/api/quizzes?size=100`);
+            const response = await fetch(`/${locale}/api/quizzes/getWithoutLevel?category=All&page=${page}&size=${pageSize}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            const data = await response.json();
-            console.log(data);
+            const data = await response.json() as PageResponse;
             setQuizzes(data.content || []);
+            setTotalPages(data.totalPages || 1);
+            setCurrentPage(data.number || 0);
             setIsLoading(false);
         } catch (err) {
             console.error('Error fetching quizzes:', err);
             setIsLoading(false);
+        }
+    };
+
+    const changePage = (page: number) => {
+        if (page >= 0 && page < totalPages) {
+            setCurrentPage(page);
         }
     };
 
@@ -66,7 +76,7 @@ export default function QuizzesManager() {
             }
 
             // Odśwież listę quizów po usunięciu
-            fetchQuizzes();
+            fetchQuizzes(currentPage);
             setQuizToDelete(null);
         } catch (error) {
             console.error('Error deleting quiz:', error);
@@ -95,7 +105,8 @@ export default function QuizzesManager() {
             </div>
 
             {showAddForm && <AddQuizForm onQuizAdded={() => {
-                fetchQuizzes();
+                fetchQuizzes(0); // Reset do pierwszej strony po dodaniu nowego quizu
+                setCurrentPage(0);
                 setShowAddForm(false);
             }}/>}
 
@@ -145,43 +156,86 @@ export default function QuizzesManager() {
             {quizzes.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">{t('noQuizzes')}</p>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white">
-                        <thead>
-                        <tr className="bg-gray-100">
-                            <th className="py-3 px-4 border-b text-left">ID</th>
-                            <th className="py-3 px-4 border-b text-left">{t('name')}</th>
-                            <th className="py-3 px-4 border-b text-left">{t('category')}</th>
-                            <th className="py-3 px-4 border-b text-left">{t('questionsCount')}</th>
-                            <th className="py-3 px-4 border-b text-left">{t('actions')}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {quizzes.map((quiz) => (
-                            <tr key={quiz.id} className="hover:bg-gray-50">
-                                <td className="py-3 px-4 border-b">{quiz.id}</td>
-                                <td className="py-3 px-4 border-b">{quiz.name}</td>
-                                <td className="py-3 px-4 border-b">{quiz.category}</td>
-                                <td className="py-3 px-4 border-b">{quiz.numberOfQuestions || 0}</td>
-                                <td className="py-3 px-4 border-b">
-                                    <Link
-                                        href={`/admin/quizzes/${quiz.id}`}
-                                        className="text-blue-600 hover:underline mr-3"
-                                    >
-                                        {t('edit')}
-                                    </Link>
-                                    <button
-                                        className="text-red-600 hover:underline"
-                                        onClick={() => confirmDelete(quiz)}
-                                    >
-                                        {t('delete')}
-                                    </button>
-                                </td>
+                <>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white">
+                            <thead>
+                            <tr className="bg-gray-100">
+                                <th className="py-3 px-4 border-b text-left">ID</th>
+                                <th className="py-3 px-4 border-b text-left">{t('name')}</th>
+                                <th className="py-3 px-4 border-b text-left">{t('category')}</th>
+                                <th className="py-3 px-4 border-b text-left">{t('questionsCount')}</th>
+                                <th className="py-3 px-4 border-b text-left">{t('actions')}</th>
                             </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                            {quizzes.map((quiz) => (
+                                <tr key={quiz.id} className="hover:bg-gray-50">
+                                    <td className="py-3 px-4 border-b">{quiz.id}</td>
+                                    <td className="py-3 px-4 border-b">{quiz.name}</td>
+                                    <td className="py-3 px-4 border-b">{quiz.category}</td>
+                                    <td className="py-3 px-4 border-b">{quiz.numberOfQuestions || 0}</td>
+                                    <td className="py-3 px-4 border-b">
+                                        <Link
+                                            href={`/admin/quizzes/${quiz.id}`}
+                                            className="text-blue-600 hover:underline mr-3"
+                                        >
+                                            {t('edit')}
+                                        </Link>
+                                        <button
+                                            className="text-red-600 hover:underline"
+                                            onClick={() => confirmDelete(quiz)}
+                                        >
+                                            {t('delete')}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Paginacja */}
+                    {totalPages > 1 && (
+                        <div className="mt-4 flex justify-center space-x-2">
+                            <button
+                                onClick={() => changePage(currentPage - 1)}
+                                disabled={currentPage === 0}
+                                className={`px-3 py-1 rounded ${
+                                    currentPage === 0
+                                        ? 'bg-gray-200 text-gray-500'
+                                        : 'bg-quizBlue text-white hover:bg-blue-700'
+                                }`}
+                            >
+                                &lt;
+                            </button>
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => changePage(index)}
+                                    className={`px-3 py-1 rounded ${
+                                        currentPage === index
+                                            ? 'bg-quizPink text-white'
+                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                            <button
+                                onClick={() => changePage(currentPage + 1)}
+                                disabled={currentPage === totalPages - 1}
+                                className={`px-3 py-1 rounded ${
+                                    currentPage === totalPages - 1
+                                        ? 'bg-gray-200 text-gray-500'
+                                        : 'bg-quizBlue text-white hover:bg-blue-700'
+                                }`}
+                            >
+                                &gt;
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
