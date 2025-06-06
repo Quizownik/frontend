@@ -12,6 +12,7 @@ module.exports = {
         quizGreen: '#00f59f',
         quizBlue: '#5BC0EB',
         quizPurple: '#7f00b2',
+        quizRed: '#c55050',
       },
     },
   },
