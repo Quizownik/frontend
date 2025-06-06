@@ -147,6 +147,7 @@
     "deleting": "Deleting...",
     "cancel": "Cancel",
     "editQuestion": "Edit question",
+    "editQuiz": "Edit Quiz",
     "questionUpdated": "Question has been updated",
     "questionDeleted": "Question has been deleted",
     "deleteQuestionConfirmation": "Are you sure you want to delete this question?",
