@@ -120,13 +120,14 @@ export default function QuestionsManager() {
 
             {successMessage && (
                 <div className="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
-                    <p>{successMessage}</p>
+
                     <button
                         onClick={() => setSuccessMessage(null)}
-                        className="text-green-700 font-bold ml-2"
+                        className="text-green-700  ml-2"
                     >
-                        ×
+                        <span className="font-bold">×</span> {successMessage}
                     </button>
+
                 </div>
             )}
 
