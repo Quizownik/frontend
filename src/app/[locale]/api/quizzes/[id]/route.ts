@@ -1,24 +1,30 @@
-﻿import {NextRequest, NextResponse} from 'next/server';
-import {getCurrentUser} from '@/app/[locale]/lib/session';
-import {API_BASE_URL} from '@/app/[locale]/lib/utils';
+﻿import { NextRequest, NextResponse } from 'next/server';
+import { getCurrentUser } from '@/app/[locale]/lib/session';
+import { API_BASE_URL } from '@/app/[locale]/lib/utils';
+import { getTranslations } from 'next-intl/server';
 
 export async function GET(
     request: NextRequest,
     context: { params: { id: string } }
 ) {
     try {
+        // Get translations based on the request locale
+        const { pathname } = new URL(request.url);
+        const locale = pathname.split('/')[1];
+        const t = await getTranslations({ locale, namespace: '' });
+
         // Pobieramy parametry w sposób asynchroniczny
         const params = await context.params;
         const quizId = params.id;
 
         if (!quizId) {
-            return NextResponse.json({error: 'Quiz ID is required'}, {status: 400});
+            return NextResponse.json({error: t('API.quizIdRequired')}, {status: 400});
         }
 
         const user = await getCurrentUser();
 
         if (!user || !user.userToken) {
-            return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+            return NextResponse.json({error: t('API.errors.unauthorized')}, {status: 401});
         }
 
         // Użyj tokenu z sesji do autoryzacji zapytania do zewnętrznego API
@@ -33,7 +39,7 @@ export async function GET(
                 const errorText = await response.text();
 
                 return NextResponse.json({
-                    error: `API error: ${response.status}`,
+                    error: `${t('API.errors.serverError')}: ${response.status}`,
                     details: errorText
                 }, {status: response.status});
             }
@@ -41,19 +47,22 @@ export async function GET(
             const quizzes = await response.json();
             return NextResponse.json(quizzes);
         } catch (apiError) {
-
             // Bezpieczne wyciągnięcie wiadomości błędu
-            const errorMessage = apiError instanceof Error ? apiError.message : 'Nieznany błąd';
+            const errorMessage = apiError instanceof Error ? apiError.message : t('API.errors.internalServerError');
             return NextResponse.json({
-                error: 'Failed to fetch quizzes from API',
+                error: t('API.errors.quizNotFound'),
                 details: errorMessage
             }, {status: 500});
         }
     } catch (sessionError) {
+        // Fallback to default locale if there's a session error
+        const defaultLocale = 'pl';
+        const t = await getTranslations({ locale: defaultLocale, namespace: '' });
+
         // Bezpieczne wyciągnięcie wiadomości błędu
-        const errorMessage = sessionError instanceof Error ? sessionError.message : 'Nieznany błąd';
+        const errorMessage = sessionError instanceof Error ? sessionError.message : t('API.errors.internalServerError');
         return NextResponse.json({
-            error: 'Session error',
+            error: t('API.errors.unauthorized'),
             details: errorMessage
         }, {status: 500});
     }

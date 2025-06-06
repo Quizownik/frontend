@@ -10,15 +10,19 @@ import {useTranslations} from "next-intl";
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import {getLocale} from '@/app/[locale]/lib/utils';
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
+import {ErrorPopup} from "@/app/[locale]/components/ErrorPopup";
 
 export default function LoginPage() {
     const t = useTranslations('LoginPage');
+    const apiT = useTranslations('API.errors');
     const router = useRouter();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Sprawdzanie, czy użytkownik jest już zalogowany
     useEffect(() => {
@@ -38,17 +42,51 @@ export default function LoginPage() {
             });
     }, [router]);
 
+    // Funkcja do mapowania kodów błędów na komunikaty z tłumaczeń
+    const getErrorMessage = (errorCode: string): string => {
+        switch (errorCode) {
+            case 'invalid_credentials':
+                return t('errorMessage');
+            case 'account_blocked':
+                return apiT('forbidden');
+            case 'too_many_requests':
+                return apiT('tooManyRequests');
+            case 'unexpected_response':
+                return apiT('serverError');
+            case 'server_error':
+                return apiT('internalServerError');
+            default:
+                return t('errorMessage');
+        }
+    };
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Logging in with:', {email, password});
+        setIsSubmitting(true);
+        setErrorMessage(null);
+
         const formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
-        const result = await login(formData);
-        if (result?.errors) {
-            alert('Błąd: ' + JSON.stringify(result.errors));
-        } else if (result) {
-            alert(result);
+
+        try {
+            const result = await login(formData);
+
+            if (result?.errors) {
+                // Pobranie pierwszego błędu z listy
+                const firstErrorKey = Object.values(result.errors)[0]?.[0];
+                if (firstErrorKey) {
+                    // Konwersja kodu błędu na komunikat z tłumaczeniem
+                    setErrorMessage(getErrorMessage(firstErrorKey));
+                } else {
+                    setErrorMessage(t('errorMessage'));
+                }
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            setErrorMessage(apiT('internalServerError'));
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -62,6 +100,15 @@ export default function LoginPage() {
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-quizBlue to-quizPink">
+            {/* Popup do wyświetlania błędów */}
+            {errorMessage && (
+                <ErrorPopup
+                    message={errorMessage}
+                    onClose={() => setErrorMessage(null)}
+                    autoCloseTime={5000}
+                />
+            )}
+
             {/* Dodany przełącznik języka w prawym górnym rogu */}
             <div className="absolute top-4 right-4">
                 <LanguageSwitcher variant="pill" />
@@ -139,9 +186,17 @@ export default function LoginPage() {
 
                     <button
                         type="submit"
+                        disabled={isSubmitting}
                         className="w-full bg-quizPink hover:bg-pink-400 text-white font-bold py-2 sm:py-3 rounded-lg transition duration-300 text-sm sm:text-base"
                     >
-                        {t("loginButton")}
+                        {isSubmitting ? (
+                            <div className="flex justify-center items-center">
+                                <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
+                                <span>{t('loginButton')}</span>
+                            </div>
+                        ) : (
+                            t('loginButton')
+                        )}
                     </button>
 
                     <p className="text-sm text-center text-gray-500">

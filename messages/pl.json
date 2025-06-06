@@ -62,7 +62,8 @@
     "logoutButton": "Wyloguj się",
     "errorMessage": "Wystąpił błąd podczas aktualizacji profilu",
     "resultsPage": "Wyniki quizów",
-    "adminQuizzes": "Zarządzaj Quizami"
+    "adminQuizzes": "Zarządzaj Quizami",
+    "changePassword": "Zmień hasło"
   },
   "CommunityPage": {
     "title": "Społeczność",
@@ -146,7 +147,50 @@
     "deleting": "Usuwanie...",
     "cancel": "Anuluj"
   },
+  "ChangePasswordPage": {
+    "title": "Zmiana hasła",
+    "subtitle": "Wprowadź swoje obecne hasło oraz nowe hasło, aby je zmienić",
+    "currentPassword": "Obecne hasło",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź nowe hasło",
+    "submitButton": "Zmień hasło",
+    "backToProfile": "Powrót do profilu",
+    "passwordChanged": "Hasło zostało zmienione pomyślnie",
+    "passwordError": "Wystąpił błąd podczas zmiany hasła",
+    "passwordsDontMatch": "Nowe hasło i potwierdzenie nie są identyczne",
+    "passwordRequirements": "Hasło musi mieć co najmniej 8 znaków"
+  },
   "API": {
-    "quizIdRequired": "ID quizu jest wymagane"
+    "quizIdRequired": "ID quizu jest wymagane",
+    "errors": {
+      "unauthorized": "Brak autoryzacji",
+      "invalidPasswordData": "Nieprawidłowe dane hasła",
+      "allFieldsRequired": "Wszystkie pola są wymagane",
+      "passwordMismatch": "Nowe hasło i potwierdzenie nie są zgodne",
+      "passwordMinLength": "Hasło musi mieć co najmniej 8 znaków długości",
+      "passwordLetterRequired": "Hasło musi zawierać co najmniej jedną literę",
+      "passwordNumberRequired": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "passwordSpecialCharRequired": "Hasło musi zawierać co najmniej jeden znak specjalny",
+      "currentPasswordRequired": "Aktualne hasło jest wymagane",
+      "passwordSameAsCurrent": "Nowe hasło nie może być takie samo jak aktualne",
+      "passwordChangeSuccess": "Hasło zostało zmienione pomyślnie",
+      "passwordChangeError": "Wystąpił błąd podczas zmiany hasła",
+      "usernameOrPasswordIsIncorrect": "Nieprawidłowy login lub hasło",
+      "internalServerError": "Wystąpił wewnętrzny błąd serwera",
+      "invalidCredentials": "Nieprawidłowe dane uwierzytelniające",
+      "userNotFound": "Użytkownik nie został znaleziony",
+      "quizNotFound": "Quiz nie został znaleziony",
+      "questionNotFound": "Pytanie nie zostało znalezione",
+      "resultNotFound": "Wynik nie został znaleziony",
+      "invalidData": "Nieprawidłowe dane",
+      "accessDenied": "Odmowa dostępu",
+      "badRequest": "Nieprawidłowe żądanie",
+      "forbidden": "Dostęp zabroniony",
+      "notFound": "Zasób nie został znaleziony",
+      "conflict": "Konflikt danych",
+      "tooManyRequests": "Zbyt wiele żądań, spróbuj ponownie później",
+      "serverError": "Błąd serwera",
+      "serviceUnavailable": "Usługa tymczasowo niedostępna"
+    }
   }
 }

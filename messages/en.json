@@ -62,7 +62,8 @@
     "logoutButton": "Log Out",
     "errorMessage": "An error occurred while updating the profile",
     "resultsPage": "Quiz Results",
-    "adminQuizzes": "Manage Quizzes"
+    "adminQuizzes": "Manage Quizzes",
+    "changePassword": "Change Password"
   },
   "CommunityPage": {
     "title": "Community",
@@ -147,6 +148,49 @@
     "cancel": "Cancel"
   },
   "API": {
-    "quizIdRequired": "Quiz ID is required"
+    "quizIdRequired": "Quiz ID is required",
+    "errors": {
+      "unauthorized": "Unauthorized access",
+      "invalidPasswordData": "Invalid password data",
+      "allFieldsRequired": "All fields are required",
+      "passwordMismatch": "New password and confirmation password do not match",
+      "passwordMinLength": "Password must be at least 8 characters long",
+      "passwordLetterRequired": "Password must contain at least one letter",
+      "passwordNumberRequired": "Password must contain at least one number",
+      "passwordSpecialCharRequired": "Password must contain at least one special character",
+      "currentPasswordRequired": "Current password is required",
+      "passwordSameAsCurrent": "New password cannot be the same as the current password",
+      "passwordChangeSuccess": "Password has been changed successfully",
+      "passwordChangeError": "An error occurred while changing the password",
+      "usernameOrPasswordIsIncorrect": "Incorrect username or password",
+      "internalServerError": "An internal server error occurred",
+      "invalidCredentials": "Invalid credentials",
+      "userNotFound": "User not found",
+      "quizNotFound": "Quiz not found",
+      "questionNotFound": "Question not found",
+      "resultNotFound": "Result not found",
+      "invalidData": "Invalid data",
+      "accessDenied": "Access denied",
+      "badRequest": "Bad request",
+      "forbidden": "Access forbidden",
+      "notFound": "Resource not found",
+      "conflict": "Data conflict",
+      "tooManyRequests": "Too many requests, please try again later",
+      "serverError": "Server error",
+      "serviceUnavailable": "Service temporarily unavailable"
+    }
+  },
+  "ChangePasswordPage": {
+    "title": "Change Password",
+    "subtitle": "Enter your current password and new password to change it",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "submitButton": "Change Password",
+    "backToProfile": "Back to Profile",
+    "passwordChanged": "Password has been changed successfully",
+    "passwordError": "An error occurred while changing the password",
+    "passwordsDontMatch": "New password and confirmation don't match",
+    "passwordRequirements": "Password must be at least 8 characters long"
   }
 }
