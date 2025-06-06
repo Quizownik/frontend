@@ -32,6 +32,11 @@
     "grammarLabel": "Grammar",
     "vocabularyLabel": "Vocabulary",
     "mixedLabel": "Mixed",
+    "levelLabel": "Difficulty",
+    "defaultLabel": "Default",
+    "easyLabel": "Easy",
+    "mediumLabel": "Medium",
+    "hardLabel": "Hard",
     "allLabel": "All",
     "pagination": {
       "previous": "Previous",

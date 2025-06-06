@@ -17,12 +17,13 @@ export default function QuizzesPage() {
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [pageSize] = useState<number>(9); // Domyślny rozmiar strony
     const [category, setCategory] = useState<string>("All"); // Domyślna kategoria
+    const [level, setLevel] = useState<string>("Default"); // Domyślny poziom
 
     useEffect(() => {
         if (!loading && authorized) {
-            fetchQuizzes(currentPage, pageSize, category);
+            fetchQuizzes(currentPage, pageSize, category, level);
         }
-    }, [loading, authorized, currentPage, pageSize, category]);
+    }, [loading, authorized, currentPage, pageSize, category, level]);
 
     // Funkcja zmieniająca kategorię
     const changeCategory = (newCategory: string) => {
@@ -30,11 +31,16 @@ export default function QuizzesPage() {
         setCurrentPage(0); // Reset do pierwszej strony po zmianie kategorii
     };
 
+    const changeLevel = (newLevel: string) => {
+        setLevel(newLevel);
+        setCurrentPage(0);
+    }
+
     // Funkcja do pobierania quizów z parametrami paginacji i kategorią
-    const fetchQuizzes = (page: number, size: number, category: string) => {
+    const fetchQuizzes = (page: number, size: number, category: string, level: string) => {
         const locale = getLocale();
 
-        fetch(`/${locale}/api/quizzes?page=${page}&size=${size}&category=${encodeURIComponent(category)}&sort=name`)
+        fetch(`/${locale}/api/quizzes?page=${page}&size=${size}&category=${encodeURIComponent(category)}&level=${encodeURIComponent(level)}&sort=name`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -130,75 +136,120 @@ export default function QuizzesPage() {
             </motion.p>
 
             {/* Przyciski do wyboru kategorii */}
-            <div className="flex flex-wrap justify-center gap-4 mb-10">
-                <button
-                    onClick={() => changeCategory("All")}
-                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "All" ? 'bg-quizGreen shadow-lg' : 'bg-gray-300 hover:bg-green-400'}`}
-                >
-                    {t('allLabel')}
-                </button>
-                <button
-                    onClick={() => changeCategory("Mixed")}
-                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Mixed" ? 'bg-quizPink shadow-lg' : 'bg-gray-300 hover:bg-pink-500'}`}
-                >
-                    {t('mixedLabel')}
-                </button>
-                <button
-                    onClick={() => changeCategory("Grammar")}
-                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Grammar" ? 'bg-quizYellow shadow-lg' : 'bg-gray-300 hover:bg-yellow-500'}`}
-                >
-                    {t('grammarLabel')}
-                </button>
-                <button
-                    onClick={() => changeCategory("Vocabulary")}
-                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Vocabulary" ? 'bg-quizBlue shadow-lg' : 'bg-gray-300 hover:bg-blue-500'}`}
-                >
-                    {t('vocabularyLabel')}
-                </button>
+            <div className="flex flex-wrap gap-8 mb-4">
+                <h2 className="text-center text-xl pl-2 uppercase">{t('categoryLabel')}</h2>
+                <div className="flex flex-wrap w-4/5 gap-8 justify-center">
+                    <button
+                        onClick={() => changeCategory("All")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "All" ? 'bg-quizGreen shadow-lg' : 'bg-gray-300 hover:bg-green-400'}`}
+                    >
+                        {t('allLabel')}
+                    </button>
+                    <button
+                        onClick={() => changeCategory("Mixed")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Mixed" ? 'bg-quizPink shadow-lg' : 'bg-gray-300 hover:bg-pink-500'}`}
+                    >
+                        {t('mixedLabel')}
+                    </button>
+                    <button
+                        onClick={() => changeCategory("Grammar")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Grammar" ? 'bg-quizYellow shadow-lg' : 'bg-gray-300 hover:bg-yellow-500'}`}
+                    >
+                        {t('grammarLabel')}
+                    </button>
+                    <button
+                        onClick={() => changeCategory("Vocabulary")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Vocabulary" ? 'bg-quizBlue shadow-lg' : 'bg-gray-300 hover:bg-blue-500'}`}
+                    >
+                        {t('vocabularyLabel')}
+                    </button>
+                </div>
+
             </div>
 
-            <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                {quizzesPage?.content && quizzesPage.content.map((quiz, index) => {
-                    const borderColor = categoryColors[quiz.category] || 'border-gray-300';
+            {/* Kontener dla quizów i poziomu */}
+            <div className="flex flex-wrap justify-center gap-4 mb-10">
+                {/* Przyciski do wyboru poziomu */}
+                <div className="flex flex-col flex-wrap justify-items-start gap-8">
+                    <div className="h-1 w-full bg-quizPink rounded-full"></div>
+                    <h2 className="text-center text-xl uppercase">{t('levelLabel')}</h2>
+                    <button
+                        onClick={() => changeLevel("Default")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${level === "Default" ? 'bg-quizGreen shadow-lg' : 'bg-gray-300 hover:bg-green-400'}`}
+                    >
+                        {t('defaultLabel')}
+                    </button>
+                    <button
+                        onClick={() => changeLevel("Mixed")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${level === "Mixed" ? 'bg-quizPink shadow-lg' : 'bg-gray-300 hover:bg-pink-500'}`}
+                    >
+                        {t('mixedLabel')}
+                    </button>
+                    <button
+                        onClick={() => changeLevel("Easy")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${level === "Easy" ? 'bg-quizYellow shadow-lg' : 'bg-gray-300 hover:bg-yellow-500'}`}
+                    >
+                        {t('easyLabel')}
+                    </button>
+                    <button
+                        onClick={() => changeLevel("Medium")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${level === "Medium" ? 'bg-quizBlue shadow-lg' : 'bg-gray-300 hover:bg-blue-500'}`}
+                    >
+                        {t('mediumLabel')}
+                    </button>
+                    <button
+                        onClick={() => changeLevel("Hard")}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${level === "Hard" ? 'bg-red-400 shadow-lg' : 'bg-gray-300 hover:bg-red-700'}`}
+                    >
+                        {t('hardLabel')}
+                    </button>
+                </div>
 
-                    // Style dla opanowanych quizów
-                    const isQuizMastered = quiz.isMastered;
-                    const cardClasses = `
+                {/* Wyświetlanie quizów */}
+                <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-4/5 mx-auto">
+                    {quizzesPage?.content && quizzesPage.content.map((quiz, index) => {
+                        const borderColor = categoryColors[quiz.category] || 'border-gray-300';
+
+                        // Style dla opanowanych quizów
+                        const isQuizMastered = quiz.isMastered;
+                        const cardClasses = `
                         bg-gray-100 p-6 rounded-xl shadow-md transition duration-300 border-l-4 
                         ${borderColor} 
-                        ${isQuizMastered 
-                            ? 'opacity-60 grayscale relative overflow-hidden' 
+                        ${isQuizMastered
+                            ? 'opacity-60 grayscale relative overflow-hidden'
                             : 'hover:shadow-xl'}
                     `;
 
-                    return (
-                        <motion.div
-                            key={quiz.id}
-                            initial={{opacity: 0, y: 10}}
-                            animate={{opacity: 1, y: 0}}
-                            transition={{delay: index * 0.2}}
-                            className={cardClasses}
-                        >
-                            {isQuizMastered && (
-                                <div className="absolute top-2 right-2 bg-black text-xs text-white px-2 py-1 rounded-full">
-                                    {t("masteredLabel")}
-                                </div>
-                            )}
-
-                            <h2 className="text-xl font-bold text-quizBlue mb-2">{quiz.name}</h2>
-                            <p className="text-sm text-black mb-1">{t("categoryLabel")}: {quiz.category}</p>
-                            <p className="text-sm text-gray-600 mb-4">Level: {quiz.level}</p>
-
-                            <Link
-                                href={`/quizzes/${quiz.id}`}
-                                className={`inline-block text-white font-semibold px-4 py-2 rounded-lg transition ${isQuizMastered ? 'bg-gray-500' : 'bg-quizPink hover:bg-pink-400'}`}
+                        return (
+                            <motion.div
+                                key={quiz.id}
+                                initial={{opacity: 0, y: 10}}
+                                animate={{opacity: 1, y: 0}}
+                                transition={{delay: index * 0.2}}
+                                className={cardClasses}
                             >
-                                {isQuizMastered ? t("repeatQuiz") : t("startQuiz")}
-                            </Link>
-                        </motion.div>
-                    );
-                })}
-            </section>
+                                {isQuizMastered && (
+                                    <div className="absolute top-2 right-2 bg-black text-xs text-white px-2 py-1 rounded-full">
+                                        {t("masteredLabel")}
+                                    </div>
+                                )}
+
+                                <h2 className="text-xl font-bold text-quizBlue mb-2">{quiz.name}</h2>
+                                <p className="text-sm text-black mb-1">{t("categoryLabel")}: {quiz.category}</p>
+                                <p className="text-sm text-gray-600 mb-4">Level: {quiz.level}</p>
+
+                                <Link
+                                    href={`/quizzes/${quiz.id}`}
+                                    className={`inline-block text-white font-semibold px-4 py-2 rounded-lg transition ${isQuizMastered ? 'bg-gray-500' : 'bg-quizPink hover:bg-pink-400'}`}
+                                >
+                                    {isQuizMastered ? t("repeatQuiz") : t("startQuiz")}
+                                </Link>
+                            </motion.div>
+                        );
+                    })}
+                </section>
+            </div>
+
 
             {/* Panel kontrolny paginacji */}
             {quizzesPage && quizzesPage.totalPages > 1 && (
