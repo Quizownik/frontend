@@ -72,6 +72,11 @@ export default function LoginPage() {
         try {
             const result = await login(formData);
 
+            if (result?.success) {
+                router.push('/profile');
+                return;
+            }
+
             if (result?.errors) {
                 // Pobranie pierwszego błędu z listy
                 const firstErrorKey = Object.values(result.errors)[0]?.[0];

@@ -153,18 +153,28 @@ export async function login(formData: FormData) {
             };
         }
 
-        const data = await response.json()
-        if (!data.access_token) {
+        try {
+            const data = await response.json();
+
+            if (!data.access_token) {
+                return {
+                    errors: {
+                        email: ['unexpected_response'],
+                    },
+                };
+            }
+
+            // Utworzenie sesji i przekierowanie
+            await createSession(data.access_token);
+            return { success: true }; // Zwracamy sukces zamiast bezpośredniego przekierowania
+        } catch (jsonError) {
+            console.error('Error parsing JSON response:', jsonError);
             return {
                 errors: {
-                    email: ['unexpected_response'],
+                    email: ['invalid_response_format'],
                 },
-            }
+            };
         }
-
-        await createSession(data.access_token)
-
-        redirect('/profile')
     } catch (error) {
         console.error('Login error:', error);
 
