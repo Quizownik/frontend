@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
 import {PageResponse} from "@/app/[locale]/lib/types";
+import CategoryChip from "@/app/[locale]/components/categoryChip";
 
 export default function QuizzesPage() {
     const t = useTranslations('QuizzesPage');
@@ -208,8 +209,8 @@ export default function QuizzesPage() {
                 {/* Wyświetlanie quizów */}
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-4/5 mx-auto items-start">
                     {quizzesPage?.content && quizzesPage.content.map((quiz, index) => {
-                        const borderColor = categoryColors[quiz.category] || 'border-black';
-
+                        const color = categoryColors[quiz.category] || 'black';
+                        const borderColor = `border-${color}`;
                         // Style dla opanowanych quizów
                         const isQuizMastered = quiz.isMastered;
                         const cardClasses = `
@@ -235,7 +236,7 @@ export default function QuizzesPage() {
                                 )}
 
                                 <h2 className="text-xl font-bold text-quizBlue mb-2 break-words whitespace-normal">{quiz.name}</h2>
-                                <p className="text-sm text-black mb-1">{t("categoryLabel")}: {quiz.category}</p>
+                                <CategoryChip name={quiz.category}/>
                                 <p className="text-sm text-gray-600 mb-4">Level: {quiz.level}</p>
 
                                 <Link

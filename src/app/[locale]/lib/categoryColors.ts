@@ -1,7 +1,7 @@
 ﻿const categoryColors: Record<string, string> = {
-    Grammar: 'border-quizYellow',
-    Vocabulary: 'border-quizBlue',
-    Mixed: 'border-quizPink'
+    Grammar: 'quizYellow',
+    Vocabulary: 'quizBlue',
+    Mixed: 'quizPink'
 };
 
 export { categoryColors };
