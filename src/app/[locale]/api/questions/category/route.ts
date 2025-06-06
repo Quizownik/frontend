@@ -24,7 +24,6 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        console.log(`${API_BASE_URL}/questions/category/${encodeURIComponent(category)}?page=${page}&size=${size}&sort=${sort}`)
         const response = await fetch(`${API_BASE_URL}/questions/category/${encodeURIComponent(category)}?page=${page}&size=${size}&sort=${sort}`, {
             headers: {
                 'Authorization': `Bearer ${user.userToken}`,

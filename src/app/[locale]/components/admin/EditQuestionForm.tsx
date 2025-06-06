@@ -1,20 +1,29 @@
-﻿import {useTranslations} from "next-intl";
+import {useTranslations} from "next-intl";
 import {useState} from "react";
 import {getLocale} from "@/app/[locale]/lib/utils";
+import {Question} from "@/app/[locale]/lib/types";
 
-export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: () => void }) {
+interface EditQuestionFormProps {
+    question: Question;
+    onQuestionUpdated: () => void;
+    onCancel: () => void;
+}
+
+export default function EditQuestionForm({question, onQuestionUpdated, onCancel}: EditQuestionFormProps) {
     const t = useTranslations('AdminPage');
     const [formData, setFormData] = useState<{
+        id: number;
         question: string;
         category: string;
         answers: { answer: string; isCorrect: boolean }[];
     }>({
-        question: '',
-        category: 'Grammar',
-        answers: [
-            {answer: '', isCorrect: true},
-            {answer: '', isCorrect: false}
-        ]
+        id: question.id,
+        question: question.question,
+        category: question.category,
+        answers: question.answers.map(a => ({
+            answer: a.answer,
+            isCorrect: a.isCorrect
+        }))
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,8 +90,8 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
 
         try {
             const locale = getLocale();
-            const response = await fetch(`/${locale}/api/questions/create`, {
-                method: 'POST',
+            const response = await fetch(`/${locale}/api/questions/update`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -91,12 +100,12 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
 
             if (!response.ok) {
                 const errorData = await response.text();
-                throw new Error(errorData || 'Failed to create question');
+                throw new Error(errorData || 'Failed to update question');
             }
 
-            onQuestionAdded();
+            onQuestionUpdated();
         } catch (err) {
-            console.error('Error creating question:', err);
+            console.error('Error updating question:', err);
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
         } finally {
             setIsSubmitting(false);
@@ -105,7 +114,15 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
 
     return (
         <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
-            <h3 className="text-xl font-medium mb-4">{t('addNewQuestion')}</h3>
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-medium">{t('editQuestion')}</h3>
+                <button
+                    onClick={onCancel}
+                    className="text-gray-500 hover:text-gray-700"
+                >
+                    ✕
+                </button>
+            </div>
 
             {error && (
                 <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6">
@@ -200,7 +217,14 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
                     </div>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-end space-x-3">
+                    <button
+                        type="button"
+                        onClick={onCancel}
+                        className="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition"
+                    >
+                        {t('cancel')}
+                    </button>
                     <button
                         type="submit"
                         disabled={isSubmitting}
@@ -213,4 +237,3 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
         </div>
     );
 }
-

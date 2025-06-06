@@ -5,18 +5,26 @@ import {getLocale} from "@/app/[locale]/lib/utils";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import Link from "next/link";
 import AddQuestionForm from "@/app/[locale]/components/admin/AddQuestionForm";
+import CategoryChip from "@/app/[locale]/components/categoryChip";
+import EditQuestionForm from "@/app/[locale]/components/admin/EditQuestionForm";
+import {ErrorPopup} from "@/app/[locale]/components/ErrorPopup";
 
 export default function QuestionsManager() {
     const t = useTranslations('AdminPage');
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string>('Mixed');
+    const [selectedCategory, setSelectedCategory] = useState<string>('Grammar');
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
     const pageSize = 10;
+    const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deleteQuestionId, setDeleteQuestionId] = useState<number | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    const categories = ['Mixed', 'Grammar', 'Vocabulary'];
+    const categories = ['Grammar', 'Vocabulary'];
 
     useEffect(() => {
         fetchQuestions(0, selectedCategory);
@@ -39,58 +47,122 @@ export default function QuestionsManager() {
         } catch (err) {
             console.error('Error fetching questions:', err);
             setIsLoading(false);
+            setErrorMessage(t('fetchError'));
         }
     };
 
-    const handleCategoryChange = (category: string) => {
-        setSelectedCategory(category);
-        setCurrentPage(0);
+    const handleEditQuestion = (question: Question) => {
+        setEditingQuestion(question);
     };
 
-    const handlePageChange = (newPage: number) => {
-        if (newPage >= 0 && newPage < totalPages) {
-            setCurrentPage(newPage);
-            fetchQuestions(newPage, selectedCategory);
+    const handleDeleteConfirmation = (questionId: number) => {
+        setDeleteQuestionId(questionId);
+    };
+
+    const handleDeleteQuestion = async () => {
+        if (!deleteQuestionId) return;
+
+        setIsDeleting(true);
+        const locale = getLocale();
+
+        try {
+            const response = await fetch(`/${locale}/api/questions/delete`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: deleteQuestionId }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Odświeżenie listy po usunięciu
+            fetchQuestions();
+            setSuccessMessage(t('questionDeleted'));
+        } catch (err) {
+            console.error('Error deleting question:', err);
+            setErrorMessage(t('deleteError'));
+        } finally {
+            setIsDeleting(false);
+            setDeleteQuestionId(null);
         }
     };
 
-    const getCategoryColorClass = (category: string) => {
-        switch (category) {
-            case 'Mixed': return 'bg-purple-100 text-purple-800';
-            case 'Vocabulary': return 'bg-pink-100 text-pink-800';
-            case 'Grammar': return 'bg-blue-100 text-blue-800';
-            default: return 'bg-gray-100 text-gray-800';
-        }
+    const handleQuestionUpdated = () => {
+        fetchQuestions();
+        setEditingQuestion(null);
+        setSuccessMessage(t('questionUpdated'));
     };
 
-    if (isLoading) return <LoadingSpinner/>;
+    const handleQuestionAdded = () => {
+        fetchQuestions();
+        setShowAddForm(false);
+        setSuccessMessage(t('questionAdded'));
+    };
+
+    const changePage = (page: number) => {
+        if (page >= 0 && page < totalPages) {
+            fetchQuestions(page);
+        }
+    };
 
     return (
         <div>
+            {errorMessage && (
+                <ErrorPopup
+                    message={errorMessage}
+                    onClose={() => setErrorMessage(null)}
+                    autoCloseTime={5000}
+                />
+            )}
+
+            {successMessage && (
+                <div className="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
+
+                    <button
+                        onClick={() => setSuccessMessage(null)}
+                        className="text-green-700  ml-2"
+                    >
+                        <span className="font-bold">×</span> {successMessage}
+                    </button>
+
+                </div>
+            )}
+
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-semibold">{t('questionsList')}</h2>
+                <h2 className="text-2xl font-bold">{t('questionsList')}</h2>
                 <button
                     onClick={() => setShowAddForm(!showAddForm)}
-                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition flex items-center"
+                    className="px-4 py-2 bg-quizPink text-white rounded hover:bg-pink-500 transition"
                 >
-                    <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                    </svg>
                     {showAddForm ? t('cancelAddQuestion') : t('addNewQuestion')}
                 </button>
             </div>
 
-            <div className="mb-6">
-                <div className="flex justify-center space-x-2 overflow-x-auto pb-2">
-                    {categories.map((category) => (
+            {showAddForm && (
+                <AddQuestionForm onQuestionAdded={handleQuestionAdded} />
+            )}
+
+            {editingQuestion && (
+                <EditQuestionForm
+                    question={editingQuestion}
+                    onQuestionUpdated={handleQuestionUpdated}
+                    onCancel={() => setEditingQuestion(null)}
+                />
+            )}
+
+            <div className="mb-4">
+                <div className="flex space-x-2 mb-4">
+                    {categories.map(category => (
                         <button
                             key={category}
-                            onClick={() => handleCategoryChange(category)}
-                            className={`px-4 py-2 rounded-full whitespace-nowrap ${
+                            onClick={() => setSelectedCategory(category)}
+                            className={`px-3 py-1 rounded ${
                                 selectedCategory === category
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-200 hover:bg-gray-300'
+                                    ? 'bg-quizBlue text-white'
+                                    : 'bg-gray-200 text-gray-700'
                             }`}
                         >
                             {category}
@@ -99,99 +171,126 @@ export default function QuestionsManager() {
                 </div>
             </div>
 
-            {showAddForm && <AddQuestionForm onQuestionAdded={() => {
-                fetchQuestions();
-                setShowAddForm(false);
-            }}/>}
-
-            {questions.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">{t('noQuestions')}</p>
-            ) : (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white">
-                        <thead>
-                        <tr className="bg-gray-100">
-                            <th className="py-3 px-4 border-b text-left">ID</th>
-                            <th className="py-3 px-4 border-b text-left">{t('question')}</th>
-                            <th className="py-3 px-4 border-b text-left">{t('category')}</th>
-                            <th className="py-3 px-4 border-b text-left">{t('answersCount')}</th>
-                            <th className="py-3 px-4 border-b text-left">{t('actions')}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {questions.map((question) => (
-                            <tr key={question.id} className="hover:bg-gray-50">
-                                <td className="py-3 px-4 border-b">{question.id}</td>
-                                <td className="py-3 px-4 border-b">{question.question}</td>
-                                <td className="py-3 px-4 border-b">
-                                    <span className={`px-2 py-1 rounded-full text-sm ${getCategoryColorClass(question.category)}`}>
-                                        {question.category}
-                                    </span>
-                                </td>
-                                <td className="py-3 px-4 border-b">{question.answers?.length || 0}</td>
-                                <td className="py-3 px-4 border-b">
-                                    <Link
-                                        href={`/admin/questions/${question.id}`}
-                                        className="text-blue-600 hover:underline mr-3"
-                                    >
-                                        {t('edit')}
-                                    </Link>
-                                    <button
-                                        className="text-red-600 hover:underline"
-                                        onClick={() => {/* Implement delete logic */
-                                        }}
-                                    >
-                                        {t('delete')}
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
+            {isLoading ? (
+                <div className="flex justify-center my-10">
+                    <LoadingSpinner />
                 </div>
-            )}
+            ) : (
+                <>
+                    {questions.length > 0 ? (
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white border border-gray-200">
+                                <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="py-2 px-4 border-b text-left">ID</th>
+                                    <th className="py-2 px-4 border-b text-left">{t('question')}</th>
+                                    <th className="py-2 px-4 border-b text-left">{t('category')}</th>
+                                    <th className="py-2 px-4 border-b text-left">{t('answers')}</th>
+                                    <th className="py-2 px-4 border-b text-center">{t('actions')}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {questions.map((question) => (
+                                    <tr key={question.id} className="hover:bg-gray-50">
+                                        <td className="py-2 px-4 border-b">{question.id}</td>
+                                        <td className="py-2 px-4 border-b">{question.question}</td>
+                                        <td className="py-2 px-4 border-b">
+                                            <CategoryChip name={question.category} textToDisplay={question.category}/>
+                                        </td>
+                                        <td className="py-2 px-4 border-b">{question.answers.length}</td>
+                                        <td className="py-2 px-4 border-b text-center">
+                                            <div className="flex justify-center space-x-2">
+                                                <button
+                                                    onClick={() => handleEditQuestion(question)}
+                                                    className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                                                >
+                                                    {t('edit')}
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteConfirmation(question.id)}
+                                                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                                                >
+                                                    {t('delete')}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <div className="text-center py-8 bg-gray-50 rounded-lg">
+                            <p className="text-gray-500">{t('noQuestions')}</p>
+                        </div>
+                    )}
 
-            {totalPages > 1 && (
-                <div className="flex justify-center mt-6">
-                    <nav className="flex space-x-2">
-                        <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 0}
-                            className={`px-3 py-1 rounded ${
-                                currentPage === 0
-                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                                    : 'bg-gray-200 hover:bg-gray-300'
-                            }`}
-                        >
-                            &laquo;
-                        </button>
-
-                        {[...Array(totalPages)].map((_, index) => (
+                    {/* Paginacja */}
+                    {totalPages > 1 && (
+                        <div className="mt-4 flex justify-center space-x-2">
                             <button
-                                key={index}
-                                onClick={() => handlePageChange(index)}
+                                onClick={() => changePage(currentPage - 1)}
+                                disabled={currentPage === 0}
                                 className={`px-3 py-1 rounded ${
-                                    currentPage === index
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 hover:bg-gray-300'
+                                    currentPage === 0
+                                        ? 'bg-gray-200 text-gray-500'
+                                        : 'bg-quizBlue text-white hover:bg-blue-700'
                                 }`}
                             >
-                                {index + 1}
+                                &lt;
                             </button>
-                        ))}
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => changePage(index)}
+                                    className={`px-3 py-1 rounded ${
+                                        currentPage === index
+                                            ? 'bg-quizPink text-white'
+                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                            <button
+                                onClick={() => changePage(currentPage + 1)}
+                                disabled={currentPage === totalPages - 1}
+                                className={`px-3 py-1 rounded ${
+                                    currentPage === totalPages - 1
+                                        ? 'bg-gray-200 text-gray-500'
+                                        : 'bg-quizBlue text-white hover:bg-blue-700'
+                                }`}
+                            >
+                                &gt;
+                            </button>
+                        </div>
+                    )}
+                </>
+            )}
 
-                        <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages - 1}
-                            className={`px-3 py-1 rounded ${
-                                currentPage === totalPages - 1
-                                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                                    : 'bg-gray-200 hover:bg-gray-300'
-                            }`}
-                        >
-                            &raquo;
-                        </button>
-                    </nav>
+            {/* Dialog potwierdzenia usunięcia */}
+            {deleteQuestionId && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                        <h3 className="text-lg font-medium mb-4">{t('confirmDelete')}</h3>
+                        <p className="mb-4">{t('deleteQuestionConfirmation')}</p>
+                        <div className="flex justify-end space-x-2">
+                            <button
+                                onClick={() => setDeleteQuestionId(null)}
+                                className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                                disabled={isDeleting}
+                            >
+                                {t('cancel')}
+                            </button>
+                            <button
+                                onClick={handleDeleteQuestion}
+                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                disabled={isDeleting}
+                            >
+                                {isDeleting ? t('deleting') : t('delete')}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
