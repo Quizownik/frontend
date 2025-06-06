@@ -156,7 +156,8 @@
     "cancel": "Anuluj",
     "noQuestionsSelected": "Wybierz co najmniej jedno pytanie",
     "selectedQuestionsCount": "Wybrane pytania",
-    "selectQuestionsHelp": "Kliknij na pytanie lub zaznacz checkbox, aby dodać je do quizu"
+    "selectQuestionsHelp": "Kliknij na pytanie lub zaznacz checkbox, aby dodać je do quizu",
+    "categoryFilterInfo": "Uwaga: Wybór konkretnej kategorii spowoduje, że pytania z innych kategorii będą ignorowane."
   },
   "ChangePasswordPage": {
     "title": "Zmiana hasła",

@@ -156,7 +156,8 @@
     "questionAdded": "Question has been added successfully",
     "noQuestionsSelected": "Select at least one question",
     "selectedQuestionsCount": "Selected questions",
-    "selectQuestionsHelp": "Click on a question or check the checkbox to add it to the quiz"
+    "selectQuestionsHelp": "Click on a question or check the checkbox to add it to the quiz",
+    "categoryFilterInfo": "Note: When selecting a specific category, questions from other categories will be ignored."
   },
   "API": {
     "quizIdRequired": "Quiz ID is required",
