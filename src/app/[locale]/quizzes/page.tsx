@@ -206,14 +206,14 @@ export default function QuizzesPage() {
                 </div>
 
                 {/* Wyświetlanie quizów */}
-                <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-4/5 mx-auto">
+                <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-4/5 mx-auto items-start">
                     {quizzesPage?.content && quizzesPage.content.map((quiz, index) => {
-                        const borderColor = categoryColors[quiz.category] || 'border-gray-300';
+                        const borderColor = categoryColors[quiz.category] || 'border-black';
 
                         // Style dla opanowanych quizów
                         const isQuizMastered = quiz.isMastered;
                         const cardClasses = `
-                        bg-gray-100 p-6 rounded-xl shadow-md transition duration-300 border-l-4 
+                        bg-gray-100 p-6 rounded-xl shadow-md transition duration-300 border-l-8
                         ${borderColor} 
                         ${isQuizMastered
                             ? 'opacity-60 grayscale relative overflow-hidden'
@@ -234,7 +234,7 @@ export default function QuizzesPage() {
                                     </div>
                                 )}
 
-                                <h2 className="text-xl font-bold text-quizBlue mb-2">{quiz.name}</h2>
+                                <h2 className="text-xl font-bold text-quizBlue mb-2 break-words whitespace-normal">{quiz.name}</h2>
                                 <p className="text-sm text-black mb-1">{t("categoryLabel")}: {quiz.category}</p>
                                 <p className="text-sm text-gray-600 mb-4">Level: {quiz.level}</p>
 
