@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {Question, PageResponseQuestions} from "@/app/[locale]/lib/types";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
-import Link from "next/link";
 import AddQuestionForm from "@/app/[locale]/components/admin/AddQuestionForm";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 import EditQuestionForm from "@/app/[locale]/components/admin/EditQuestionForm";
