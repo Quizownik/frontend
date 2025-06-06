@@ -206,7 +206,24 @@ export default function ProfilePage() {
                                     <Link
                                         href={`/profile/results`}
                                         className="flex flex-row px-6 py-3 bg-quizBlue text-white rounded-lg shadow-md hover:bg-quizBlue/90 transition-colors items-center justify-center">
+                                        <img
+                                            src={"/icons/stats.png"}
+                                            alt="Stats"
+                                            className="w-4 h-4 mr-1"
+                                            loading="lazy"
+                                        />
                                         {t("resultsPage")}
+                                    </Link>
+                                    <Link
+                                        href={`/profile/change-password`}
+                                        className="flex flex-row px-6 py-3 bg-quizPurple text-white rounded-lg shadow-md hover:bg-quizPurple/90 transition-colors items-center justify-center">
+                                        <img
+                                            src={"/icons/password_change.png"}
+                                            alt="Stats"
+                                            className="w-4 h-4 mr-1"
+                                            loading="lazy"
+                                        />
+                                        {t("changePassword")}
                                     </Link>
 
                                     {/* Admin Button - visible only for users with ADMIN role */}

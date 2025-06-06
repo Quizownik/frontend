@@ -62,7 +62,8 @@
     "logoutButton": "Wyloguj się",
     "errorMessage": "Wystąpił błąd podczas aktualizacji profilu",
     "resultsPage": "Wyniki quizów",
-    "adminQuizzes": "Zarządzaj Quizami"
+    "adminQuizzes": "Zarządzaj Quizami",
+    "changePassword": "Zmień hasło"
   },
   "CommunityPage": {
     "title": "Społeczność",
@@ -145,6 +146,19 @@
     "deleteQuizConfirmation": "Czy na pewno chcesz usunąć quiz: \"{name}\"?",
     "deleting": "Usuwanie...",
     "cancel": "Anuluj"
+  },
+  "ChangePasswordPage": {
+    "title": "Zmiana hasła",
+    "subtitle": "Wprowadź swoje obecne hasło oraz nowe hasło, aby je zmienić",
+    "currentPassword": "Obecne hasło",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź nowe hasło",
+    "submitButton": "Zmień hasło",
+    "backToProfile": "Powrót do profilu",
+    "passwordChanged": "Hasło zostało zmienione pomyślnie",
+    "passwordError": "Wystąpił błąd podczas zmiany hasła",
+    "passwordsDontMatch": "Nowe hasło i potwierdzenie nie są identyczne",
+    "passwordRequirements": "Hasło musi mieć co najmniej 8 znaków"
   },
   "API": {
     "quizIdRequired": "ID quizu jest wymagane"
