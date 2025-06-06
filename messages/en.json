@@ -145,7 +145,14 @@
     "confirmDelete": "Confirm Deletion",
     "deleteQuizConfirmation": "Are you sure you want to delete the quiz: \"{name}\"?",
     "deleting": "Deleting...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "editQuestion": "Edit question",
+    "questionUpdated": "Question has been updated",
+    "questionDeleted": "Question has been deleted",
+    "deleteQuestionConfirmation": "Are you sure you want to delete this question?",
+    "fetchError": "An error occurred while fetching questions",
+    "deleteError": "An error occurred while deleting the question",
+    "questionAdded": "Question has been added successfully"
   },
   "API": {
     "quizIdRequired": "Quiz ID is required",
