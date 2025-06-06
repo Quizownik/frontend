@@ -158,7 +158,7 @@ export default function QuestionsManager() {
                         <button
                             key={category}
                             onClick={() => setSelectedCategory(category)}
-                            className={`px-3 py-1 rounded ${
+                            className={`px-4 py-2 rounded ${
                                 selectedCategory === category
                                     ? 'bg-quizBlue text-white'
                                     : 'bg-gray-200 text-gray-700'
