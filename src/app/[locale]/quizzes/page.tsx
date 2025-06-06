@@ -1,7 +1,6 @@
 'use client';
 import {motion} from 'framer-motion';
 import Link from 'next/link';
-import {categoryColors} from "@/app/[locale]/lib/categoryColors";
 import {useAuthGuard} from "@/app/[locale]/actions/useAuthGuard";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {useEffect, useState} from "react";
@@ -9,6 +8,8 @@ import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
 import {PageResponse} from "@/app/[locale]/lib/types";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
+import LevelChip from "@/app/[locale]/components/LevelChip";
+import {categoryColors} from "@/app/[locale]/lib/categoryColors";
 
 export default function QuizzesPage() {
     const t = useTranslations('QuizzesPage');
@@ -200,7 +201,7 @@ export default function QuizzesPage() {
                     </button>
                     <button
                         onClick={() => changeLevel("Hard")}
-                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${level === "Hard" ? 'bg-red-400 shadow-lg' : 'bg-gray-300 hover:bg-red-700'}`}
+                        className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${level === "Hard" ? 'bg-quizRed shadow-lg' : 'bg-gray-300 hover:bg-red-700'}`}
                     >
                         {t('hardLabel')}
                     </button>
@@ -214,7 +215,7 @@ export default function QuizzesPage() {
                         // Style dla opanowanych quizów
                         const isQuizMastered = quiz.isMastered;
                         const cardClasses = `
-                        bg-gray-100 p-6 rounded-xl shadow-md transition duration-300 border-l-8
+                        bg-gray-100 p-6 rounded-xl shadow-md transition duration-300 border-l-8 
                         ${borderColor} 
                         ${isQuizMastered
                             ? 'opacity-60 grayscale relative overflow-hidden'
@@ -236,12 +237,15 @@ export default function QuizzesPage() {
                                 )}
 
                                 <h2 className="text-xl font-bold text-quizBlue mb-2 break-words whitespace-normal">{quiz.name}</h2>
-                                <CategoryChip name={quiz.category}/>
-                                <p className="text-sm text-gray-600 mb-4">Level: {quiz.level}</p>
+                                <div className="flex flex-wrap gap-4 mb-3">
+                                    <CategoryChip name={quiz.category} textToDisplay={t(`${quiz.category.toLowerCase()}Label`)}/>
+                                    <LevelChip name={quiz.level} textToDisplay={t(`${quiz.level.toLowerCase()}Label`)}/>
+                                </div>
+
 
                                 <Link
                                     href={`/quizzes/${quiz.id}`}
-                                    className={`inline-block text-white font-semibold px-4 py-2 rounded-lg transition ${isQuizMastered ? 'bg-gray-500' : 'bg-quizPink hover:bg-pink-400'}`}
+                                    className={`inline-block text-white font-semibold text-sm px-4 py-2 rounded-lg transition ${isQuizMastered ? 'bg-gray-500' : 'bg-quizPink hover:bg-pink-400'}`}
                                 >
                                     {isQuizMastered ? t("repeatQuiz") : t("startQuiz")}
                                 </Link>
