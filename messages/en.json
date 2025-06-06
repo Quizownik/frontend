@@ -32,6 +32,7 @@
     "grammarLabel": "Grammar",
     "vocabularyLabel": "Vocabulary",
     "mixedLabel": "Mixed",
+    "allLabel": "All",
     "pagination": {
       "previous": "Previous",
       "next": "Next",

@@ -16,7 +16,7 @@ export default function QuizzesPage() {
     const [quizzesPage, setQuizzesPage] = useState<PageResponse | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [pageSize] = useState<number>(9); // Domyślny rozmiar strony
-    const [category, setCategory] = useState<string>("Grammar"); // Domyślna kategoria
+    const [category, setCategory] = useState<string>("All"); // Domyślna kategoria
 
     useEffect(() => {
         if (!loading && authorized) {
@@ -131,6 +131,12 @@ export default function QuizzesPage() {
 
             {/* Przyciski do wyboru kategorii */}
             <div className="flex flex-wrap justify-center gap-4 mb-10">
+                <button
+                    onClick={() => changeCategory("All")}
+                    className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "All" ? 'bg-quizGreen shadow-lg' : 'bg-gray-300 hover:bg-green-400'}`}
+                >
+                    {t('allLabel')}
+                </button>
                 <button
                     onClick={() => changeCategory("Mixed")}
                     className={`px-6 py-3 rounded-lg font-semibold text-black transition-all transform hover:scale-105 ${category === "Mixed" ? 'bg-quizPink shadow-lg' : 'bg-gray-300 hover:bg-pink-500'}`}
