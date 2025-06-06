@@ -16,11 +16,6 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ message: t('unauthorized') }, { status: 401 });
         }
 
-        // Sprawdź rolę użytkownika (tylko ADMIN może aktualizować pytania)
-        if (user.role !== 'ADMIN') {
-            return NextResponse.json({ message: t('accessDenied') }, { status: 403 });
-        }
-
         const requestBody = await request.json();
         const { id, question, category, answers } = requestBody;
 
@@ -34,17 +29,20 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ message: 'At least one answer must be correct' }, { status: 400 });
         }
 
+        // Przygotowanie danych do wysłania - wyraźnie zaznaczając, że to pełna aktualizacja
+        const questionData = {
+            question,
+            category,
+            answers
+        };
+
         const response = await fetch(`${API_BASE_URL}/questions/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.userToken}`
             },
-            body: JSON.stringify({
-                question,
-                category,
-                answers
-            })
+            body: JSON.stringify(questionData)
         });
 
         if (!response.ok) {
