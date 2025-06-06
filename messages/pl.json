@@ -175,6 +175,7 @@
       "passwordSameAsCurrent": "Nowe hasło nie może być takie samo jak aktualne",
       "passwordChangeSuccess": "Hasło zostało zmienione pomyślnie",
       "passwordChangeError": "Wystąpił błąd podczas zmiany hasła",
+      "usernameOrPasswordIsIncorrect": "Nieprawidłowy login lub hasło",
       "internalServerError": "Wystąpił wewnętrzny błąd serwera",
       "invalidCredentials": "Nieprawidłowe dane uwierzytelniające",
       "userNotFound": "Użytkownik nie został znaleziony",

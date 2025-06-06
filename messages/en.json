@@ -162,6 +162,7 @@
       "passwordSameAsCurrent": "New password cannot be the same as the current password",
       "passwordChangeSuccess": "Password has been changed successfully",
       "passwordChangeError": "An error occurred while changing the password",
+      "usernameOrPasswordIsIncorrect": "Incorrect username or password",
       "internalServerError": "An internal server error occurred",
       "invalidCredentials": "Invalid credentials",
       "userNotFound": "User not found",
