@@ -33,6 +33,11 @@
     "vocabularyLabel": "Słownictwo",
     "mixedLabel": "Mieszane",
     "allLabel": "Wszystkie",
+    "levelLabel": "Trudność",
+    "defaultLabel": "Domyślny",
+    "easyLabel": "Łatwy",
+    "mediumLabel": "Średni",
+    "hardLabel": "Trudny",
     "pagination": {
       "previous": "Poprzednia",
       "next": "Następna",
