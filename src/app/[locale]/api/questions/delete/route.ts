@@ -16,11 +16,6 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ message: t('unauthorized') }, { status: 401 });
         }
 
-        // Sprawdź rolę użytkownika (tylko ADMIN może usuwać pytania)
-        if (user.role !== 'ADMIN') {
-            return NextResponse.json({ message: t('accessDenied') }, { status: 403 });
-        }
-
         const requestBody = await request.json();
         const { id } = requestBody;
 
