@@ -15,7 +15,8 @@ export async function GET(request: NextRequest) {
         const searchParams = request.nextUrl.searchParams;
         const page = searchParams.get('page') || '0';
         const size = searchParams.get('size') || '10';
-        const category = searchParams.get('category') || 'Mixed';
+        const category = searchParams.get('category') || 'All';
+        const level = searchParams.get('level') || 'Default';
         const sort = searchParams.get('sort') || 'name';
 
 
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
         // Użyj tokenu z sesji do autoryzacji zapytania do zewnętrznego API
         try {
             const response = await fetch(
-                `${API_BASE_URL}/quizzes/sorted?category=${encodeURIComponent(category)}&page=${page}&size=${size}&sort=${sort}`,
+                `${API_BASE_URL}/quizzes/sorted2params?category=${encodeURIComponent(category)}&level=${encodeURIComponent(level)}&page=${page}&size=${size}&sort=${sort}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${user.userToken}`
