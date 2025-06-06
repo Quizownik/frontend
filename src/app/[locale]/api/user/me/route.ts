@@ -1,13 +1,19 @@
-import { NextResponse } from 'next/server';
-import {deleteSession, getCurrentUser} from '@/app/[locale]/lib/session';
+import { NextRequest, NextResponse } from 'next/server';
+import { deleteSession, getCurrentUser } from '@/app/[locale]/lib/session';
 import { API_BASE_URL } from '@/app/[locale]/lib/utils';
+import { getTranslations } from 'next-intl/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
+        // Get translations based on the request locale
+        const { pathname } = new URL(request.url);
+        const locale = pathname.split('/')[1];
+        const t = await getTranslations({ locale, namespace: '' });
+
         const user = await getCurrentUser();
 
         if (!user || !user.userToken) {
-            return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+            return NextResponse.json({error: t('API.errors.unauthorized')}, {status: 401});
         }
 
         try {
@@ -21,7 +27,7 @@ export async function GET() {
                 const errorText = await response.text();
                 await deleteSession();
                 return NextResponse.json({
-                    error: `API error: ${response.status}`,
+                    error: `${t('API.errors.serverError')}: ${response.status}`,
                     details: errorText
                 }, {status: response.status});
             }
@@ -29,16 +35,20 @@ export async function GET() {
             const userData = await response.json();
             return NextResponse.json(userData);
         } catch (apiError) {
-            const errorMessage = apiError instanceof Error ? apiError.message : 'Nieznany błąd';
+            const errorMessage = apiError instanceof Error ? apiError.message : t('API.errors.internalServerError');
             return NextResponse.json({
-                error: 'Nie udało się pobrać danych użytkownika z API',
+                error: t('API.errors.userNotFound'),
                 details: errorMessage
             }, {status: 500});
         }
     } catch (sessionError) {
-        const errorMessage = sessionError instanceof Error ? sessionError.message : 'Nieznany błąd';
+        // Fallback to default locale if there's a session error
+        const defaultLocale = 'pl';
+        const t = await getTranslations({ locale: defaultLocale, namespace: '' });
+
+        const errorMessage = sessionError instanceof Error ? sessionError.message : t('API.errors.internalServerError');
         return NextResponse.json({
-            error: 'Błąd sesji',
+            error: t('API.errors.unauthorized'),
             details: errorMessage
         }, {status: 500});
     }

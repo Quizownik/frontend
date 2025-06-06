@@ -2,40 +2,49 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from "@/app/[locale]/lib/session";
 import { API_BASE_URL } from "@/app/[locale]/lib/utils";
 import { z } from 'zod';
+import { getTranslations } from 'next-intl/server';
 
 // Schema for password validation
-const passwordSchema = z
+const createPasswordSchema = (t: any) => z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters long' })
-    .regex(/[a-zA-Z]/, { message: 'Password must contain at least one letter' })
-    .regex(/[0-9]/, { message: 'Password must contain at least one number' })
+    .min(8, { message: t('API.errors.passwordMinLength') })
+    .regex(/[a-zA-Z]/, { message: t('API.errors.passwordLetterRequired') })
+    .regex(/[0-9]/, { message: t('API.errors.passwordNumberRequired') })
     .regex(/[^a-zA-Z0-9]/, {
-        message: 'Password must contain at least one special character',
+        message: t('API.errors.passwordSpecialCharRequired'),
     })
     .trim();
 
 // Schema for password change request
-const changePasswordSchema = z.object({
-    currentPassword: z.string().min(1, { message: 'Current password is required' }),
-    newPassword: passwordSchema,
+const createChangePasswordSchema = (t: any) => z.object({
+    currentPassword: z.string().min(1, { message: t('API.errors.currentPasswordRequired') }),
+    newPassword: createPasswordSchema(t),
     confirmationPassword: z.string()
 }).refine((data) => data.newPassword === data.confirmationPassword, {
-    message: 'New password and confirmation password do not match',
+    message: t('API.errors.passwordMismatch'),
     path: ['confirmationPassword'],
 }).refine((data) => data.currentPassword !== data.newPassword, {
-    message: 'New password cannot be the same as the current password',
+    message: t('API.errors.passwordSameAsCurrent'),
     path: ['newPassword'],
 });
 
 export async function PATCH(request: NextRequest) {
     try {
+        // Get translations based on the request locale
+        const { pathname } = new URL(request.url);
+        const locale = pathname.split('/')[1];
+        const t = await getTranslations({ locale, namespace: '' });
+
         const user = await getCurrentUser();
 
         if (!user || !user.userToken) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+            return NextResponse.json({ error: t('API.errors.unauthorized') }, { status: 401 });
         }
 
         const requestBody = await request.json();
+
+        // Create schema with translations
+        const changePasswordSchema = createChangePasswordSchema(t);
 
         // Validate with Zod schema
         try {
@@ -50,7 +59,7 @@ export async function PATCH(request: NextRequest) {
             }
 
             return NextResponse.json(
-                { message: 'Invalid password data' },
+                { message: t('API.errors.invalidPasswordData') },
                 { status: 400 }
             );
         }
@@ -73,16 +82,20 @@ export async function PATCH(request: NextRequest) {
 
         if (!response.ok) {
             return NextResponse.json(
-                { message: 'Error changing password: ' + response.statusText },
+                { message: t('API.errors.passwordChangeError') },
                 { status: response.status }
             );
         }
 
-        return NextResponse.json({ message: 'Password changed successfully' });
+        return NextResponse.json({ message: t('API.errors.passwordChangeSuccess') });
     } catch (error) {
         console.error('Error changing password:', error);
+        // Get translations for the fallback error message
+        const defaultLocale = 'pl'; // Default locale as fallback
+        const t = await getTranslations({ locale: defaultLocale, namespace: '' });
+
         return NextResponse.json(
-            { message: 'An error occurred while changing the password' },
+            { message: t('API.errors.internalServerError') },
             { status: 500 }
         );
     }

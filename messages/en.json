@@ -148,7 +148,36 @@
     "cancel": "Cancel"
   },
   "API": {
-    "quizIdRequired": "Quiz ID is required"
+    "quizIdRequired": "Quiz ID is required",
+    "errors": {
+      "unauthorized": "Unauthorized access",
+      "invalidPasswordData": "Invalid password data",
+      "allFieldsRequired": "All fields are required",
+      "passwordMismatch": "New password and confirmation password do not match",
+      "passwordMinLength": "Password must be at least 8 characters long",
+      "passwordLetterRequired": "Password must contain at least one letter",
+      "passwordNumberRequired": "Password must contain at least one number",
+      "passwordSpecialCharRequired": "Password must contain at least one special character",
+      "currentPasswordRequired": "Current password is required",
+      "passwordSameAsCurrent": "New password cannot be the same as the current password",
+      "passwordChangeSuccess": "Password has been changed successfully",
+      "passwordChangeError": "An error occurred while changing the password",
+      "internalServerError": "An internal server error occurred",
+      "invalidCredentials": "Invalid credentials",
+      "userNotFound": "User not found",
+      "quizNotFound": "Quiz not found",
+      "questionNotFound": "Question not found",
+      "resultNotFound": "Result not found",
+      "invalidData": "Invalid data",
+      "accessDenied": "Access denied",
+      "badRequest": "Bad request",
+      "forbidden": "Access forbidden",
+      "notFound": "Resource not found",
+      "conflict": "Data conflict",
+      "tooManyRequests": "Too many requests, please try again later",
+      "serverError": "Server error",
+      "serviceUnavailable": "Service temporarily unavailable"
+    }
   },
   "ChangePasswordPage": {
     "title": "Change Password",

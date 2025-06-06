@@ -161,6 +161,35 @@
     "passwordRequirements": "Hasło musi mieć co najmniej 8 znaków"
   },
   "API": {
-    "quizIdRequired": "ID quizu jest wymagane"
+    "quizIdRequired": "ID quizu jest wymagane",
+    "errors": {
+      "unauthorized": "Brak autoryzacji",
+      "invalidPasswordData": "Nieprawidłowe dane hasła",
+      "allFieldsRequired": "Wszystkie pola są wymagane",
+      "passwordMismatch": "Nowe hasło i potwierdzenie nie są zgodne",
+      "passwordMinLength": "Hasło musi mieć co najmniej 8 znaków długości",
+      "passwordLetterRequired": "Hasło musi zawierać co najmniej jedną literę",
+      "passwordNumberRequired": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "passwordSpecialCharRequired": "Hasło musi zawierać co najmniej jeden znak specjalny",
+      "currentPasswordRequired": "Aktualne hasło jest wymagane",
+      "passwordSameAsCurrent": "Nowe hasło nie może być takie samo jak aktualne",
+      "passwordChangeSuccess": "Hasło zostało zmienione pomyślnie",
+      "passwordChangeError": "Wystąpił błąd podczas zmiany hasła",
+      "internalServerError": "Wystąpił wewnętrzny błąd serwera",
+      "invalidCredentials": "Nieprawidłowe dane uwierzytelniające",
+      "userNotFound": "Użytkownik nie został znaleziony",
+      "quizNotFound": "Quiz nie został znaleziony",
+      "questionNotFound": "Pytanie nie zostało znalezione",
+      "resultNotFound": "Wynik nie został znaleziony",
+      "invalidData": "Nieprawidłowe dane",
+      "accessDenied": "Odmowa dostępu",
+      "badRequest": "Nieprawidłowe żądanie",
+      "forbidden": "Dostęp zabroniony",
+      "notFound": "Zasób nie został znaleziony",
+      "conflict": "Konflikt danych",
+      "tooManyRequests": "Zbyt wiele żądań, spróbuj ponownie później",
+      "serverError": "Błąd serwera",
+      "serviceUnavailable": "Usługa tymczasowo niedostępna"
+    }
   }
 }
