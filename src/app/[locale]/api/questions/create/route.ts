@@ -38,13 +38,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Sprawdzenie czy jest dokładnie 4 odpowiedzi
-    if (body.answers.length !== 4) {
-      return NextResponse.json(
-        { error: 'Question must have exactly 4 answers' },
-        { status: 400 }
-      );
-    }
 
     // Sprawdzenie czy jest co najmniej jedna poprawna odpowiedź
     if (!body.answers.some((answer: Answer) => answer.isCorrect)) {

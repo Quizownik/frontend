@@ -5,18 +5,19 @@ import {getLocale} from "@/app/[locale]/lib/utils";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import Link from "next/link";
 import AddQuestionForm from "@/app/[locale]/components/admin/AddQuestionForm";
+import CategoryChip from "@/app/[locale]/components/categoryChip";
 
 export default function QuestionsManager() {
     const t = useTranslations('AdminPage');
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string>('Mixed');
+    const [selectedCategory, setSelectedCategory] = useState<string>('Grammar');
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
     const pageSize = 10;
 
-    const categories = ['Mixed', 'Grammar', 'Vocabulary'];
+    const categories = ['Grammar', 'Vocabulary'];
 
     useEffect(() => {
         fetchQuestions(0, selectedCategory);
@@ -124,9 +125,7 @@ export default function QuestionsManager() {
                                 <td className="py-3 px-4 border-b">{question.id}</td>
                                 <td className="py-3 px-4 border-b">{question.question}</td>
                                 <td className="py-3 px-4 border-b">
-                                    <span className={`px-2 py-1 rounded-full text-sm ${getCategoryColorClass(question.category)}`}>
-                                        {question.category}
-                                    </span>
+                                    <CategoryChip name={question.category} textToDisplay={question.category}/>
                                 </td>
                                 <td className="py-3 px-4 border-b">{question.answers?.length || 0}</td>
                                 <td className="py-3 px-4 border-b">

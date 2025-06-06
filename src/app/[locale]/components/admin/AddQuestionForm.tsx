@@ -13,8 +13,6 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
         category: 'Grammar',
         answers: [
             {answer: '', isCorrect: true},
-            {answer: '', isCorrect: false},
-            {answer: '', isCorrect: false},
             {answer: '', isCorrect: false}
         ]
     });
@@ -31,6 +29,36 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
         const newAnswers = [...formData.answers];
         newAnswers[index] = {...newAnswers[index], [field]: value};
         setFormData({...formData, answers: newAnswers});
+    };
+
+    const addAnswer = () => {
+        if (formData.answers.length < 4) {
+            setFormData({
+                ...formData,
+                answers: [
+                    ...formData.answers,
+                    { answer: '', isCorrect: false }
+                ]
+            });
+        }
+    };
+
+    const removeAnswer = (index: number) => {
+        if (formData.answers.length > 2) {
+            // Sprawdź, czy usuwana odpowiedź jest poprawna
+            const isRemovingCorrect = formData.answers[index].isCorrect;
+            const newAnswers = formData.answers.filter((_, i) => i !== index);
+
+            // Jeśli usunięta odpowiedź była poprawna, ustaw pierwszą jako poprawną
+            if (isRemovingCorrect && newAnswers.length > 0) {
+                newAnswers[0].isCorrect = true;
+            }
+
+            setFormData({
+                ...formData,
+                answers: newAnswers
+            });
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -53,7 +81,7 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
 
         try {
             const locale = getLocale();
-            const response = await fetch(`/${locale}/api//questions/create`, {
+            const response = await fetch(`/${locale}/api/questions/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -110,12 +138,25 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
                         >
                             <option value="Grammar">Grammar</option>
                             <option value="Vocabulary">Vocabulary</option>
-                            <option value="Mixed">Mixed</option>
                         </select>
                     </div>
 
                     <div>
-                        <label className="block mb-3 font-medium">{t('answers')}:</label>
+                        <div className="flex justify-between items-center mb-3">
+                            <label className="block font-medium">{t('answers')}:</label>
+                            <div className="flex space-x-2">
+                                <button
+                                    type="button"
+                                    onClick={addAnswer}
+                                    disabled={formData.answers.length >= 4}
+                                    className={`px-2 py-1 rounded text-white ${formData.answers.length >= 4 ? 'bg-gray-400' : 'bg-green-500 hover:bg-green-600'}`}
+                                    title="Add answer"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
                         {formData.answers.map((answer, index) => (
                             <div key={index} className="flex items-center mb-3">
                                 <input
@@ -141,9 +182,21 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
                                     placeholder={`${t('answer')} ${index + 1}`}
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => removeAnswer(index)}
+                                    disabled={formData.answers.length <= 2}
+                                    className={`ml-2 px-2 py-1 rounded text-white ${formData.answers.length <= 2 ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'}`}
+                                    title="Remove answer"
+                                >
+                                    ✕
+                                </button>
                             </div>
                         ))}
-                        <p className="text-sm text-gray-600 mt-1">{t('selectCorrectAnswer')}</p>
+                        <div className="text-sm text-gray-600 mt-1 flex justify-between">
+                            <p>{t('selectCorrectAnswer')}</p>
+                            <p>Answers: {formData.answers.length}/4</p>
+                        </div>
                     </div>
                 </div>
 
@@ -160,3 +213,4 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
         </div>
     );
 }
+
