@@ -5,9 +5,11 @@ import {getLocale} from "@/app/[locale]/lib/utils";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import AddQuizForm from "@/app/[locale]/components/admin/AddQuizForm";
 import Link from "next/link";
+import CategoryChip from "@/app/[locale]/components/categoryChip";
 
 export default function QuizzesManager() {
     const t = useTranslations('AdminPage');
+    const qt = useTranslations('QuizzesPage');
     const [quizzes, setQuizzes] = useState<QuizLabel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -16,18 +18,19 @@ export default function QuizzesManager() {
     const [deleteError, setDeleteError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
+    const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const pageSize = 10;
 
     useEffect(() => {
-        fetchQuizzes(currentPage);
-    }, [currentPage]);
+        fetchQuizzes(currentPage, selectedCategory);
+    }, [currentPage, selectedCategory]);
 
-    const fetchQuizzes = async (page = 0) => {
+    const fetchQuizzes = async (page = 0, category = 'All') => {
         setIsLoading(true);
         const locale = getLocale();
 
         try {
-            const response = await fetch(`/${locale}/api/quizzes/getWithoutLevel?category=All&page=${page}&size=${pageSize}`);
+            const response = await fetch(`/${locale}/api/quizzes/getWithoutLevel?category=${category}&page=${page}&size=${pageSize}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -46,6 +49,11 @@ export default function QuizzesManager() {
         if (page >= 0 && page < totalPages) {
             setCurrentPage(page);
         }
+    };
+
+    const changeCategory = (category: string) => {
+        setSelectedCategory(category);
+        setCurrentPage(0); // Reset do pierwszej strony po zmianie kategorii
     };
 
     const confirmDelete = (quiz: QuizLabel) => {
@@ -76,7 +84,7 @@ export default function QuizzesManager() {
             }
 
             // Odśwież listę quizów po usunięciu
-            fetchQuizzes(currentPage);
+            fetchQuizzes(currentPage, selectedCategory);
             setQuizToDelete(null);
         } catch (error) {
             console.error('Error deleting quiz:', error);
@@ -104,8 +112,57 @@ export default function QuizzesManager() {
                 </button>
             </div>
 
+            {/* Przyciski kategorii */}
+            <div className="mb-6">
+                <div className="flex flex-wrap gap-2">
+                    <button
+                        onClick={() => changeCategory('All')}
+                        className={`px-4 py-2 rounded-lg transition-colors ${
+                            selectedCategory === 'All'
+                                ? 'bg-quizBlue text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                    >
+                        {qt('allLabel')}
+                    </button>
+
+                    <button
+                        onClick={() => changeCategory('Mixed')}
+                        className={`px-4 py-2 rounded-lg transition-colors ${
+                            selectedCategory === 'Mixed'
+                                ? 'bg-quizBlue text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                    >
+                        {qt('mixedLabel')}
+                    </button>
+
+                    <button
+                        onClick={() => changeCategory('Grammar')}
+                        className={`px-4 py-2 rounded-lg transition-colors ${
+                            selectedCategory === 'Grammar'
+                                ? 'bg-quizBlue text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                    >
+                        {qt('grammarLabel')}
+                    </button>
+
+                    <button
+                        onClick={() => changeCategory('Vocabulary')}
+                        className={`px-4 py-2 rounded-lg transition-colors ${
+                            selectedCategory === 'Vocabulary'
+                                ? 'bg-quizBlue text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                    >
+                        {qt('vocabularyLabel')}
+                    </button>
+                </div>
+            </div>
+
             {showAddForm && <AddQuizForm onQuizAdded={() => {
-                fetchQuizzes(0); // Reset do pierwszej strony po dodaniu nowego quizu
+                fetchQuizzes(0, selectedCategory);
                 setCurrentPage(0);
                 setShowAddForm(false);
             }}/>}
@@ -173,7 +230,9 @@ export default function QuizzesManager() {
                                 <tr key={quiz.id} className="hover:bg-gray-50">
                                     <td className="py-3 px-4 border-b">{quiz.id}</td>
                                     <td className="py-3 px-4 border-b">{quiz.name}</td>
-                                    <td className="py-3 px-4 border-b">{quiz.category}</td>
+                                    <td className="py-3 px-4 border-b">
+                                        <CategoryChip name={quiz.category} textToDisplay={qt(`${quiz.category.toLowerCase()}Label`)} />
+                                    </td>
                                     <td className="py-3 px-4 border-b">{quiz.numberOfQuestions || 0}</td>
                                     <td className="py-3 px-4 border-b">
                                         <Link
