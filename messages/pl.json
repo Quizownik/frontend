@@ -153,7 +153,10 @@
     "confirmDelete": "Potwierdzenie usunięcia",
     "deleteQuizConfirmation": "Czy na pewno chcesz usunąć quiz: \"{name}\"?",
     "deleting": "Usuwanie...",
-    "cancel": "Anuluj"
+    "cancel": "Anuluj",
+    "noQuestionsSelected": "Wybierz co najmniej jedno pytanie",
+    "selectedQuestionsCount": "Wybrane pytania",
+    "selectQuestionsHelp": "Kliknij na pytanie lub zaznacz checkbox, aby dodać je do quizu"
   },
   "ChangePasswordPage": {
     "title": "Zmiana hasła",

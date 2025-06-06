@@ -153,7 +153,10 @@
     "fetchError": "An error occurred while fetching questions",
     "deleteError": "An error occurred while deleting the question",
     "updateError": "An error occurred while updating the question",
-    "questionAdded": "Question has been added successfully"
+    "questionAdded": "Question has been added successfully",
+    "noQuestionsSelected": "Select at least one question",
+    "selectedQuestionsCount": "Selected questions",
+    "selectQuestionsHelp": "Click on a question or check the checkbox to add it to the quiz"
   },
   "API": {
     "quizIdRequired": "Quiz ID is required",
