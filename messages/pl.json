@@ -141,6 +141,7 @@
     "edit": "Edytuj",
     "delete": "Usuń",
     "editQuestion": "Edytuj pytanie",
+    "editQuiz": "Edytuj quiz",
     "questionUpdated": "Pytanie zostało zaktualizowane",
     "questionDeleted": "Pytanie zostało usunięte",
     "deleteQuestionConfirmation": "Czy na pewno chcesz usunąć to pytanie?",
@@ -153,7 +154,11 @@
     "confirmDelete": "Potwierdzenie usunięcia",
     "deleteQuizConfirmation": "Czy na pewno chcesz usunąć quiz: \"{name}\"?",
     "deleting": "Usuwanie...",
-    "cancel": "Anuluj"
+    "cancel": "Anuluj",
+    "noQuestionsSelected": "Wybierz co najmniej jedno pytanie",
+    "selectedQuestionsCount": "Wybrane pytania",
+    "selectQuestionsHelp": "Kliknij na pytanie lub zaznacz checkbox, aby dodać je do quizu",
+    "categoryFilterInfo": "Uwaga: Wybór konkretnej kategorii spowoduje, że pytania z innych kategorii będą ignorowane."
   },
   "ChangePasswordPage": {
     "title": "Zmiana hasła",

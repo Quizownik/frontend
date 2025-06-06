@@ -1,10 +1,16 @@
-﻿import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslations} from 'next-intl';
 import {getLocale} from '@/app/[locale]/lib/utils';
 import {PageResponseQuestions, Question} from '@/app/[locale]/lib/types';
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 
-export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) {
+interface EditQuizFormProps {
+    quizId: number;
+    onQuizUpdated: () => void;
+    onCancel: () => void;
+}
+
+export default function EditQuizForm({quizId, onQuizUpdated, onCancel}: EditQuizFormProps) {
     const t = useTranslations('AdminPage');
     const qt = useTranslations('QuizzesPage');
     const qpt = useTranslations('QuizzesPage.pagination');
@@ -19,6 +25,7 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
 
     const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [availableQuestions, setAvailableQuestions] = useState<Question[]>([]);
     const [questionFilter, setQuestionFilter] = useState<string>('Grammar');
@@ -27,6 +34,53 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
     const [isLoadingQuestions, setIsLoadingQuestions] = useState<boolean>(false);
     const pageSize = 10;
 
+    // Pobierz dane quizu do edycji
+    useEffect(() => {
+        const fetchQuizData = async () => {
+            setIsLoading(true);
+            const locale = getLocale();
+            try {
+                console.log("Pobieranie danych quizu o ID:", quizId);
+                const response = await fetch(`/${locale}/api/quizzes/${quizId}`);
+                if (response.ok) {
+                    const quizData = await response.json();
+                    console.log("Pobrane dane quizu:", quizData);
+
+                    setFormData({
+                        name: quizData.name,
+                        category: quizData.category,
+                    });
+
+                    // Ustawienie questionFilter na podstawie kategorii quizu
+                    if (quizData.category !== 'Mixed') {
+                        setQuestionFilter(quizData.category);
+                    }
+
+                    // Pobierz identyfikatory pytań przypisanych do quizu
+                    if (quizData.questionIds && Array.isArray(quizData.questionIds)) {
+                        // Konwertuj wszystkie ID do liczb, aby zapewnić spójność typów
+                        const questionIds = quizData.questionIds.map(id => Number(id));
+                        console.log("Załadowane ID pytań z quizu:", questionIds);
+                        setSelectedQuestionIds(questionIds);
+                    }
+                } else {
+                    setError(t('fetchError'));
+                    console.error("Błąd odpowiedzi:", await response.text());
+                }
+            } catch (err) {
+                setError(t('fetchError'));
+                console.error('Error fetching quiz:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (quizId) {
+            fetchQuizData();
+        }
+    }, [quizId, t]);
+
+    // Fetch questions whenever filter or page changes
     useEffect(() => {
         // Jeśli zmieni się kategoria quizu, dostosuj filtr pytań do tej kategorii
         if (formData.category !== 'Mixed') {
@@ -60,12 +114,9 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
 
     const handleQuestionSelection = (questionId: number) => {
         setSelectedQuestionIds(prevIds => {
-            // Jeśli pytanie jest już zaznaczone, usuń je z tablicy
             if (prevIds.includes(questionId)) {
                 return prevIds.filter(id => id !== questionId);
-            }
-            // W przeciwnym razie dodaj je do tablicy
-            else {
+            } else {
                 return [...prevIds, questionId];
             }
         });
@@ -73,7 +124,7 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
 
     const handleFilterChange = (category: string) => {
         setQuestionFilter(category);
-        setCurrentPage(0); // Resetujemy do pierwszej strony przy zmianie filtra
+        setCurrentPage(0);
     };
 
     const changePage = (page: number) => {
@@ -103,8 +154,8 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
             };
 
             const locale = getLocale();
-            const response = await fetch(`/${locale}/api/quizzes/create`, {
-                method: 'POST',
+            const response = await fetch(`/${locale}/api/quizzes/update/${quizId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -113,10 +164,10 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
 
             if (!response.ok) {
                 const errorData = await response.text();
-                throw new Error(errorData || 'Failed to create quiz');
+                throw new Error(errorData || 'Failed to update quiz');
             }
 
-            onQuizAdded();
+            onQuizUpdated();
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
         } finally {
@@ -124,9 +175,15 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
         }
     };
 
+    if (isLoading) {
+        return <div className="flex justify-center items-center py-8">
+            <div className="w-8 h-8 border-4 border-quizBlue border-t-transparent rounded-full animate-spin"></div>
+        </div>;
+    }
+
     return (
         <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
-            <h3 className="text-xl font-medium mb-4">{t('addNewQuiz')}</h3>
+            <h3 className="text-xl font-medium mb-4">{t('editQuiz')}</h3>
 
             {error && (
                 <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6">
@@ -300,7 +357,14 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
                     </p>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-end space-x-4">
+                    <button
+                        type="button"
+                        onClick={onCancel}
+                        className="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition"
+                    >
+                        {t('cancel')}
+                    </button>
                     <button
                         type="submit"
                         disabled={isSubmitting || selectedQuestionIds.length === 0}
@@ -315,4 +379,3 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
         </div>
     );
 }
-

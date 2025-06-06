@@ -147,13 +147,18 @@
     "deleting": "Deleting...",
     "cancel": "Cancel",
     "editQuestion": "Edit question",
+    "editQuiz": "Edit Quiz",
     "questionUpdated": "Question has been updated",
     "questionDeleted": "Question has been deleted",
     "deleteQuestionConfirmation": "Are you sure you want to delete this question?",
     "fetchError": "An error occurred while fetching questions",
     "deleteError": "An error occurred while deleting the question",
     "updateError": "An error occurred while updating the question",
-    "questionAdded": "Question has been added successfully"
+    "questionAdded": "Question has been added successfully",
+    "noQuestionsSelected": "Select at least one question",
+    "selectedQuestionsCount": "Selected questions",
+    "selectQuestionsHelp": "Click on a question or check the checkbox to add it to the quiz",
+    "categoryFilterInfo": "Note: When selecting a specific category, questions from other categories will be ignored."
   },
   "API": {
     "quizIdRequired": "Quiz ID is required",
