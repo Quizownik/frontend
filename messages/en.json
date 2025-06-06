@@ -152,6 +152,7 @@
     "deleteQuestionConfirmation": "Are you sure you want to delete this question?",
     "fetchError": "An error occurred while fetching questions",
     "deleteError": "An error occurred while deleting the question",
+    "updateError": "An error occurred while updating the question",
     "questionAdded": "Question has been added successfully"
   },
   "API": {

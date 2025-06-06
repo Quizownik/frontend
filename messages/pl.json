@@ -146,6 +146,7 @@
     "deleteQuestionConfirmation": "Czy na pewno chcesz usunąć to pytanie?",
     "fetchError": "Wystąpił błąd podczas pobierania pytań",
     "deleteError": "Wystąpił błąd podczas usuwania pytania",
+    "updateError": "Wystąpił błąd podczas aktualizacji pytania",
     "questionAdded": "Pytanie zostało dodane pomyślnie",
     "noQuizzes": "Brak dostępnych quizów.",
     "noQuestions": "Brak dostępnych pytań.",

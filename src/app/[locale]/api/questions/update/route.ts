@@ -8,12 +8,13 @@ export async function PUT(request: NextRequest) {
         // Get translations based on the request locale
         const { pathname } = new URL(request.url);
         const locale = pathname.split('/')[1];
-        const t = await getTranslations({ locale, namespace: 'API.errors' });
+        const t = await getTranslations({ locale, namespace: 'AdminPage' });
+        const apiT = await getTranslations({ locale, namespace: 'API.errors' });
 
         const user = await getCurrentUser();
 
         if (!user || !user.userToken) {
-            return NextResponse.json({ message: t('unauthorized') }, { status: 401 });
+            return NextResponse.json({ message: apiT('unauthorized') }, { status: 401 });
         }
 
         const requestBody = await request.json();
@@ -21,15 +22,15 @@ export async function PUT(request: NextRequest) {
 
         // Podstawowa walidacja
         if (!id || !question || !category || !answers || !Array.isArray(answers) || answers.length < 2) {
-            return NextResponse.json({ message: t('invalidData') }, { status: 400 });
+            return NextResponse.json({ message: apiT('invalidData') }, { status: 400 });
         }
 
         // Sprawdzenie czy jest co najmniej jedna poprawna odpowiedź
         if (!answers.some(a => a.isCorrect)) {
-            return NextResponse.json({ message: 'At least one answer must be correct' }, { status: 400 });
+            return NextResponse.json({ message: t('correctAnswerRequired') }, { status: 400 });
         }
 
-        // Przygotowanie danych do wysłania - wyraźnie zaznaczając, że to pełna aktualizacja
+        // Przygotowanie danych do wysłania
         const questionData = {
             question,
             category,
@@ -48,13 +49,16 @@ export async function PUT(request: NextRequest) {
         if (!response.ok) {
             const errorText = await response.text();
             return NextResponse.json({
-                message: `Error updating question: ${response.status}`,
+                message: t('updateError') || 'Error updating question',
                 details: errorText
             }, { status: response.status });
         }
 
         const updatedQuestion = await response.json();
-        return NextResponse.json(updatedQuestion);
+        return NextResponse.json({
+            ...updatedQuestion,
+            message: t('questionUpdated')
+        });
     } catch (error) {
         console.error('Error in questions/update API:', error);
         return NextResponse.json(
@@ -63,3 +67,4 @@ export async function PUT(request: NextRequest) {
         );
     }
 }
+
