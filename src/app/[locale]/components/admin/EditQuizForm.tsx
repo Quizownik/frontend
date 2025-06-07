@@ -56,13 +56,12 @@ export default function EditQuizForm({quizId, onQuizUpdated, onCancel}: EditQuiz
                         setQuestionFilter(quizData.category);
                     }
 
-                    // Pobierz identyfikatory pytań przypisanych do quizu
-                    if (quizData.questionIds && Array.isArray(quizData.questionIds)) {
-                        // Konwertuj wszystkie ID do liczb, aby zapewnić spójność typów
-                        const questionIds = quizData.questionIds.map((id: number) => Number(id));
+                    if(quizData.questions.length > 0){
+                        const questionIds = quizData.questions.map((question: { id: number; }) => question.id);
                         console.log("Załadowane ID pytań z quizu:", questionIds);
                         setSelectedQuestionIds(questionIds);
                     }
+
                 } else {
                     setError(t('fetchError'));
                     console.error("Błąd odpowiedzi:", await response.text());
@@ -152,6 +151,8 @@ export default function EditQuizForm({quizId, onQuizUpdated, onCancel}: EditQuiz
                 category: formData.category,
                 questionIds: selectedQuestionIds
             };
+
+            console.log("Wysyłanie danych quizu:", quizData);
 
             const locale = getLocale();
             const response = await fetch(`/${locale}/api/quizzes/update/${quizId}`, {
