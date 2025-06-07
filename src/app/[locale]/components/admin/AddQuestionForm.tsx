@@ -6,10 +6,12 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
     const t = useTranslations('AdminPage');
     const [formData, setFormData] = useState<{
         question: string;
+        level: string;
         category: string;
         answers: { answer: string; isCorrect: boolean }[];
     }>({
         question: '',
+        level: 'Easy',
         category: 'Grammar',
         answers: [
             {answer: '', isCorrect: true},
@@ -125,6 +127,21 @@ export default function AddQuestionForm({onQuestionAdded}: { onQuestionAdded: ()
                             rows={3}
                             required
                         />
+                    </div>
+
+                    <div>
+                        <label className="block mb-1 font-medium">{t('level')}:</label>
+                        <select
+                            name="level"
+                            value={formData.level}
+                            onChange={handleChange}
+                            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-quizBlue"
+                            required
+                        >
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
                     </div>
 
                     <div>
