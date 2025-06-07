@@ -2,12 +2,18 @@
 import { getCurrentUser } from '@/app/[locale]/lib/session';
 import { API_BASE_URL } from '@/app/[locale]/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import {number} from "zod";
+
+type QuizGenerateRequest = {
+    name: string;
+    category: string,
+    level: string,
+    numberOfQuestions: number,
+}
 
 export async function POST(request: NextRequest) {
     try {
-        const { pathname } = new URL(request.url);
-        const locale = pathname.split('/')[1];
-        const t = await getTranslations({ locale, namespace: '' });
+        const t = await getTranslations('');
 
         const user = await getCurrentUser();
         if (!user || !user.userToken) {
@@ -16,13 +22,20 @@ export async function POST(request: NextRequest) {
 
         const { name, category, count, level } = await request.json();
 
+        const quizToGenerate: QuizGenerateRequest = {
+            name: name,
+            category: category,
+            level: level,
+            numberOfQuestions: count,
+        }
+
         const response = await fetch(`${API_BASE_URL}/quizzes/generate`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${user.userToken}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, category, level, count})
+            body: JSON.stringify(quizToGenerate)
         });
 
         if (!response.ok) {

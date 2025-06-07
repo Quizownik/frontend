@@ -1,12 +1,12 @@
 ﻿import React, {useState} from "react";
-import {getLocale} from "next-intl/server";
-import {useTranslations} from "next-intl";
+import {useTranslations, useLocale} from "next-intl";
 
 export default function GenerateQuizModal({onClose, onQuizGenerated}: {
     onClose: () => void,
     onQuizGenerated: () => void
 }) {
     const t = useTranslations('GenerateQuizModal');
+    const locale = useLocale();
     const [name, setName] = useState('');
     const [category, setCategory] = useState('Mixed');
     const [count, setCount] = useState(5);
@@ -19,7 +19,6 @@ export default function GenerateQuizModal({onClose, onQuizGenerated}: {
         setIsSubmitting(true);
         setError(null);
         try {
-            const locale = getLocale();
             const res = await fetch(`/${locale}/api/quizzes/generate`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
