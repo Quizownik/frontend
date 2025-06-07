@@ -121,6 +121,7 @@
     "cancelAddQuestion": "Anuluj",
     "name": "Nazwa",
     "question": "Pytanie",
+    "level": "Poziom",
     "category": "Kategoria",
     "position": "Pozycja",
     "questionsCount": "Liczba pytań",

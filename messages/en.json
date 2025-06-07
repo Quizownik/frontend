@@ -122,6 +122,7 @@
     "name": "Name",
     "question": "Question",
     "category": "Category",
+    "level": "Level",
     "position": "Position",
     "questionsCount": "Questions",
     "answersCount": "Answers",

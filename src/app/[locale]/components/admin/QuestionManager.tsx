@@ -10,6 +10,7 @@ import {ErrorPopup} from "@/app/[locale]/components/ErrorPopup";
 
 export default function QuestionsManager() {
     const t = useTranslations('AdminPage');
+    const qt = useTranslations('QuizzesPage');
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -183,6 +184,7 @@ export default function QuestionsManager() {
                                 <tr>
                                     <th className="py-2 px-4 border-b text-left">ID</th>
                                     <th className="py-2 px-4 border-b text-left">{t('question')}</th>
+                                    <th className="py-2 px-4 border-b text-left">{t('level')}</th>
                                     <th className="py-2 px-4 border-b text-left">{t('category')}</th>
                                     <th className="py-2 px-4 border-b text-left">{t('answers')}</th>
                                     <th className="py-2 px-4 border-b text-center">{t('actions')}</th>
@@ -193,8 +195,9 @@ export default function QuestionsManager() {
                                     <tr key={question.id} className="hover:bg-gray-50">
                                         <td className="py-2 px-4 border-b">{question.id}</td>
                                         <td className="py-2 px-4 border-b">{question.question}</td>
+                                        <td className="py-2 px-4 border-b text-left">{question.level}</td>
                                         <td className="py-2 px-4 border-b">
-                                            <CategoryChip name={question.category} textToDisplay={question.category}/>
+                                            <CategoryChip name={question.category} textToDisplay={qt(`${question.category.toLowerCase()}Label`)}/>
                                         </td>
                                         <td className="py-2 px-4 border-b">{question.answers.length}</td>
                                         <td className="py-2 px-4 border-b text-center">
