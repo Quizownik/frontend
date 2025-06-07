@@ -6,6 +6,7 @@ export async function PUT(
     request: NextRequest,
     {params}: { params: { id: string } }
 ) {
+
     // Pobierz dane użytkownika z sesji
     const user = await getCurrentUser();
 
@@ -18,8 +19,9 @@ export async function PUT(
 
     try {
         // Walidacja ID quizu
-        const quizId = Number(params.id);
-        if (isNaN(quizId)) {
+        const {id} = await params;
+
+        if (isNaN(Number(id))) {
             return NextResponse.json(
                 {error: 'Invalid quiz ID'},
                 {status: 400}
@@ -44,8 +46,10 @@ export async function PUT(
             questionIds: body.questionIds
         };
 
+        console.log(quizData);
+
         // Wywołanie API backend
-        const response = await fetch(`${API_BASE_URL}/quizzes/${quizId}`, {
+        const response = await fetch(`${API_BASE_URL}/quizzes/${id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${user.userToken}`,
@@ -57,7 +61,7 @@ export async function PUT(
         // Obsługa błędów z API
         if (!response.ok) {
             const errorText = await response.text();
-            console.error(`Error updating quiz ${quizId}:`, errorText);
+            console.error(`Error updating quiz ${id}:`, errorText);
 
             return NextResponse.json(
                 {error: 'Failed to update quiz', details: errorText},
