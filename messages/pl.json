@@ -206,5 +206,22 @@
       "serverError": "Błąd serwera",
       "serviceUnavailable": "Usługa tymczasowo niedostępna"
     }
+  },
+  "GenerateQuizModal": {
+    "title": "Wygeneruj quiz",
+    "quizName": "Nazwa quizu",
+    "category": "Kategoria",
+    "questionCount": "Liczba pytań",
+    "level": "Poziom pytań",
+    "cancel": "Anuluj",
+    "generate": "Wygeneruj",
+    "generating": "Generowanie...",
+    "error": "Błąd generowania quizu",
+    "grammar": "Gramatyka",
+    "vocabulary": "Słownictwo",
+    "mixed": "Mieszany",
+    "easy": "Łatwy",
+    "medium": "Średni",
+    "hard": "Trudny"
   }
 }

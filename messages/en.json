@@ -194,6 +194,23 @@
       "serviceUnavailable": "Service temporarily unavailable"
     }
   },
+  "GenerateQuizModal": {
+    "title": "Generate quiz",
+    "quizName": "Quiz name",
+    "category": "Category",
+    "questionCount": "Number of questions",
+    "level": "Questions level",
+    "cancel": "Cancel",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "error": "Error generating quiz",
+    "grammar": "Grammar",
+    "vocabulary": "Vocabulary",
+    "mixed": "Mixed",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
   "ChangePasswordPage": {
     "title": "Change Password",
     "subtitle": "Enter your current password and new password to change it",
