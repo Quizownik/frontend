@@ -7,6 +7,7 @@ import AddQuestionForm from "@/app/[locale]/components/admin/AddQuestionForm";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 import EditQuestionForm from "@/app/[locale]/components/admin/EditQuestionForm";
 import {ErrorPopup} from "@/app/[locale]/components/ErrorPopup";
+import LevelChip from "@/app/[locale]/components/LevelChip";
 
 export default function QuestionsManager() {
     const t = useTranslations('AdminPage');
@@ -71,7 +72,7 @@ export default function QuestionsManager() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: deleteQuestionId }),
+                body: JSON.stringify({id: deleteQuestionId}),
             });
 
             if (!response.ok) {
@@ -142,7 +143,7 @@ export default function QuestionsManager() {
             </div>
 
             {showAddForm && (
-                <AddQuestionForm onQuestionAdded={handleQuestionAdded} />
+                <AddQuestionForm onQuestionAdded={handleQuestionAdded}/>
             )}
 
             {editingQuestion && (
@@ -173,7 +174,7 @@ export default function QuestionsManager() {
 
             {isLoading ? (
                 <div className="flex justify-center my-10">
-                    <LoadingSpinner />
+                    <LoadingSpinner/>
                 </div>
             ) : (
                 <>
@@ -195,9 +196,13 @@ export default function QuestionsManager() {
                                     <tr key={question.id} className="hover:bg-gray-50">
                                         <td className="py-2 px-4 border-b">{question.id}</td>
                                         <td className="py-2 px-4 border-b">{question.question}</td>
-                                        <td className="py-2 px-4 border-b text-left">{question.level}</td>
+                                        <td className="py-2 px-4 border-b text-left">
+                                            <LevelChip name={question.level}
+                                                       textToDisplay={qt(`${question.level.toLowerCase()}Label`)}/>
+                                        </td>
                                         <td className="py-2 px-4 border-b">
-                                            <CategoryChip name={question.category} textToDisplay={qt(`${question.category.toLowerCase()}Label`)}/>
+                                            <CategoryChip name={question.category}
+                                                          textToDisplay={qt(`${question.category.toLowerCase()}Label`)}/>
                                         </td>
                                         <td className="py-2 px-4 border-b">{question.answers.length}</td>
                                         <td className="py-2 px-4 border-b text-center">
