@@ -59,7 +59,7 @@ export default function EditQuizForm({quizId, onQuizUpdated, onCancel}: EditQuiz
                     // Pobierz identyfikatory pytań przypisanych do quizu
                     if (quizData.questionIds && Array.isArray(quizData.questionIds)) {
                         // Konwertuj wszystkie ID do liczb, aby zapewnić spójność typów
-                        const questionIds = quizData.questionIds.map(id => Number(id));
+                        const questionIds = quizData.questionIds.map((id: number) => Number(id));
                         console.log("Załadowane ID pytań z quizu:", questionIds);
                         setSelectedQuestionIds(questionIds);
                     }
