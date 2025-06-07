@@ -113,6 +113,7 @@
     "backToProfile": "Back to Profile",
     "quizzesTab": "Quizzes",
     "questionsTab": "Questions",
+    "generateQuiz": "Generate quiz",
     "quizzesList": "Quizzes List",
     "questionsList": "Questions List",
     "addNewQuiz": "Add New Quiz",
@@ -122,6 +123,7 @@
     "name": "Name",
     "question": "Question",
     "category": "Category",
+    "level": "Level",
     "position": "Position",
     "questionsCount": "Questions",
     "answersCount": "Answers",
@@ -192,6 +194,23 @@
       "serverError": "Server error",
       "serviceUnavailable": "Service temporarily unavailable"
     }
+  },
+  "GenerateQuizModal": {
+    "title": "Generate quiz",
+    "quizName": "Quiz name",
+    "category": "Category",
+    "questionCount": "Number of questions",
+    "level": "Questions level",
+    "cancel": "Cancel",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "error": "Error generating quiz",
+    "grammar": "Grammar",
+    "vocabulary": "Vocabulary",
+    "mixed": "Mixed",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
   },
   "ChangePasswordPage": {
     "title": "Change Password",

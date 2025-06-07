@@ -6,6 +6,7 @@ import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import AddQuizForm from "@/app/[locale]/components/admin/AddQuizForm";
 import EditQuizForm from "@/app/[locale]/components/admin/EditQuizForm";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
+import GenerateQuizModal from "@/app/[locale]/components/admin/GenerateQuizModal";
 
 export default function QuizzesManager() {
     const t = useTranslations('AdminPage');
@@ -13,6 +14,7 @@ export default function QuizzesManager() {
     const [quizzes, setQuizzes] = useState<QuizLabel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showGenerateModal, setShowGenerateModal] = useState(false);
     const [quizToEdit, setQuizToEdit] = useState<number | null>(null);
     const [quizToDelete, setQuizToDelete] = useState<QuizLabel | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -113,8 +115,19 @@ export default function QuizzesManager() {
 
     return (
         <div>
+
+
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-semibold">{t('quizzesList')}</h2>
+                <button
+                    onClick={() => setShowGenerateModal(true)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center ml-2"
+                >
+                    <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+                    </svg>
+                    {t('generateQuiz')}
+                </button>
                 {!quizToEdit && (
                     <button
                         onClick={() => setShowAddForm(!showAddForm)}
@@ -128,6 +141,13 @@ export default function QuizzesManager() {
                     </button>
                 )}
             </div>
+
+            {showGenerateModal && (
+                <GenerateQuizModal
+                    onClose={() => setShowGenerateModal(false)}
+                    onQuizGenerated={() => fetchQuizzes(0, selectedCategory)}
+                />
+            )}
 
             {/* Przyciski kategorii - pokazywane tylko gdy nie edytujemy quizu */}
             {!quizToEdit && (
@@ -226,9 +246,12 @@ export default function QuizzesManager() {
                             >
                                 {isDeleting ? (
                                     <>
-                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                    strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor"
+                                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
                                         {t('deleting')}
                                     </>
@@ -261,7 +284,8 @@ export default function QuizzesManager() {
                                     <td className="py-3 px-4 border-b">{quiz.id}</td>
                                     <td className="py-3 px-4 border-b">{quiz.name}</td>
                                     <td className="py-3 px-4 border-b">
-                                        <CategoryChip name={quiz.category} textToDisplay={qt(`${quiz.category.toLowerCase()}Label`)} />
+                                        <CategoryChip name={quiz.category}
+                                                      textToDisplay={qt(`${quiz.category.toLowerCase()}Label`)}/>
                                     </td>
                                     <td className="py-3 px-4 border-b">{quiz.numberOfQuestions || 0}</td>
                                     <td className="py-3 px-4 border-b">
