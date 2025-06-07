@@ -2,7 +2,6 @@
 import { getCurrentUser } from '@/app/[locale]/lib/session';
 import { API_BASE_URL } from '@/app/[locale]/lib/utils';
 import { getTranslations } from 'next-intl/server';
-import {number} from "zod";
 
 type QuizGenerateRequest = {
     name: string;
