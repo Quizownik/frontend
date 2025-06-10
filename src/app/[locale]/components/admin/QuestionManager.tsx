@@ -76,12 +76,13 @@ export default function QuestionsManager() {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                setErrorMessage(t('cantDeleteQuestion'));
+            }else{
+                // Odświeżenie listy po usunięciu
+                setSuccessMessage(t('questionDeleted'));
+                fetchQuestions();
             }
 
-            // Odświeżenie listy po usunięciu
-            fetchQuestions();
-            setSuccessMessage(t('questionDeleted'));
         } catch (err) {
             console.error('Error deleting question:', err);
             setErrorMessage(t('deleteError'));

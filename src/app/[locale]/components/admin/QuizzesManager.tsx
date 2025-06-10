@@ -288,15 +288,15 @@ export default function QuizzesManager() {
                                                       textToDisplay={qt(`${quiz.category.toLowerCase()}Label`)}/>
                                     </td>
                                     <td className="py-3 px-4 border-b">{quiz.numberOfQuestions || 0}</td>
-                                    <td className="py-3 px-4 border-b">
+                                    <td className="flex flex-row py-3 px-4 border-b gap-2">
                                         <button
                                             onClick={() => handleEditQuiz(quiz.id)}
-                                            className="text-blue-600 hover:underline mr-3"
+                                            className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
                                         >
                                             {t('edit')}
                                         </button>
                                         <button
-                                            className="text-red-600 hover:underline"
+                                            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
                                             onClick={() => confirmDelete(quiz)}
                                         >
                                             {t('delete')}
