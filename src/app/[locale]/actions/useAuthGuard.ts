@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {logout} from "@/app/[locale]/actions/auth";
 
 export function useAuthGuard() {
     const router = useRouter();
@@ -10,8 +11,8 @@ export function useAuthGuard() {
         const locale = window.location.pathname.split('/')[1] || 'pl';
         fetch(`/${locale}/api/me`)
             .then(res => {
-                if (res.status === 401) {
-                    router.replace('/login');
+                if (res.status === 401 || res.status === 403) {
+                    logout();
                 } else if (res.ok) {
                     setAuthorized(true);
                 }
