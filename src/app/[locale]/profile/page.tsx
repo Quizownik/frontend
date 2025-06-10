@@ -10,6 +10,7 @@ import {getLocale} from "@/app/[locale]/lib/utils";
 import {useTranslations} from "next-intl";
 import {useRouter} from "next/navigation";
 import {Link} from "@/i18n/navigation";
+import LevelChip from "@/app/[locale]/components/LevelChip";
 
 type UserProfile = {
     firstName: string;
@@ -20,12 +21,14 @@ type UserProfile = {
     createdDate: string;
     numOfDoneQuizzes: number;
     numOfOnlyFullyCorrectQuizzes: number;
+    level: 'Easy' | 'Medium' | 'Hard';
 };
 
 const defaultAvatarUrl = '/avatars/avatar.png';
 
 export default function ProfilePage() {
     const t = useTranslations('ProfilePage');
+    const qt = useTranslations('QuizzesPage')
     const router = useRouter();
 
     const {loading, authorized} = useAuthGuard();
@@ -142,6 +145,20 @@ export default function ProfilePage() {
                                               color='blue'/>
                                 </div>
 
+                                {/* User Level */}
+                                <div className="mb-8 flex items-center justify-center">
+                                    <span
+                                        className="text-gray-600 text-lg mr-2 font-semibold">{t('levelLabel') || 'Poziom'}:</span>
+                                    <span className="font-bold text-lg">
+                                        {user.level === 'Easy' &&
+                                            <LevelChip name={'Easy'} textToDisplay={qt('easyLabel')}/>}
+                                        {user.level === 'Medium' &&
+                                            <LevelChip name={'Medium'} textToDisplay={qt('mediumLabel')}/>}
+                                        {user.level === 'Hard' &&
+                                            <LevelChip name={'Hard'} textToDisplay={qt('hardLabel')}/>}
+                                    </span>
+                                </div>
+
                                 {/* Account Information */}
                                 <div className="bg-gray-50 rounded-xl p-6 shadow-inner">
                                     <h3 className="font-semibold text-lg border-b border-gray-200 pb-3 mb-4 flex items-center">
@@ -236,9 +253,10 @@ export default function ProfilePage() {
                                             href="/admin/quizzes"
                                             className="flex flex-row px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-colors items-center justify-center"
                                         >
-                                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                                 viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                             </svg>
                                             {t("adminQuizzes")}
                                         </Link>

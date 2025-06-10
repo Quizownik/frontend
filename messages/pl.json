@@ -20,7 +20,19 @@
     "registerButton": "Zarejestruj się",
     "loginButton": "Zaloguj się",
     "alreadyHaveAccount": "Masz już konto?",
-    "errorMessage": "Wystąpił błąd podczas rejestracji"
+    "errorMessage": "Wystąpił błąd podczas rejestracji",
+    "passwordMismatch": "Hasła nie są zgodne",
+    "firstnameRequired": "Imię jest wymagane",
+    "lastnameRequired": "Nazwisko jest wymagane",
+    "usernameRequired": "Nazwa użytkownika jest wymagana",
+    "emailInvalid": "Nieprawidłowy adres email",
+    "emailTaken": "Ten adres email jest już zarejestrowany",
+    "passwordMinLength": "Hasło musi mieć co najmniej 8 znaków",
+    "passwordLetterRequired": "Hasło musi zawierać co najmniej jedną literę",
+    "passwordNumberRequired": "Hasło musi zawierać co najmniej jedną cyfrę",
+    "passwordSpecialCharRequired": "Hasło musi zawierać co najmniej jeden znak specjalny",
+    "passwordInvalid": "Nieprawidłowe hasło",
+    "confirmPasswordRequired": "Potwierdzenie hasła jest wymagane"
   },
   "QuizzesPage": {
     "title": "Quizy do nauki angielskiego",
@@ -55,6 +67,7 @@
     "accountCreatedDate": "Data utworzenia konta",
     "usernameLabel": "Nazwa użytkownika",
     "emailLabel": "Email",
+    "levelLabel": "Sugerowany poziom quizów",
     "editProfile": "Edytuj profil",
     "dataLoading": "Ładowanie danych profilu",
     "endedQuizzes": "Ukończone quizy",
