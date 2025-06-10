@@ -45,6 +45,7 @@ export async function GET(
             }
 
             const quizzes = await response.json();
+
             return NextResponse.json(quizzes);
         } catch (apiError) {
             // Bezpieczne wyciągnięcie wiadomości błędu
