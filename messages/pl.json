@@ -27,6 +27,7 @@
     "usernameRequired": "Nazwa użytkownika jest wymagana",
     "emailInvalid": "Nieprawidłowy adres email",
     "emailTaken": "Ten adres email jest już zarejestrowany",
+    "usernameTaken": "Ten username jest już zarejestrowany",
     "passwordMinLength": "Hasło musi mieć co najmniej 8 znaków",
     "passwordLetterRequired": "Hasło musi zawierać co najmniej jedną literę",
     "passwordNumberRequired": "Hasło musi zawierać co najmniej jedną cyfrę",
