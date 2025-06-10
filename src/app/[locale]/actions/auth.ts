@@ -77,6 +77,12 @@ export async function signup(formData: FormData) {
                         email: ['emailTaken']
                     },
                 }
+            }else if(response.status === 406) {
+                return {
+                    errors: {
+                        username: ['usernameTaken']
+                    },
+                }
             }
         } catch (e) {
             console.error(e);

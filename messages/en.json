@@ -27,6 +27,7 @@
     "usernameRequired": "Username is required",
     "emailInvalid": "Invalid email address",
     "emailTaken": "This email is already registered",
+    "usernameTaken": "This username is already registered",
     "passwordMinLength": "Password must be at least 8 characters",
     "passwordLetterRequired": "Password must contain at least one letter",
     "passwordNumberRequired": "Password must contain at least one number",
