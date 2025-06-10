@@ -8,8 +8,6 @@ import {LoadingSpinner} from '@/app/[locale]/components/LoadingSpinner';
 import {getLocale} from '@/app/[locale]/lib/utils';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import AddQuizForm from '@/app/[locale]/components/admin/AddQuizForm';
-import {Question, QuizLabel} from "@/app/[locale]/lib/types";
 import QuestionsManager from "@/app/[locale]/components/admin/QuestionManager";
 import QuizzesManager from "@/app/[locale]/components/admin/QuizzesManager";
 

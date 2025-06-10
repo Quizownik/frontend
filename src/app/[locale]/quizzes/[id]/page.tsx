@@ -60,7 +60,6 @@ export default function QuizDetailPage() {
     const [isQuizSubmitted, setIsQuizSubmitted] = useState<boolean>(false);
     const [score, setScore] = useState<number>(0);
     const [quizStartTime, setQuizStartTime] = useState<Date | null>(null);
-    const [quizEndTime, setQuizEndTime] = useState<Date | null>(null);
     const [quizDuration, setQuizDuration] = useState<number>(0); // w sekundach
 
     useEffect(() => {
@@ -76,6 +75,24 @@ export default function QuizDetailPage() {
         }
     }, [loading, authorized, quizId]);
 
+    function shuffleQuestions(array: Question[]) {
+        let currentIndex = array.length;
+
+        // While there remain elements to shuffle...
+        while (currentIndex != 0) {
+
+            // Pick a remaining element...
+            const randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+    
     const fetchQuiz = async () => {
         setIsLoading(true);
         const locale = getLocale();
@@ -88,7 +105,13 @@ export default function QuizDetailPage() {
             }
 
             const data = await response.json();
-            setQuiz(data);
+            const quizWithShuffledQuestions = {
+                ...data,
+                questions: shuffleQuestions(data.questions)
+            };
+            setQuiz(quizWithShuffledQuestions);
+            console.log(quizWithShuffledQuestions);
+            setQuiz(quizWithShuffledQuestions);
             setIsLoading(false);
         } catch (err) {
             console.error('Błąd pobierania quizu:', err);
@@ -199,7 +222,6 @@ export default function QuizDetailPage() {
         setScore(finalScore);
 
         const endTime = new Date();
-        setQuizEndTime(endTime);
 
         if (quizStartTime) {
             const duration = Math.floor((endTime.getTime() - quizStartTime.getTime()) / 1000);
@@ -216,8 +238,8 @@ export default function QuizDetailPage() {
         setIsQuizSubmitted(false);
         setScore(0);
         setQuizStartTime(null);
-        setQuizEndTime(null);
         setQuizDuration(0);
+        fetchQuiz();
     };
 
     if (loading || isLoading) return <LoadingSpinner/>;
