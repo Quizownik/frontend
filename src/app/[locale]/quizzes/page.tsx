@@ -48,11 +48,7 @@ export default function QuizzesPage() {
         fetch(`/${locale}/api/quizzes?page=${page}&size=${size}&category=${encodeURIComponent(category)}&level=${encodeURIComponent(level)}&sort=name`)
             .then(response => {
                 if (!response.ok) {
-                    response.text().then(text => {
-                        setApiError(text || 'API error');
-                        setTimeout(() => logout(), 1500);
-                    });
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    logout();
                 }
                 return response.json();
             })
