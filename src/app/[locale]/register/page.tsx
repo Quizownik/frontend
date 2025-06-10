@@ -28,6 +28,7 @@ export default function RegisterPage() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [passwordMismatch, setPasswordMismatch] = useState(false);
     const [emailError, setEmailError] = useState<string | null>(null);
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string[] }>({});
 
     // Sprawdzanie, czy użytkownik jest już zalogowany
     useEffect(() => {
@@ -55,6 +56,7 @@ export default function RegisterPage() {
         setErrorMessage(null);
         setEmailError(null);
         setPasswordMismatch(false);
+        setFieldErrors({});
 
         if (password !== confirmPassword) {
             setPasswordMismatch(true);
@@ -73,10 +75,21 @@ export default function RegisterPage() {
         const result = await signup(formData);
 
         if (result?.errors) {
-            // Jeśli mamy błędy specyficzne dla pól
+            setFieldErrors(result.errors);
+            // Pobierz pierwszy błąd do popupu i przetłumacz przez t()
+            let firstErrorKey = null;
             if (result.errors.email && result.errors.email.length > 0) {
-                setEmailError(result.errors.email[0]);
-                setErrorMessage(result.errors.email[0]);
+                setEmailError(t(result.errors.email[0]));
+                firstErrorKey = result.errors.email[0];
+            } else if (result.errors.password && result.errors.password.length > 0) {
+                firstErrorKey = result.errors.password[0];
+            } else if (result.errors.confirmPassword && result.errors.confirmPassword.length > 0) {
+                firstErrorKey = result.errors.confirmPassword[0];
+            } else if (Object.values(result.errors).flat().length > 0) {
+                firstErrorKey = Object.values(result.errors).flat()[0];
+            }
+            if (firstErrorKey) {
+                setErrorMessage(t(firstErrorKey));
             }
         }
     };
@@ -148,8 +161,11 @@ export default function RegisterPage() {
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
+                            className={`px-4 py-2 sm:py-3 border ${fieldErrors.firstname ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base`}
                         />
+                        {fieldErrors.firstname && (
+                            <p className="text-red-500 text-sm mt-1">{t(fieldErrors.firstname[0])}</p>
+                        )}
                     </div>
 
                     <div className="flex flex-col">
@@ -162,8 +178,11 @@ export default function RegisterPage() {
                             required
                             value={lastname}
                             onChange={(e) => setLastname(e.target.value)}
-                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
+                            className={`px-4 py-2 sm:py-3 border ${fieldErrors.lastname ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base`}
                         />
+                        {fieldErrors.lastname && (
+                            <p className="text-red-500 text-sm mt-1">{t(fieldErrors.lastname[0])}</p>
+                        )}
                     </div>
 
                     <div className="flex flex-col">
@@ -176,8 +195,11 @@ export default function RegisterPage() {
                             required
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base"
+                            className={`px-4 py-2 sm:py-3 border ${fieldErrors.username ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base`}
                         />
+                        {fieldErrors.username && (
+                            <p className="text-red-500 text-sm mt-1">{t(fieldErrors.username[0])}</p>
+                        )}
                     </div>
 
                     <div className="flex flex-col">
@@ -193,10 +215,10 @@ export default function RegisterPage() {
                                 setEmail(e.target.value);
                                 setEmailError(null);
                             }}
-                            className={`px-4 py-2 sm:py-3 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base`}
+                            className={`px-4 py-2 sm:py-3 border ${(emailError || fieldErrors.email) ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base`}
                         />
-                        {emailError && (
-                            <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                        {(emailError || fieldErrors.email) && (
+                            <p className="text-red-500 text-sm mt-1">{emailError || t(fieldErrors.email?.[0])}</p>
                         )}
                     </div>
 
@@ -213,7 +235,7 @@ export default function RegisterPage() {
                                 setPassword(e.target.value);
                                 setPasswordMismatch(false);
                             }}
-                            className={`px-4 py-2 sm:py-3 border ${passwordMismatch ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12`}
+                            className={`px-4 py-2 sm:py-3 border ${(passwordMismatch || fieldErrors.password) ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12`}
                         />
                         <button
                             type="button"
@@ -227,6 +249,9 @@ export default function RegisterPage() {
                                 <VisibilityOffTwoToneIcon className="w-5 h-5"/>
                             )}
                         </button>
+                        {fieldErrors.password && (
+                            <p className="text-red-500 text-sm mt-1">{t(fieldErrors.password[0])}</p>
+                        )}
                     </div>
 
                     <div className="flex flex-col relative">
@@ -243,7 +268,7 @@ export default function RegisterPage() {
                                 setConfirmPassword(e.target.value);
                                 setPasswordMismatch(false);
                             }}
-                            className={`px-4 py-2 sm:py-3 border ${passwordMismatch ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12`}
+                            className={`px-4 py-2 sm:py-3 border ${(passwordMismatch || fieldErrors.confirmPassword) ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-quizBlue text-xl sm:text-base pr-12`}
                         />
                         <button
                             type="button"
@@ -257,6 +282,9 @@ export default function RegisterPage() {
                                 <VisibilityOffTwoToneIcon className="w-5 h-5"/>
                             )}
                         </button>
+                        {fieldErrors.confirmPassword && (
+                            <p className="text-red-500 text-sm mt-1">{t(fieldErrors.confirmPassword[0])}</p>
+                        )}
                     </div>
                     {passwordMismatch && (
                         <p className="text-red-500 text-sm -mt-2">{t('passwordMismatch') || 'Hasła nie są zgodne'}</p>

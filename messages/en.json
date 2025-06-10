@@ -20,7 +20,19 @@
     "registerButton": "Register",
     "loginButton": "Log In",
     "alreadyHaveAccount": "Already have an account?",
-    "errorMessage": "An error occurred during registration"
+    "errorMessage": "An error occurred during registration",
+    "passwordMismatch": "Passwords do not match",
+    "firstnameRequired": "First name is required",
+    "lastnameRequired": "Last name is required",
+    "usernameRequired": "Username is required",
+    "emailInvalid": "Invalid email address",
+    "emailTaken": "This email is already registered",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordLetterRequired": "Password must contain at least one letter",
+    "passwordNumberRequired": "Password must contain at least one number",
+    "passwordSpecialCharRequired": "Password must contain at least one special character",
+    "passwordInvalid": "Invalid password",
+    "confirmPasswordRequired": "Password confirmation is required"
   },
   "QuizzesPage": {
     "title": "English Learning Quizzes",
@@ -55,6 +67,7 @@
     "accountCreatedDate": "Account Creation Date",
     "usernameLabel": "Username",
     "emailLabel": "Email",
+    "levelLabel": "Suggested level of quizzes",
     "editProfile": "Edit Profile",
     "dataLoading": "Loading profile data",
     "endedQuizzes": "Completed Quizzes",
