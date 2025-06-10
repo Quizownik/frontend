@@ -8,6 +8,7 @@ import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import {categoryColors} from "@/app/[locale]/lib/categoryColors";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {Link} from '@/i18n/navigation';
+import {logout} from "@/app/[locale]/actions/auth";
 
 type Answer = {
     id: number;
@@ -101,6 +102,7 @@ export default function QuizDetailPage() {
             const response = await fetch(`/${locale}/api/quizzes/${quizId}`);
 
             if (!response.ok) {
+                await logout();
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 

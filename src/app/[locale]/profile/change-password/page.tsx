@@ -8,6 +8,7 @@ import { getLocale } from "@/app/[locale]/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { LoadingSpinner } from "@/app/[locale]/components/LoadingSpinner";
 import { z } from 'zod';
+import {logout} from "@/app/[locale]/actions/auth";
 
 // Schema for password validation
 const passwordSchema = z
@@ -44,7 +45,7 @@ export default function ChangePasswordPage() {
 
     useEffect(() => {
         if (!loading && !authorized) {
-            router.push('/login');
+            logout();
         }
     }, [loading, authorized, router]);
 
