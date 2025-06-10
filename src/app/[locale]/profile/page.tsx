@@ -49,10 +49,7 @@ export default function ProfilePage() {
             const response = await fetch(`/${locale}/api/user/me`);
 
             if (!response.ok) {
-                if (response.status === 401) {
-                    router.push('/login');
-                    return;
-                }
+                await logout();
                 throw new Error(`Error ${response.status}: ${await response.text()}`);
             }
 

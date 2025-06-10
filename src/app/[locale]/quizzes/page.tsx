@@ -10,6 +10,8 @@ import {PageResponse} from "@/app/[locale]/lib/types";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 import LevelChip from "@/app/[locale]/components/LevelChip";
 import {categoryColors} from "@/app/[locale]/lib/categoryColors";
+import {logout} from "@/app/[locale]/actions/auth";
+import {ErrorPopup} from "@/app/[locale]/components/ErrorPopup";
 
 export default function QuizzesPage() {
     const t = useTranslations('QuizzesPage');
@@ -20,6 +22,7 @@ export default function QuizzesPage() {
     const [pageSize] = useState<number>(9); // Domyślny rozmiar strony
     const [category, setCategory] = useState<string>("All"); // Domyślna kategoria
     const [level, setLevel] = useState<string>("Default"); // Domyślny poziom
+    const [apiError, setApiError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!loading && authorized) {
@@ -45,6 +48,10 @@ export default function QuizzesPage() {
         fetch(`/${locale}/api/quizzes?page=${page}&size=${size}&category=${encodeURIComponent(category)}&level=${encodeURIComponent(level)}&sort=name`)
             .then(response => {
                 if (!response.ok) {
+                    response.text().then(text => {
+                        setApiError(text || 'API error');
+                        setTimeout(() => logout(), 1500);
+                    });
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return response.json();
@@ -119,6 +126,9 @@ export default function QuizzesPage() {
 
     return (
         <main className="min-h-screen font-quiz px-4 py-10 shadow-xl">
+            {apiError && (
+                <ErrorPopup message={apiError} onClose={() => setApiError(null)} autoCloseTime={1500}/>
+            )}
             <motion.h1
                 initial={{opacity: 0, y: -40}}
                 animate={{opacity: 1, y: 0}}

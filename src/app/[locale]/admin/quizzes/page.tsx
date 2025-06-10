@@ -10,6 +10,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import QuestionsManager from "@/app/[locale]/components/admin/QuestionManager";
 import QuizzesManager from "@/app/[locale]/components/admin/QuizzesManager";
+import {logout} from "@/app/[locale]/actions/auth";
 
 
 export default function AdminQuizzesPage() {

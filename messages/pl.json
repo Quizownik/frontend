@@ -161,6 +161,7 @@
     "questionUpdated": "Pytanie zostało zaktualizowane",
     "questionDeleted": "Pytanie zostało usunięte",
     "deleteQuestionConfirmation": "Czy na pewno chcesz usunąć to pytanie?",
+    "cantDeleteQuestion": "Nie można usunąć pytania.",
     "fetchError": "Wystąpił błąd podczas pobierania pytań",
     "deleteError": "Wystąpił błąd podczas usuwania pytania",
     "updateError": "Wystąpił błąd podczas aktualizacji pytania",
