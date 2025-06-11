@@ -20,11 +20,25 @@
     "registerButton": "Register",
     "loginButton": "Log In",
     "alreadyHaveAccount": "Already have an account?",
-    "errorMessage": "An error occurred during registration"
+    "errorMessage": "An error occurred during registration",
+    "passwordMismatch": "Passwords do not match",
+    "firstnameRequired": "First name is required",
+    "lastnameRequired": "Last name is required",
+    "usernameRequired": "Username is required",
+    "emailInvalid": "Invalid email address",
+    "emailTaken": "This email is already registered",
+    "usernameTaken": "This username is already registered",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordLetterRequired": "Password must contain at least one letter",
+    "passwordNumberRequired": "Password must contain at least one number",
+    "passwordSpecialCharRequired": "Password must contain at least one special character",
+    "passwordInvalid": "Invalid password",
+    "confirmPasswordRequired": "Password confirmation is required"
   },
   "QuizzesPage": {
     "title": "English Learning Quizzes",
     "categoryLabel": "Category",
+    "noQuizzesMessage": "No available quizzes",
     "questions": "Questions",
     "subtitle": "Choose a category and test your English knowledge.",
     "startQuiz": "Start Quiz",
@@ -55,6 +69,7 @@
     "accountCreatedDate": "Account Creation Date",
     "usernameLabel": "Username",
     "emailLabel": "Email",
+    "levelLabel": "Suggested level of quizzes",
     "editProfile": "Edit Profile",
     "dataLoading": "Loading profile data",
     "endedQuizzes": "Completed Quizzes",
@@ -113,6 +128,7 @@
     "backToProfile": "Back to Profile",
     "quizzesTab": "Quizzes",
     "questionsTab": "Questions",
+    "generateQuiz": "Generate quiz",
     "quizzesList": "Quizzes List",
     "questionsList": "Questions List",
     "addNewQuiz": "Add New Quiz",
@@ -122,6 +138,7 @@
     "name": "Name",
     "question": "Question",
     "category": "Category",
+    "level": "Level",
     "position": "Position",
     "questionsCount": "Questions",
     "answersCount": "Answers",
@@ -158,7 +175,8 @@
     "noQuestionsSelected": "Select at least one question",
     "selectedQuestionsCount": "Selected questions",
     "selectQuestionsHelp": "Click on a question or check the checkbox to add it to the quiz",
-    "categoryFilterInfo": "Note: When selecting a specific category, questions from other categories will be ignored."
+    "categoryFilterInfo": "Note: When selecting a specific category, questions from other categories will be ignored.",
+    "cantDeleteQuestion": "Can't delete question."
   },
   "API": {
     "quizIdRequired": "Quiz ID is required",
@@ -192,6 +210,23 @@
       "serverError": "Server error",
       "serviceUnavailable": "Service temporarily unavailable"
     }
+  },
+  "GenerateQuizModal": {
+    "title": "Generate quiz",
+    "quizName": "Quiz name",
+    "category": "Category",
+    "questionCount": "Number of questions",
+    "level": "Questions level",
+    "cancel": "Cancel",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "error": "Error generating quiz",
+    "grammar": "Grammar",
+    "vocabulary": "Vocabulary",
+    "mixed": "Mixed",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
   },
   "ChangePasswordPage": {
     "title": "Change Password",

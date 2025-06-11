@@ -7,9 +7,11 @@ import AddQuestionForm from "@/app/[locale]/components/admin/AddQuestionForm";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 import EditQuestionForm from "@/app/[locale]/components/admin/EditQuestionForm";
 import {ErrorPopup} from "@/app/[locale]/components/ErrorPopup";
+import LevelChip from "@/app/[locale]/components/LevelChip";
 
 export default function QuestionsManager() {
     const t = useTranslations('AdminPage');
+    const qt = useTranslations('QuizzesPage');
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -70,16 +72,17 @@ export default function QuestionsManager() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: deleteQuestionId }),
+                body: JSON.stringify({id: deleteQuestionId}),
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                setErrorMessage(t('cantDeleteQuestion'));
+            }else{
+                // Odświeżenie listy po usunięciu
+                setSuccessMessage(t('questionDeleted'));
+                fetchQuestions();
             }
 
-            // Odświeżenie listy po usunięciu
-            fetchQuestions();
-            setSuccessMessage(t('questionDeleted'));
         } catch (err) {
             console.error('Error deleting question:', err);
             setErrorMessage(t('deleteError'));
@@ -141,7 +144,7 @@ export default function QuestionsManager() {
             </div>
 
             {showAddForm && (
-                <AddQuestionForm onQuestionAdded={handleQuestionAdded} />
+                <AddQuestionForm onQuestionAdded={handleQuestionAdded}/>
             )}
 
             {editingQuestion && (
@@ -172,7 +175,7 @@ export default function QuestionsManager() {
 
             {isLoading ? (
                 <div className="flex justify-center my-10">
-                    <LoadingSpinner />
+                    <LoadingSpinner/>
                 </div>
             ) : (
                 <>
@@ -183,6 +186,7 @@ export default function QuestionsManager() {
                                 <tr>
                                     <th className="py-2 px-4 border-b text-left">ID</th>
                                     <th className="py-2 px-4 border-b text-left">{t('question')}</th>
+                                    <th className="py-2 px-4 border-b text-left">{t('level')}</th>
                                     <th className="py-2 px-4 border-b text-left">{t('category')}</th>
                                     <th className="py-2 px-4 border-b text-left">{t('answers')}</th>
                                     <th className="py-2 px-4 border-b text-center">{t('actions')}</th>
@@ -193,8 +197,13 @@ export default function QuestionsManager() {
                                     <tr key={question.id} className="hover:bg-gray-50">
                                         <td className="py-2 px-4 border-b">{question.id}</td>
                                         <td className="py-2 px-4 border-b">{question.question}</td>
+                                        <td className="py-2 px-4 border-b text-left">
+                                            <LevelChip name={question.level}
+                                                       textToDisplay={qt(`${question.level.toLowerCase()}Label`)}/>
+                                        </td>
                                         <td className="py-2 px-4 border-b">
-                                            <CategoryChip name={question.category} textToDisplay={question.category}/>
+                                            <CategoryChip name={question.category}
+                                                          textToDisplay={qt(`${question.category.toLowerCase()}Label`)}/>
                                         </td>
                                         <td className="py-2 px-4 border-b">{question.answers.length}</td>
                                         <td className="py-2 px-4 border-b text-center">

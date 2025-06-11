@@ -1,6 +1,7 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/app/[locale]/lib/session';
 import { API_BASE_URL } from '@/app/[locale]/lib/utils';
+import {logout} from "@/app/[locale]/actions/auth";
 
 export async function GET(request: NextRequest) {
     try {
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest) {
 
             if (!response.ok) {
                 const errorText = await response.text();
-
+                logout();
                 return NextResponse.json({
                     error: `API error: ${response.status}`,
                     details: errorText
@@ -44,6 +45,7 @@ export async function GET(request: NextRequest) {
         } catch (apiError) {
             // Bezpieczne wyciągnięcie wiadomości błędu
             const errorMessage = apiError instanceof Error ? apiError.message : 'Nieznany błąd';
+            logout();
             return NextResponse.json({
                 error: 'Failed to fetch quizzes from API',
                 details: errorMessage
@@ -52,6 +54,7 @@ export async function GET(request: NextRequest) {
     } catch (sessionError) {
         // Bezpieczne wyciągnięcie wiadomości błędu
         const errorMessage = sessionError instanceof Error ? sessionError.message : 'Nieznany błąd';
+        logout();
         return NextResponse.json({
             error: 'Session error',
             details: errorMessage

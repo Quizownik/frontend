@@ -11,6 +11,7 @@ interface Answer {
 // Interfejs dla struktury pytania
 interface QuestionData {
   question: string;
+  level: string;
   category: string;
   answers: Answer[];
 }
@@ -31,7 +32,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json() as QuestionData;
 
     // Walidacja danych
-    if (!body.question || !body.category || !Array.isArray(body.answers)) {
+    if (!body.question || !body.level || !body.category || !Array.isArray(body.answers)) {
       return NextResponse.json(
         { error: 'Invalid question data. Required fields: question, category, answers (array)' },
         { status: 400 }
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
     // Przygotowanie danych do wysłania
     const questionData = {
       question: body.question,
+      level: body.level,
       category: body.category,
       answers: body.answers
     };

@@ -18,10 +18,10 @@ export async function PUT(request: NextRequest) {
         }
 
         const requestBody = await request.json();
-        const { id, question, category, answers } = requestBody;
+        const { id, question, level, category, answers } = requestBody;
 
         // Podstawowa walidacja
-        if (!id || !question || !category || !answers || !Array.isArray(answers) || answers.length < 2) {
+        if (!id || !question || !level || !category || !answers || !Array.isArray(answers) || answers.length < 2) {
             return NextResponse.json({ message: apiT('invalidData') }, { status: 400 });
         }
 
@@ -33,6 +33,7 @@ export async function PUT(request: NextRequest) {
         // Przygotowanie danych do wysłania
         const questionData = {
             question,
+            level,
             category,
             answers
         };

@@ -3,6 +3,7 @@ import {useTranslations} from 'next-intl';
 import {getLocale} from '@/app/[locale]/lib/utils';
 import {PageResponseQuestions, Question} from '@/app/[locale]/lib/types';
 import CategoryChip from "@/app/[locale]/components/categoryChip";
+import LevelChip from "@/app/[locale]/components/LevelChip";
 
 export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) {
     const t = useTranslations('AdminPage');
@@ -222,6 +223,8 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
                                         <th className="text-left py-2 px-3"></th>
                                         <th className="text-left py-2 px-3">ID</th>
                                         <th className="text-left py-2 px-3">{t('question')}</th>
+                                        <th className="text-left py-2 px-3">{t('level')}</th>
+                                        {/* nowa kolumna */}
                                         <th className="text-left py-2 px-3">{t('category')}</th>
                                     </tr>
                                     </thead>
@@ -244,7 +247,11 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
                                             <td className="py-2 px-3">{q.id}</td>
                                             <td className="py-2 px-3 max-w-xs truncate">{q.question}</td>
                                             <td className="py-2 px-3">
-                                                <CategoryChip name={q.category} textToDisplay={q.category} />
+                                                <LevelChip name={q.level}
+                                                           textToDisplay={qt(`${q.level.toLowerCase()}Label`)}/>
+                                            </td>
+                                            <td className="py-2 px-3">
+                                                <CategoryChip name={q.category} textToDisplay={q.category}/>
                                             </td>
                                         </tr>
                                     ))}
@@ -291,7 +298,8 @@ export default function AddQuizForm({onQuizAdded}: { onQuizAdded: () => void }) 
                         )}
                         {isLoadingQuestions && (
                             <div className="flex justify-center items-center py-4">
-                                <div className="w-6 h-6 border-2 border-quizBlue border-t-transparent rounded-full animate-spin"></div>
+                                <div
+                                    className="w-6 h-6 border-2 border-quizBlue border-t-transparent rounded-full animate-spin"></div>
                             </div>
                         )}
                     </div>

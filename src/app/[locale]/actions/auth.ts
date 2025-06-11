@@ -15,8 +15,37 @@ export async function signup(formData: FormData) {
     })
 
     if (!validatedFields.success) {
+        // Zamień klucze błędów na klucze tłumaczeń z messages
+        const fieldErrors = validatedFields.error.flatten().fieldErrors as Record<string, string[]>;
+        const translatedErrors: Record<string, string[]> = {};
+        for (const key in fieldErrors) {
+            if (Object.prototype.hasOwnProperty.call(fieldErrors, key) && Array.isArray(fieldErrors[key])) {
+                translatedErrors[key] = (fieldErrors[key] as string[]).map((err: string) => {
+                    switch (key) {
+                        case 'firstname':
+                            return 'firstnameRequired';
+                        case 'lastname':
+                            return 'lastnameRequired';
+                        case 'username':
+                            return 'usernameRequired';
+                        case 'email':
+                            return 'emailInvalid';
+                        case 'password':
+                            if (err.includes('8')) return 'passwordMinLength';
+                            if (err.toLowerCase().includes('letter')) return 'passwordLetterRequired';
+                            if (err.toLowerCase().includes('number')) return 'passwordNumberRequired';
+                            if (err.toLowerCase().includes('special')) return 'passwordSpecialCharRequired';
+                            return 'passwordInvalid';
+                        case 'confirmPassword':
+                            return 'confirmPasswordRequired';
+                        default:
+                            return err;
+                    }
+                });
+            }
+        }
         return {
-            errors: validatedFields.error.flatten().fieldErrors,
+            errors: translatedErrors,
         }
     }
 
@@ -37,30 +66,30 @@ export async function signup(formData: FormData) {
     })
 
     if (!response.ok) {
-        let errorData: { error?: string, message?: string } = { message: 'An error occurred' };
         try {
-            // Sprawdź, czy odpowiedź ma body
             const text = await response.text();
             if (text) {
-                errorData = JSON.parse(text);
+                JSON.parse(text);
             }
-
-            // Obsługa statusu 409 CONFLICT (email już istnieje)
             if (response.status === 409) {
                 return {
                     errors: {
-                        email: [errorData.error || 'Ten adres email jest już zarejestrowany']
+                        email: ['emailTaken']
+                    },
+                }
+            }else if(response.status === 406) {
+                return {
+                    errors: {
+                        username: ['usernameTaken']
                     },
                 }
             }
         } catch (e) {
             console.error(e);
         }
-
-        // Dla innych błędów
         return {
             errors: {
-                email: [errorData.error || errorData.message || 'Wystąpił błąd podczas rejestracji']
+                email: ['errorMessage']
             },
         }
     }
