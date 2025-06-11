@@ -38,6 +38,7 @@
   "QuizzesPage": {
     "title": "English Learning Quizzes",
     "categoryLabel": "Category",
+    "noQuizzesMessage": "No available quizzes",
     "questions": "Questions",
     "subtitle": "Choose a category and test your English knowledge.",
     "startQuiz": "Start Quiz",

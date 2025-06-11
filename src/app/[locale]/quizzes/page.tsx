@@ -215,6 +215,11 @@ export default function QuizzesPage() {
 
                 {/* Wyświetlanie quizów */}
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-4/5 mx-auto items-start">
+                    {quizzesPage?.content && quizzesPage.content.length === 0 && (
+                        <div className="w-full text-center text-xl text-gray-500 py-12">
+                            {t('noQuizzesMessage')}
+                        </div>
+                    )}
                     {quizzesPage?.content && quizzesPage.content.map((quiz, index) => {
                         const color = categoryColors[quiz.category] || 'black';
                         const borderColor = `border-${color}`;

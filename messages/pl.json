@@ -40,6 +40,7 @@
     "categoryLabel": "Kategoria",
     "questions": "Pytania",
     "subtitle": "Wybierz kategorię i sprawdź swoją wiedzę z języka angielskiego.",
+    "noQuizzesMessage": "Brak dostępnych quizów",
     "startQuiz": "Rozpocznij Quiz",
     "repeatQuiz": "Powtórz Quiz",
     "grammarLabel": "Gramatyka",
