@@ -76,3 +76,13 @@ export type UserEntry = {
     username: string;
     score: number;
 }
+
+export type QuizStats = {
+    quizId: number;
+    name: string;
+    category: string;
+    level: string;
+    medianScore: number;
+    totalSolutions: number;
+    solvedPerDayAgo: Record<number, number>;
+};
