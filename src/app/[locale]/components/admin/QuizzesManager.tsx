@@ -1,12 +1,13 @@
 ﻿import {useTranslations} from "next-intl";
 import {useEffect, useState} from "react";
-import {PageResponse, QuizLabel} from "@/app/[locale]/lib/types";
+import {PageResponse, QuizLabel, QuizStats} from "@/app/[locale]/lib/types";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import AddQuizForm from "@/app/[locale]/components/admin/AddQuizForm";
 import EditQuizForm from "@/app/[locale]/components/admin/EditQuizForm";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 import GenerateQuizModal from "@/app/[locale]/components/admin/GenerateQuizModal";
+import StatisticsModal from "@/app/[locale]/components/admin/StatisticsModal";
 
 export default function QuizzesManager() {
     const t = useTranslations('AdminPage');
@@ -22,11 +23,48 @@ export default function QuizzesManager() {
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
+    const [showStatisticsModal, setShowStatisticsModal] = useState(false);
+    const [quizStats, setQuizStats] = useState<QuizStats[]>([]);
+    const [currentQuizStats, setCurrentQuizStats] = useState<QuizStats | null>(null);
+
+    const handleShowStatistics = (quizId: number) => {
+        setShowStatisticsModal(true);
+        //search for the quiz stats by quizId
+        const stats = quizStats.find(stat => stat.quizId === quizId);
+        if (stats) {
+            setCurrentQuizStats(stats);
+        } else {
+            console.error(`No stats found for quiz ID ${quizId}`);
+            setCurrentQuizStats(null);
+        }
+
+    }
+    const handleCloseStatistics = () => setShowStatisticsModal(false);
+
     const pageSize = 10;
 
     useEffect(() => {
         fetchQuizzes(currentPage, selectedCategory);
+        fetchQuizStats();
     }, [currentPage, selectedCategory]);
+
+    const fetchQuizStats = async () => {
+        setIsLoading(true);
+        const locale = getLocale();
+
+        try {
+            const response = await fetch(`/${locale}/api/result/admin/stats`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setQuizStats(data || []);
+            setIsLoading(false);
+        } catch (err) {
+            console.error('Error fetching quiz stats:', err);
+            setIsLoading(false);
+        }
+    };
 
     const fetchQuizzes = async (page = 0, category = 'All') => {
         setIsLoading(true);
@@ -262,6 +300,10 @@ export default function QuizzesManager() {
                 </div>
             )}
 
+            {showStatisticsModal && (
+                <StatisticsModal quizStats={currentQuizStats} onClose={handleCloseStatistics} />
+            )}
+
             {/* Lista quizów - pokazywana tylko gdy nie edytujemy quizu */}
             {!quizToEdit && quizzes.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">{t('noQuizzes')}</p>
@@ -289,6 +331,12 @@ export default function QuizzesManager() {
                                     </td>
                                     <td className="py-3 px-4 border-b">{quiz.numberOfQuestions || 0}</td>
                                     <td className="flex flex-row py-3 px-4 border-b gap-2">
+                                        <button
+                                            onClick={() => handleShowStatistics(quiz.id)}
+                                            className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+                                        >
+                                            {t('statistics')}
+                                        </button>
                                         <button
                                             onClick={() => handleEditQuiz(quiz.id)}
                                             className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
