@@ -84,5 +84,11 @@ export type QuizStats = {
     level: string;
     medianScore: number;
     totalSolutions: number;
-    solvedPerDayAgo: Record<number, number>;
+    solvedPerDayAgo: Map<number, number>;
 };
+
+export type DailySolvesChartData = {
+    dayAgo: number;
+    count: number;
+    date: string;
+}[];
