@@ -8,6 +8,7 @@ import EditQuizForm from "@/app/[locale]/components/admin/EditQuizForm";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 import GenerateQuizModal from "@/app/[locale]/components/admin/GenerateQuizModal";
 import StatisticsModal from "@/app/[locale]/components/admin/StatisticsModal";
+import QuizzesSummaryModal from "@/app/[locale]/components/admin/QuizzesSummaryModal";
 
 export default function QuizzesManager() {
     const t = useTranslations('AdminPage');
@@ -26,6 +27,8 @@ export default function QuizzesManager() {
     const [showStatisticsModal, setShowStatisticsModal] = useState(false);
     const [quizStats, setQuizStats] = useState<QuizStats[]>([]);
     const [currentQuizStats, setCurrentQuizStats] = useState<QuizStats | null>(null);
+    const [showSummaryModal, setShowSummaryModal] = useState(false);
+    const [quizzesSummary, setQuizzesSummary] = useState<{name: string; totalSolves: number; median: number}[]>([]);
 
     const handleShowStatistics = (quizId: number) => {
         setShowStatisticsModal(true);
@@ -37,9 +40,26 @@ export default function QuizzesManager() {
             console.error(`No stats found for quiz ID ${quizId}`);
             setCurrentQuizStats(null);
         }
+    };
 
-    }
     const handleCloseStatistics = () => setShowStatisticsModal(false);
+
+    const handleShowSummary = () => {
+        // Przygotuj dane do podsumowania z quizStats
+        if (quizStats.length > 0) {
+            const summary = quizStats.map(stat => ({
+                name: stat.name,
+                totalSolves: Object.values(stat.solvedPerDayAgo || {}).reduce((sum, count) => sum + (count as number), 0),
+                median: Number((stat.medianScore * 100).toFixed(2))
+            }));
+            setQuizzesSummary(summary);
+            setShowSummaryModal(true);
+        } else {
+            console.error('No stats available for summary');
+        }
+    };
+
+    const handleCloseSummary = () => setShowSummaryModal(false);
 
     const pageSize = 10;
 
@@ -153,8 +173,6 @@ export default function QuizzesManager() {
 
     return (
         <div>
-
-
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-semibold">{t('quizzesList')}</h2>
                 <button
@@ -178,6 +196,18 @@ export default function QuizzesManager() {
                         {showAddForm ? t('cancelAddQuiz') : t('addNewQuiz')}
                     </button>
                 )}
+                {!quizToEdit && (
+                    <button
+                        onClick={handleShowSummary}
+                        className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition flex items-center ml-2"
+                    >
+                        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        {t('summary')}
+                    </button>
+                )}
             </div>
 
             {showGenerateModal && (
@@ -187,7 +217,6 @@ export default function QuizzesManager() {
                 />
             )}
 
-            {/* Przyciski kategorii - pokazywane tylko gdy nie edytujemy quizu */}
             {!quizToEdit && (
                 <div className="mb-6">
                     <div className="flex flex-wrap gap-2">
@@ -238,7 +267,6 @@ export default function QuizzesManager() {
                 </div>
             )}
 
-            {/* Formularz dodawania quizu */}
             {showAddForm && !quizToEdit && <AddQuizForm onQuizAdded={() => {
                 fetchQuizzes(0, selectedCategory);
                 setCurrentPage(0);
@@ -302,6 +330,10 @@ export default function QuizzesManager() {
 
             {showStatisticsModal && (
                 <StatisticsModal quizStats={currentQuizStats} onClose={handleCloseStatistics} />
+            )}
+
+            {showSummaryModal && (
+                <QuizzesSummaryModal quizzesSummary={quizzesSummary} onClose={handleCloseSummary} />
             )}
 
             {/* Lista quizów - pokazywana tylko gdy nie edytujemy quizu */}
@@ -401,3 +433,4 @@ export default function QuizzesManager() {
         </div>
     );
 }
+

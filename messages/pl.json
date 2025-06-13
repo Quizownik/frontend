@@ -177,7 +177,23 @@
     "noQuestionsSelected": "Wybierz co najmniej jedno pytanie",
     "selectedQuestionsCount": "Wybrane pytania",
     "selectQuestionsHelp": "Kliknij na pytanie lub zaznacz checkbox, aby dodać je do quizu",
-    "categoryFilterInfo": "Uwaga: Wybór konkretnej kategorii spowoduje, że pytania z innych kategorii będą ignorowane."
+    "categoryFilterInfo": "Uwaga: Wybór konkretnej kategorii spowoduje, że pytania z innych kategorii będą ignorowane.",
+    "summary": "Podsumowanie",
+    "quizzesSummary": "Podsumowanie wszystkich quizów",
+    "totalSolves": "Łączna liczba rozwiązań",
+    "medianResults": "Mediana wyników",
+    "solves": "Rozwiązania",
+    "median": "Mediana",
+    "charts": {
+      "dailySolvesTitle": "Rozwiązania dziennie",
+      "dailySolvesDescription": "Liczba rozwiązań quizu w ostatnich dniach",
+      "total": "Suma",
+      "medianTitle": "Średni wynik",
+      "medianDescription": "Mediana wyników dla tego quizu",
+      "medianInfoText": "Procent poprawnych odpowiedzi udzielonych przez użytkowników",
+      "noData": "Brak danych",
+      "noDataAvailable": "Nie ma jeszcze wystarczających danych do wyświetlenia"
+    }
   },
   "ChangePasswordPage": {
     "title": "Zmiana hasła",

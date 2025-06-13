@@ -3,6 +3,7 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/
 import {Bar, BarChart, CartesianGrid, XAxis} from "recharts";
 import * as React from "react";
 import {DailySolvesChartData} from "@/app/[locale]/lib/types";
+import { useTranslations } from "next-intl";
 
 const chartConfig = {
     views: {
@@ -15,17 +16,19 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function DailySolvesCurrent({ chartData, total }: { chartData: DailySolvesChartData; total: number }) {
+    const t = useTranslations('AdminPage.charts');
+
     return (
-        <Card className="py-0">
+        <Card className="py-0 w-full">
             <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
                 <div className="flex flex-1 flex-col justify-center gap-1 px-6 pt-4 pb-3 sm:!py-0">
-                    <CardTitle>Rozwiązania dziennie</CardTitle>
+                    <CardTitle>{t('dailySolvesTitle')}</CardTitle>
                     <CardDescription>
-                        Liczba rozwiązań quizu w ostatnich dniach
+                        {t('dailySolvesDescription')}
                     </CardDescription>
                 </div>
                 <div className="flex items-center px-6 pt-4 pb-3">
-                    <span className="text-muted-foreground text-xs mr-2">Suma:</span>
+                    <span className="text-muted-foreground text-xs mr-2">{t('total')}:</span>
                     <span className="text-lg leading-none font-bold sm:text-3xl">{total}</span>
                 </div>
             </CardHeader>
@@ -65,3 +68,4 @@ export function DailySolvesCurrent({ chartData, total }: { chartData: DailySolve
         </Card>
     );
 }
+

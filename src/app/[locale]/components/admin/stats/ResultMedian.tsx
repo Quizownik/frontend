@@ -17,6 +17,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {ChartConfig, ChartContainer} from "@/components/ui/chart"
+import { useTranslations } from "next-intl"
 
 export const description = "A radial chart with a custom shape"
 
@@ -31,29 +32,31 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ResultMedian({median}: { median: number }) {
+    const t = useTranslations('AdminPage.charts');
+
     if (!median || median === 0) {
         return (
             <Card className="flex flex-col bg-background shadow-sm">
                 <CardHeader className="items-center pb-0">
-                    <CardTitle>Mediana wyników</CardTitle>
-                    <CardDescription>Brak danych</CardDescription>
+                    <CardTitle>{t('medianTitle')}</CardTitle>
+                    <CardDescription>{t('noData')}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1 pb-0">
-                    <div className="text-center text-muted-foreground">Brak dostępnych danych do wyświetlenia.</div>
+                    <div className="text-center text-muted-foreground">{t('noDataAvailable')}</div>
                 </CardContent>
             </Card>
         )
     }
     // Przygotuj dane do wykresu radialnego
     const chartData = [
-        { name: "Mediana", value: median, fill: "var(--chart-2)" },
+        { name: t('median'), value: median, fill: "var(--chart-2)" },
     ];
 
     return (
-        <Card className="flex flex-col bg-background shadow-sm">
+        <Card className="flex flex-col bg-background shadow-sm w-full">
             <CardHeader className="items-center pb-0">
-                <CardTitle>Mediana wyników</CardTitle>
-                <CardDescription>Mediana wszystkich wyników quizu</CardDescription>
+                <CardTitle>{t('medianTitle')}</CardTitle>
+                <CardDescription>{t('medianDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
                 <ChartContainer
@@ -117,7 +120,7 @@ export function ResultMedian({median}: { median: number }) {
             </CardContent>
             <CardFooter className="flex-col gap-2 text-sm">
                 <div className="text-muted-foreground leading-none">
-                    Pokazuje medianę wyników ze wszystkich rozwiązań
+                    {t('medianInfoText')}
                 </div>
             </CardFooter>
         </Card>
