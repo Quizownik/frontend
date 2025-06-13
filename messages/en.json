@@ -116,6 +116,10 @@
     "actions": "Actions",
     "retakeQuiz": "Take Quiz Again",
     "quizName": "Quiz Name",
+    "showCategoryStats": "Show Category Stats",
+    "loadingStats": "Loading...",
+    "categoryStatsTitle": "Category Statistics",
+    "solves": "Solves",
     "pagination": {
       "previous": "Previous",
       "next": "Next",
