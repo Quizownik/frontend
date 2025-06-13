@@ -117,6 +117,6 @@ export default function QuizzesSummaryModal({ quizzesSummary, onClose }: Quizzes
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
