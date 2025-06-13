@@ -185,6 +185,7 @@
     "solves": "Rozwiązania",
     "median": "Mediana",
     "charts": {
+      "median": "Mediana",
       "dailySolvesTitle": "Rozwiązania dziennie",
       "dailySolvesDescription": "Liczba rozwiązań quizu w ostatnich dniach",
       "total": "Suma",

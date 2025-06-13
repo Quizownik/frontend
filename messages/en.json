@@ -185,6 +185,7 @@
     "solves": "Solves",
     "median": "Median",
     "charts": {
+      "median": "Median",
       "dailySolvesTitle": "Daily Solves",
       "dailySolvesDescription": "Number of quiz completions in recent days",
       "total": "Total",
