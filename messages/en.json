@@ -191,6 +191,8 @@
     "charts": {
       "median": "Median",
       "dailySolvesTitle": "Daily Solves",
+      "totalSolvesTitle": "Sum of Solves",
+      "totalSolvesDescription": "Total number of quiz completions for category",
       "dailySolvesDescription": "Number of quiz completions in recent days",
       "total": "Total",
       "medianTitle": "Average Score",

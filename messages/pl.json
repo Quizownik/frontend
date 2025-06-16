@@ -191,6 +191,8 @@
     "charts": {
       "median": "Mediana",
       "dailySolvesTitle": "Rozwiązania dziennie",
+      "totalSolvesTitle": "Suma rozwiązań",
+      "totalSolvesDescription": "Łączna liczba rozwiązań dla każdej kategorii",
       "dailySolvesDescription": "Liczba rozwiązań quizu w ostatnich dniach",
       "total": "Suma",
       "medianTitle": "Średni wynik",

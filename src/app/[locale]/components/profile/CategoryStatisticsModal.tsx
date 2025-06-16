@@ -97,6 +97,14 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
             .sort((a, b) => a.dayAgo - b.dayAgo);
     };
 
+    const solvesSumData = useMemo(() => {
+        if (!categoryStats || categoryStats.length === 0) return [];
+        return categoryStats.map(stats => ({
+            category: stats.category || "Unknown",
+            totalSolves: Object.values(stats.solvedPerDayAgo || {}).reduce((acc, curr) => acc + (curr as number), 0)
+        }));
+    }, [categoryStats]);
+
     const categoriesData = useMemo(() => {
         if (!categoryStats || categoryStats.length === 0) {
             console.log("Brak danych statystycznych dla kategorii");
@@ -146,6 +154,28 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
                     <h3 className="text-xl font-semibold flex-1 text-center">{t('categoryStatsTitle')}</h3>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
                 </div>
+                {/* Total Solves */}
+                <Card className="w-full mt-8">
+                    <CardHeader>
+                        <CardTitle>{ct('totalSolvesTitle')}</CardTitle>
+                        <CardDescription>{ct('totalSolvesDescription')}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChartContainer className="aspect-auto h-[300px] w-full" config={chartConfig}>
+                            <BarChart data={solvesSumData} margin={{ left: 12, right: 12 }}>
+                                <CartesianGrid vertical={false} />
+                                <XAxis dataKey="category" />
+                                <YAxis />
+                                <Tooltip
+                                    contentStyle={tooltipStyle}
+                                    labelStyle={labelStyle}
+                                    formatter={(value) => [`${value}`, t('solves')]}
+                                />
+                                <Bar dataKey="totalSolves" fill="var(--chart-1)" name={t('solves')} />
+                            </BarChart>
+                        </ChartContainer>
+                    </CardContent>
+                </Card>
 
                 <div className="space-y-8">
                     {categoriesData.map((data, index) => (
