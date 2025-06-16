@@ -112,6 +112,7 @@ export default function ResultsPage() {
             }
 
             const data = await response.json();
+            console.log('Pobrane statystyki kategorii:', data);
             setCategoryStats(data);
             setShowStatsModal(true);
         } catch (err) {

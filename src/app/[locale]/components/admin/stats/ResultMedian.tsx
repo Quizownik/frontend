@@ -19,8 +19,6 @@ import {
 import {ChartConfig, ChartContainer} from "@/components/ui/chart"
 import { useTranslations } from "next-intl"
 
-export const description = "A radial chart with a custom shape"
-
 const chartConfig = {
     visitors: {
         label: "Visitors",

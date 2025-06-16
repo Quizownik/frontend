@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import {
@@ -69,8 +69,18 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
     const t = useTranslations('ResultsPage');
     const ct = useTranslations('AdminPage.charts');
 
+    // Dodajemy debug log, aby sprawdzić dane wejściowe
+    useEffect(() => {
+        console.log("Otrzymane dane kategorii:", categoryStats);
+    }, [categoryStats]);
+
     const prepareChartData = (stats: CategoryStats) => {
-        return Object.entries(stats.solvedPerDayAgo || {})
+        if (!stats || !stats.solvedPerDayAgo) {
+            console.log("Brak danych dla kategorii:", stats?.category);
+            return [];
+        }
+
+        return Object.entries(stats.solvedPerDayAgo)
             .map(([dayAgo, count]) => ({
                 dayAgo: Number(dayAgo),
                 count: count as number,
@@ -88,13 +98,18 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
     };
 
     const categoriesData = useMemo(() => {
+        if (!categoryStats || categoryStats.length === 0) {
+            console.log("Brak danych statystycznych dla kategorii");
+            return [];
+        }
+
         return categoryStats.map(stats => {
             const chartData = prepareChartData(stats);
             const total = chartData.reduce((acc, curr) => acc + curr.count, 0);
-            const averageScorePercent = Math.round(stats.averageScore * 100);
+            const averageScorePercent = Math.round((stats?.averageScore || 0) * 100);
 
             return {
-                category: stats.category,
+                category: stats.category || "Unknown",
                 chartData,
                 total,
                 averageScorePercent,
@@ -105,6 +120,25 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
         });
     }, [categoryStats, ct]);
 
+    // Jeśli nie ma danych, wyświetl komunikat
+    if (!categoryStats || categoryStats.length === 0 || categoriesData.length === 0) {
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-xl font-semibold flex-1 text-center">{t('categoryStatsTitle')}</h3>
+                        <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
+                    </div>
+                    <div className="text-center py-8">
+                        <p className="text-gray-600">{ct('noDataAvailable')}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    console.log("Przetworzone dane kategorii:", categoriesData);
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-auto">
@@ -114,7 +148,7 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
                 </div>
 
                 <div className="space-y-8">
-                    {categoriesData.map((data) => (
+                    {categoriesData.map((data, index) => (
                         <div key={data.category} className="bg-slate-50 p-4 rounded-lg shadow-md">
                             <h4 className="text-lg font-medium mb-4 text-center">{data.category}</h4>
 
@@ -154,7 +188,7 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
                                                     <RadialBar dataKey="value" background />
                                                     <PolarRadiusAxis tick={false} tickLine={false} axisLine={false} angle={90} domain={[0, 100]}>
                                                         <Label
-                                                            content={({viewBox}) => {
+                                                            content={({ viewBox }) => {
                                                                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                                                                     return (
                                                                         <text
@@ -213,9 +247,9 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
                                             <ChartContainer className="aspect-auto h-[250px] w-full" config={chartConfig}>
                                                 <BarChart
                                                     data={data.chartData}
-                                                    margin={{left: 12, right: 12}}
+                                                    margin={{ left: 12, right: 12 }}
                                                 >
-                                                    <CartesianGrid vertical={false}/>
+                                                    <CartesianGrid vertical={false} />
                                                     <XAxis
                                                         dataKey="date"
                                                         tickLine={false}

@@ -20,7 +20,7 @@ export async function GET(
 
         // Użyj tokenu z sesji do autoryzacji zapytania do zewnętrznego API
         try {
-            const response = await fetch(`${API_BASE_URL}/results/showPlots`, {
+            const response = await fetch(`${API_BASE_URL}/results/showPlots?category=All`, {
                 headers: {
                     'Authorization': `Bearer ${user.userToken}`
                 }
