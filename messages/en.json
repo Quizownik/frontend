@@ -194,6 +194,8 @@
       "totalSolvesTitle": "Sum of Solves",
       "totalSolvesDescription": "Total number of quiz completions for category",
       "dailySolvesDescription": "Number of quiz completions in recent days",
+      "medianPerCategoryTitle": "Results median per category",
+      "medianPerCategoryDescription": "Average percentage score for each category",
       "total": "Total",
       "medianTitle": "Average Score",
       "medianDescription": "Median score for this quiz",

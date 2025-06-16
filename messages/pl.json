@@ -194,6 +194,8 @@
       "totalSolvesTitle": "Suma rozwiązań",
       "totalSolvesDescription": "Łączna liczba rozwiązań dla każdej kategorii",
       "dailySolvesDescription": "Liczba rozwiązań quizu w ostatnich dniach",
+      "medianPerCategoryTitle": "Mediana wyników dla kategorii",
+      "medianPerCategoryDescription": "Średni procentowy wynik dla każdej kategorii",
       "total": "Suma",
       "medianTitle": "Średni wynik",
       "medianDescription": "Mediana wyników dla tego quizu",
