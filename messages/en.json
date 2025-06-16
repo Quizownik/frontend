@@ -197,7 +197,7 @@
       "medianPerCategoryTitle": "Results median per category",
       "medianPerCategoryDescription": "Average percentage score for each category",
       "total": "Total",
-      "medianTitle": "Average Score",
+      "medianTitle": "Median Score",
       "medianDescription": "Median score for this quiz",
       "medianInfoText": "Percentage of correct answers given by users",
       "noData": "No data",
