@@ -145,8 +145,6 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
         );
     }
 
-    console.log("Przetworzone dane kategorii:", categoriesData);
-
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-auto">
@@ -155,7 +153,7 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
                 </div>
                 {/* Total Solves */}
-                <Card className="w-full mt-8">
+                <Card className="w-full mt-8 mb-8 shadow-2xl">
                     <CardHeader>
                         <CardTitle>{ct('totalSolvesTitle')}</CardTitle>
                         <CardDescription>{ct('totalSolvesDescription')}</CardDescription>
@@ -179,7 +177,7 @@ export default function CategoryStatisticsModal({ categoryStats, onClose }: Cate
 
                 <div className="space-y-8">
                     {categoriesData.map((data, index) => (
-                        <div key={data.category} className="bg-slate-50 p-4 rounded-lg shadow-md">
+                        <div key={data.category} className="bg-slate-50 p-4 rounded-lg shadow-xl">
                             <h4 className="text-lg font-medium mb-4 text-center">{data.category}</h4>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

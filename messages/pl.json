@@ -116,9 +116,9 @@
     "actions": "Akcje",
     "retakeQuiz": "Rozwiąż Ponownie",
     "quizName": "Nazwa Quizu",
-    "showCategoryStats": "Pokaż statystyki kategorii",
+    "showCategoryStats": "Pokaż statystyki",
     "loadingStats": "Ładowanie...",
-    "categoryStatsTitle": "Statystyki kategorii",
+    "categoryStatsTitle": "Statystyki",
     "solves": "Rozwiązania",
     "pagination": {
       "previous": "Poprzednia",
