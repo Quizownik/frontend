@@ -76,3 +76,19 @@ export type UserEntry = {
     username: string;
     score: number;
 }
+
+export type QuizStats = {
+    quizId: number;
+    name: string;
+    category: string;
+    level: string;
+    medianScore: number;
+    totalSolutions: number;
+    solvedPerDayAgo: Map<number, number>;
+};
+
+export type DailySolvesChartData = {
+    dayAgo: number;
+    count: number;
+    date: string;
+}[];

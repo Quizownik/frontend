@@ -1,12 +1,14 @@
 ﻿import {useTranslations} from "next-intl";
 import {useEffect, useState} from "react";
-import {PageResponse, QuizLabel} from "@/app/[locale]/lib/types";
+import {PageResponse, QuizLabel, QuizStats} from "@/app/[locale]/lib/types";
 import {getLocale} from "@/app/[locale]/lib/utils";
 import {LoadingSpinner} from "@/app/[locale]/components/LoadingSpinner";
 import AddQuizForm from "@/app/[locale]/components/admin/AddQuizForm";
 import EditQuizForm from "@/app/[locale]/components/admin/EditQuizForm";
 import CategoryChip from "@/app/[locale]/components/categoryChip";
 import GenerateQuizModal from "@/app/[locale]/components/admin/GenerateQuizModal";
+import StatisticsModal from "@/app/[locale]/components/admin/StatisticsModal";
+import QuizzesSummaryModal from "@/app/[locale]/components/admin/QuizzesSummaryModal";
 
 export default function QuizzesManager() {
     const t = useTranslations('AdminPage');
@@ -22,11 +24,67 @@ export default function QuizzesManager() {
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
+    const [showStatisticsModal, setShowStatisticsModal] = useState(false);
+    const [quizStats, setQuizStats] = useState<QuizStats[]>([]);
+    const [currentQuizStats, setCurrentQuizStats] = useState<QuizStats | null>(null);
+    const [showSummaryModal, setShowSummaryModal] = useState(false);
+    const [quizzesSummary, setQuizzesSummary] = useState<{name: string; totalSolves: number; median: number}[]>([]);
+
+    const handleShowStatistics = (quizId: number) => {
+        setShowStatisticsModal(true);
+        //search for the quiz stats by quizId
+        const stats = quizStats.find(stat => stat.quizId === quizId);
+        if (stats) {
+            setCurrentQuizStats(stats);
+        } else {
+            console.error(`No stats found for quiz ID ${quizId}`);
+            setCurrentQuizStats(null);
+        }
+    };
+
+    const handleCloseStatistics = () => setShowStatisticsModal(false);
+
+    const handleShowSummary = () => {
+        // Przygotuj dane do podsumowania z quizStats
+        if (quizStats.length > 0) {
+            const summary = quizStats.map(stat => ({
+                name: stat.name,
+                totalSolves: Object.values(stat.solvedPerDayAgo || {}).reduce((sum, count) => sum + (count as number), 0),
+                median: Number((stat.medianScore * 100).toFixed(2))
+            }));
+            setQuizzesSummary(summary);
+            setShowSummaryModal(true);
+        } else {
+            console.error('No stats available for summary');
+        }
+    };
+
+    const handleCloseSummary = () => setShowSummaryModal(false);
+
     const pageSize = 10;
 
     useEffect(() => {
         fetchQuizzes(currentPage, selectedCategory);
+        fetchQuizStats();
     }, [currentPage, selectedCategory]);
+
+    const fetchQuizStats = async () => {
+        setIsLoading(true);
+        const locale = getLocale();
+
+        try {
+            const response = await fetch(`/${locale}/api/result/admin/stats`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setQuizStats(data || []);
+            setIsLoading(false);
+        } catch (err) {
+            console.error('Error fetching quiz stats:', err);
+            setIsLoading(false);
+        }
+    };
 
     const fetchQuizzes = async (page = 0, category = 'All') => {
         setIsLoading(true);
@@ -115,8 +173,6 @@ export default function QuizzesManager() {
 
     return (
         <div>
-
-
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-semibold">{t('quizzesList')}</h2>
                 <button
@@ -140,6 +196,18 @@ export default function QuizzesManager() {
                         {showAddForm ? t('cancelAddQuiz') : t('addNewQuiz')}
                     </button>
                 )}
+                {!quizToEdit && (
+                    <button
+                        onClick={handleShowSummary}
+                        className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition flex items-center ml-2"
+                    >
+                        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        {t('summary')}
+                    </button>
+                )}
             </div>
 
             {showGenerateModal && (
@@ -149,7 +217,6 @@ export default function QuizzesManager() {
                 />
             )}
 
-            {/* Przyciski kategorii - pokazywane tylko gdy nie edytujemy quizu */}
             {!quizToEdit && (
                 <div className="mb-6">
                     <div className="flex flex-wrap gap-2">
@@ -200,7 +267,6 @@ export default function QuizzesManager() {
                 </div>
             )}
 
-            {/* Formularz dodawania quizu */}
             {showAddForm && !quizToEdit && <AddQuizForm onQuizAdded={() => {
                 fetchQuizzes(0, selectedCategory);
                 setCurrentPage(0);
@@ -262,6 +328,14 @@ export default function QuizzesManager() {
                 </div>
             )}
 
+            {showStatisticsModal && (
+                <StatisticsModal quizStats={currentQuizStats} onClose={handleCloseStatistics} />
+            )}
+
+            {showSummaryModal && (
+                <QuizzesSummaryModal quizzesSummary={quizzesSummary} onClose={handleCloseSummary} />
+            )}
+
             {/* Lista quizów - pokazywana tylko gdy nie edytujemy quizu */}
             {!quizToEdit && quizzes.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">{t('noQuizzes')}</p>
@@ -289,6 +363,12 @@ export default function QuizzesManager() {
                                     </td>
                                     <td className="py-3 px-4 border-b">{quiz.numberOfQuestions || 0}</td>
                                     <td className="flex flex-row py-3 px-4 border-b gap-2">
+                                        <button
+                                            onClick={() => handleShowStatistics(quiz.id)}
+                                            className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+                                        >
+                                            {t('statistics')}
+                                        </button>
                                         <button
                                             onClick={() => handleEditQuiz(quiz.id)}
                                             className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
@@ -353,3 +433,4 @@ export default function QuizzesManager() {
         </div>
     );
 }
+

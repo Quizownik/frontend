@@ -116,6 +116,10 @@
     "actions": "Actions",
     "retakeQuiz": "Take Quiz Again",
     "quizName": "Quiz Name",
+    "showCategoryStats": "Show Stats",
+    "loadingStats": "Loading...",
+    "categoryStatsTitle": "Statistics",
+    "solves": "Solves",
     "pagination": {
       "previous": "Previous",
       "next": "Next",
@@ -155,6 +159,7 @@
     "saveQuiz": "Save Quiz",
     "saveQuestion": "Save Question",
     "actions": "Actions",
+    "statistics": "Statistics",
     "edit": "Edit",
     "delete": "Delete",
     "noQuizzes": "No quizzes available yet.",
@@ -176,7 +181,28 @@
     "selectedQuestionsCount": "Selected questions",
     "selectQuestionsHelp": "Click on a question or check the checkbox to add it to the quiz",
     "categoryFilterInfo": "Note: When selecting a specific category, questions from other categories will be ignored.",
-    "cantDeleteQuestion": "Can't delete question."
+    "cantDeleteQuestion": "Can't delete question.",
+    "summary": "Summary",
+    "quizzesSummary": "Quiz Summary Statistics",
+    "totalSolves": "Total number of solves",
+    "medianResults": "Median results",
+    "solves": "Solves",
+    "median": "Median",
+    "charts": {
+      "median": "Median",
+      "dailySolvesTitle": "Daily Solves",
+      "totalSolvesTitle": "Sum of Solves",
+      "totalSolvesDescription": "Total number of quiz completions for category",
+      "dailySolvesDescription": "Number of quiz completions in recent days",
+      "medianPerCategoryTitle": "Results median per category",
+      "medianPerCategoryDescription": "Average percentage score for each category",
+      "total": "Total",
+      "medianTitle": "Average Score",
+      "medianDescription": "Median score for this quiz",
+      "medianInfoText": "Percentage of correct answers given by users",
+      "noData": "No data",
+      "noDataAvailable": "Not enough data to display yet"
+    }
   },
   "API": {
     "quizIdRequired": "Quiz ID is required",
